@@ -1,14 +1,13 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import Nav from './components/Nav.vue'
-import SideTabs from './components/SideTabs.vue'
-import UserCard from './components/UserCard.vue'
-import NewPostInput from './components/NewPostInput.vue'
-import Home from './views/Home.vue'
+import Nav from '../components/Nav.vue'
+import NewPostInput from '../components/NewPostInput.vue'
+import SideTabs from '../components/SideTabs.vue'
+import UserCard from '../components/UserCard.vue'
+
 </script>
 
 <template>
-  <!-- <Nav username="ZooFru" wins=5 losses=0 />
+  <Nav username="ZooFru" wins=5 losses=0 />
   <div id="body">
     <div id='left-body'>
       <UserCard name='Mason Bush' username='MasonBush86' />
@@ -20,15 +19,13 @@ import Home from './views/Home.vue'
     </div>
 
     <div id='right-body'>
-
+      <router-link to='/about' exact>about</router-link>
     </div>
-  </div> -->
-  <!-- <Home /> -->
-  <router-view/>
+  </div>
 </template>
 
-<style>
-/* @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 html * {
   font-family: 'Inter', sans-serif;
   color: #3a4943;
@@ -68,5 +65,5 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-} */
+}
 </style>
