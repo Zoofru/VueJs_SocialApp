@@ -16,7 +16,7 @@ defineProps({
         <div id="infonav">
             <input type='text' autocomplete="false" spellcheck="false" placeholder="Search">
             <button type="button" @click="create()">Create</button>
-            <img src="https://i.imgur.com/Oe141Le.png" alt='accountimg'>
+            <img src="https://i.imgur.com/EW2PaMZ.jpg" alt='accountimg'>
         </div>
     </div>
 </template>
@@ -26,9 +26,10 @@ defineProps({
     display: flex;
     flex-direction: row;
     width: 100%;
-    height: 7vh;
+    height: 10vh;
     border-bottom: 2px solid lightgray;
     background-color: white;
+    border-bottom-width: thin;
 }
 
 #logo {
@@ -67,9 +68,10 @@ input {
     height: 50%;
     margin-right: 20px;
     border-radius: 10px;
-    border: none;
+    outline: none !important;
     background-color: #f5f5f5;
     padding: 2px 10px;
+    border: none;
 }
 
 input:focus {

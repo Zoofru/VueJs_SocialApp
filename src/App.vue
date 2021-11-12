@@ -1,23 +1,65 @@
 <script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import HelloWorld from './components/HelloWorld.vue'
 import Nav from './components/Nav.vue'
 import SideTabs from './components/SideTabs.vue'
+import UserCard from './components/UserCard.vue'
+import NewPostInput from './components/NewPostInput.vue'
+// import VueRouter from 'vue-router'
 </script>
 
 <template>
   <Nav username="ZooFru" wins=5 losses=0 />
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + Vite" />
-  <SideTabs />
+  <div id="body">
+    <div id='left-body'>
+      <UserCard name='Mason Bush' username='MasonBush86' />
+      <SideTabs  />
+    </div>
+
+    <div id='center-body'>
+        <NewPostInput :username='Zoofru'/>
+    </div>
+
+    <div id='right-body'>
+      
+    </div>
+  </div>
 </template>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+html * {
+  font-family: 'Inter', sans-serif;
+  color: #3a4943;
+
+}
+
 body {
   margin: 0px;
   background-color: #f5f5f5;
 }
+
+#body {
+  display: flex;
+  flex-direction: row;
+}
+
+#left-body, #right-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 20%;
+  border: 2px solid red;
+  margin-top: 5vh;
+}
+
+#center-body {
+  width: 60%;
+  border: 2px solid green;
+  display: flex;
+  justify-content: center;
+  margin-top: 5vh;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
