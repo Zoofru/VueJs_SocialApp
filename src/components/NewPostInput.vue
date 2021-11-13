@@ -2,11 +2,18 @@
 defineProps({
     username: String
 })
+
+const signInCheck = () => {
+    if(localStorage.getItem('uId')) {
+        return true;
+    }
+    return false;
+}
 </script>
 
 
 <template>      
-    <div id='new-post'>
+    <div v-if="signInCheck()" id='new-post'>
         <div id='accounticon'>
           <img id='new-post-accounticon' src='https://i.imgur.com/EW2PaMZ.jpg' alt='account-icon' />
         </div>

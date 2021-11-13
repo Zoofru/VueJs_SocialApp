@@ -6,6 +6,13 @@ defineProps({
     losses: String
 })
 
+const signInCheck = () => {
+    if(localStorage.getItem('uId')) {
+        return true;
+    }
+    return false;
+}
+
 </script>
 
 <template>
@@ -15,8 +22,14 @@ defineProps({
         </div>
         <div id="infonav">
             <input type='text' autocomplete="false" spellcheck="false" placeholder="Search">
-            <button type="button" @click="create()">Create</button>
-            <img src="https://i.imgur.com/EW2PaMZ.jpg" alt='accountimg'>
+            <button v-if="!signInCheck()" type="button">
+                <router-link 
+                    to='/login' 
+                    style="text-decoration: none; color: white;">
+                    Login
+                </router-link>
+            </button>
+            <img v-if="signInCheck()" src="https://i.imgur.com/EW2PaMZ.jpg" alt='accountimg'>
         </div>
     </div>
 </template>
@@ -47,8 +60,8 @@ defineProps({
 }
 
 img {
-    width: 3vw;
-    height: 90%;
+    width: 4vw;
+    height: 65%;
     border-radius: 10px;
     margin:auto 10px;
 }
@@ -59,8 +72,8 @@ button {
     border-radius: 10px;
     border: none;
     width: 10%;
-    height: 63%;
-    font-size: medium;
+    height: 5vh;
+    font-size: large;
 }
 
 input {

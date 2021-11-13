@@ -2,10 +2,16 @@
 
 let tabs = ["Home", "People", "Photos", "Feed", "Profile", "Settings"]
 
+const signInCheck = () => {
+    if(localStorage.getItem('uId')) {
+        return true;
+    }
+    return false;
+}
 </script>
 
 <template>
-    <div id='tabBox'>
+    <div v-if="signInCheck()" id='tabBox'>
         <div v-for="(item, index) in tabs" :key="index">
             <div v-if="item == 'Settings'" id='tabSettings'>
                 <p v-if="item == 'Settings'" id='tabText-settings'> {{ item }}</p>

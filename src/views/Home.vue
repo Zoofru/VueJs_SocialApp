@@ -25,18 +25,6 @@ import UserCard from '../components/UserCard.vue'
 </template>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
-html * {
-  font-family: 'Inter', sans-serif;
-  color: #3a4943;
-
-}
-
-body {
-  margin: 0px;
-  background-color: #f5f5f5;
-}
-
 #body {
   display: flex;
   flex-direction: row;

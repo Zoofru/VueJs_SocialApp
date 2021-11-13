@@ -3,10 +3,17 @@ defineProps({
     name: String,
     username: String
 })
+
+const signInCheck = () => {
+    if(localStorage.getItem('uId')) {
+        return true;
+    }
+    return false;
+}
 </script>
 
 <template>
-    <div id='container'>
+    <div v-if="signInCheck()" id='container'>
         <div id='account-icon'>
             <img src='https://i.imgur.com/EW2PaMZ.jpg' alt='account-icon'/>
         </div>
