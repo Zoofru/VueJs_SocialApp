@@ -22,7 +22,9 @@ export default {
   methods: {
     async getUser() {
       const res = await axios.get(`http://localhost:3001/user/finduser/${localStorage.getItem("uId")}`)
-      this.user = res.data.user
+      if(res.data.user){
+        this.user = res.data.user
+      }
     }
   },
   mounted() {
@@ -32,20 +34,20 @@ export default {
     this.getUser()
   }
 }
-
 </script>
 
 <template>
   <div>
-      <Nav />
+      <Nav v-if="user !== null" :avatar=this.user.avatar />
+      <Nav v-else />
       <div id="body">
         <div id='left-body'>
-          <UserCard :fullname=this.user.name :username=this.user.username />
+          <UserCard v-if="user !== null" :fullname=this.user.name :username=this.user.username :avatar=this.user.avatar />
           <SideTabs  />
         </div>
 
         <div id='center-body'>
-            <NewPostInput />
+            <NewPostInput v-if="user !== null" :avatar=this.user.avatar />
         </div>
 
         <div id='right-body'>

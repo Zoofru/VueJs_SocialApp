@@ -40,7 +40,12 @@ export default {
     <div>
         <div id="top">
             <div id='left'>
-                <h1>SparkWire</h1>
+                <router-link
+                    to='/'
+                    exact
+                    style="text-decoration: none;">
+                    <h1>SparkWire</h1>
+                </router-link>
             </div>
             <div id="right">
                 <p>New to SparkWire?</p>

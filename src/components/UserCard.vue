@@ -3,7 +3,8 @@ export default {
     name: "UserCard",
     props: {
         fullname: String,
-        username: String
+        username: String,
+        avatar: String
     },
     methods: {
         signInCheck() {
@@ -15,12 +16,14 @@ export default {
     }
 }
 
+
+
 </script>
 
 <template>
     <div v-if="this.signInCheck()" id='container'>
         <div id='account-icon'>
-            <img src='https://i.imgur.com/EW2PaMZ.jpg' alt='account-icon'/>
+            <img v-bind:src=avatar alt='account-icon'/>
         </div>
     
         <div id='username'>

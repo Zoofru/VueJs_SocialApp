@@ -2,6 +2,9 @@
 
 export default {
     name: 'Nav',
+    props: {
+        avatar: String
+    },
     data() {
         return {}
     },
@@ -31,7 +34,7 @@ export default {
         </div>
         <div id="infonav">
             <input type='text' autocomplete="false" spellcheck="false" placeholder="Search">
-            <button v-if="!signInCheck()" type="button">
+            <button id="login" v-if="!signInCheck()" type="button">
                 <router-link 
                     to='/login' 
                     style="text-decoration: none; color: white;">
@@ -41,7 +44,7 @@ export default {
             <button v-if="signInCheck()" type="button" @click="logout">
                 Logout
             </button>
-            <img v-if="signInCheck()" src="https://i.imgur.com/EW2PaMZ.jpg" alt='accountimg'>
+            <img v-if="signInCheck()" v-bind:src=avatar alt='accountimg'>
         </div>
     </div>
 </template>
@@ -69,6 +72,10 @@ export default {
     justify-content: flex-end;
     align-items: center;
     width: 50%;
+}
+
+#login {
+    margin-right: 20px;
 }
 
 img {

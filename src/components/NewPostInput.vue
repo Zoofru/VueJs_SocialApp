@@ -1,6 +1,7 @@
 <script setup>
 defineProps({
-    username: String
+    username: String,
+    avatar: String
 })
 
 const signInCheck = () => {
@@ -15,7 +16,7 @@ const signInCheck = () => {
 <template>      
     <div v-if="signInCheck()" id='new-post'>
         <div id='accounticon'>
-          <img id='new-post-accounticon' src='https://i.imgur.com/EW2PaMZ.jpg' alt='account-icon' />
+          <img id='new-post-accounticon' v-bind:src=avatar alt='account-icon' />
         </div>
         <input id="new-post-input" placeholder="Whats happening?" type='text' spellcheck="false" autocomplete="false" />
         <div id='submitBtn'>
