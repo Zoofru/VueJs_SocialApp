@@ -1,5 +1,39 @@
-<script setup>
+<script>
+import axios from 'axios'
 
+export default {
+    name: 'Login',
+    data() {
+        return {
+            email:null,
+            password:null,
+            unAuth:false
+        }
+    },
+    methods: {
+        async Login() {
+            try {
+                if(this.email && this.password)  {
+                    const res = await axios.post('http://localhost:3001/user/login', {
+                        email: this.email,
+                        password: this.password
+                    })
+                    console.log(res);
+                    if(res.data.user) {
+                        this.unAuth = false
+                        localStorage.setItem("uId", res.data.user.id)
+                        this.$router.push({ name: "Home" })
+                    }
+                }
+            } catch (error) {
+                if(error.response.status === 401) {
+                    this.unAuth = true
+                }
+                this.password = ''
+            }
+        }
+    }
+}
 </script>
 
 <template>
@@ -22,9 +56,10 @@
         </div>
         <div id="container">
             <h1>Login</h1>
-            <form id="login-form">
-                <input type='text' spellcheck="false" autocomplete="false" placeholder="Email" />
-                <input type='password' placeholder='Password' />
+            <form id="login-form" @submit.prevent="Login">
+                <input type='text' v-model="email" spellcheck="false" autocomplete="false" placeholder="Email" />
+                <input type='password' v-model="password" placeholder='Password' />
+                <p v-if="this.unAuth" id="error">Invalid email or password.</p>
                 <button id='signin-btn' type='submit'>Sign in</button>
             </form>
         </div>
@@ -38,6 +73,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+#error {
+    color: red;
 }
 
 #login-form {

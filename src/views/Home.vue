@@ -1,26 +1,57 @@
-<script setup>
+<script>
 import Nav from '../components/Nav.vue'
 import NewPostInput from '../components/NewPostInput.vue'
 import SideTabs from '../components/SideTabs.vue'
 import UserCard from '../components/UserCard.vue'
+import {computed, onMounted} from 'vue'
+import axios from 'axios'
+
+export default {
+  name: "Home",
+  components: {
+    Nav, 
+    NewPostInput,
+    SideTabs,
+    UserCard
+  },
+  data() {
+    return {
+      user:null
+    }
+  },
+  methods: {
+    async getUser() {
+      const res = await axios.get(`http://localhost:3001/user/finduser/${localStorage.getItem("uId")}`)
+      this.user = res.data.user
+    }
+  },
+  mounted() {
+    this.getUser()
+  },
+  created() {
+    this.getUser()
+  }
+}
 
 </script>
 
 <template>
-  <Nav username="ZooFru" wins=5 losses=0 />
-  <div id="body">
-    <div id='left-body'>
-      <UserCard name='Mason Bush' username='MasonBush86' />
-      <SideTabs  />
-    </div>
+  <div>
+      <Nav />
+      <div id="body">
+        <div id='left-body'>
+          <UserCard :fullname=this.user.name :username=this.user.username />
+          <SideTabs  />
+        </div>
 
-    <div id='center-body'>
-        <NewPostInput :username='Zoofru'/>
-    </div>
+        <div id='center-body'>
+            <NewPostInput />
+        </div>
 
-    <div id='right-body'>
-      <router-link to='/about' exact>about</router-link>
-    </div>
+        <div id='right-body'>
+          <router-link to='/about' exact>about</router-link>
+        </div>
+      </div>
   </div>
 </template>
 

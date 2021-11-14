@@ -1,17 +1,26 @@
-<script setup>
+<script>
 
-defineProps({
-    username: String,
-    wins: String,
-    losses: String
-})
+export default {
+    name: 'Nav',
+    data() {
+        return {}
+    },
+    methods: {
+        signInCheck() {
+            if(localStorage.getItem('uId')) {
+                return true;
+            }
+            return false;
+        },
+        
+        logout() {
+            localStorage.removeItem("uId")
+            location.reload()
+        }
 
-const signInCheck = () => {
-    if(localStorage.getItem('uId')) {
-        return true;
     }
-    return false;
 }
+
 
 </script>
 
@@ -28,6 +37,9 @@ const signInCheck = () => {
                     style="text-decoration: none; color: white;">
                     Login
                 </router-link>
+            </button>
+            <button v-if="signInCheck()" type="button" @click="logout">
+                Logout
             </button>
             <img v-if="signInCheck()" src="https://i.imgur.com/EW2PaMZ.jpg" alt='accountimg'>
         </div>

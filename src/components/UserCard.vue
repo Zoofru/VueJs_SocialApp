@@ -1,26 +1,31 @@
-<script setup>
-defineProps({
-    name: String,
-    username: String
-})
-
-const signInCheck = () => {
-    if(localStorage.getItem('uId')) {
-        return true;
+<script>
+export default {
+    name: "UserCard",
+    props: {
+        fullname: String,
+        username: String
+    },
+    methods: {
+        signInCheck() {
+            if(localStorage.getItem('uId')) {
+                return true;
+            }
+            return false;
+        }
     }
-    return false;
 }
+
 </script>
 
 <template>
-    <div v-if="signInCheck()" id='container'>
+    <div v-if="this.signInCheck()" id='container'>
         <div id='account-icon'>
             <img src='https://i.imgur.com/EW2PaMZ.jpg' alt='account-icon'/>
         </div>
     
         <div id='username'>
-            <p id='name'>{{ name }}</p>
-            <p id='username-name'>@{{ username }}</p>
+            <p id='name'>{{fullname}}</p>
+            <p id='username-name'>@{{username}}</p>
         </div>
     </div>
 </template>
