@@ -35,10 +35,15 @@ export default {
     <!-- * BUGGED *
     HAPPPENING BECAUSE THE GETPOSTOWNER() CALL IS NOT LOOPING IT IS RUNNING ONCE
     GETTING THE OWNER OF THE FIRST POST IN POSTS ARRAY AND ONLY USING THEM FOR
-    ALL POSTS -->
+    ALL POSTS. ITS BECAUSE AFTER THE FIRST CALL POSTOWNER IS NO LONGER NULL
+    AND IT DOSENT CALL IT ANYMORE. REMOVING IT CAUSES A INFINITE LOOP? 
+    
+    POSSIBLE SOLUTION: LOOP THROUGH POSTS FIRST AND TURN EACH ITEM INTO A OBJECT 
+    WITH THEIR OWNER ALREADY DETERMINED
+    -->
     <div id='post-container'>
         <div id='post' v-for="(post, index) in this.posts" :key="index">
-            <span id='hidden' v-if="postOwner === null">{{this.getPostOwner(post.userId)}}</span>
+            <span id='hidden'>{{this.getPostOwner(post.userId)}}</span>
             <div id='post-header'>
                 <div id='left'>
                     <img id='avatar' v-bind:src=this.postOwner.avatar alt='avatar' />
