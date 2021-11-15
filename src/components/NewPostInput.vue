@@ -1,14 +1,34 @@
-<script setup>
-defineProps({
-    username: String,
-    avatar: String
-})
+<script>
+import axios from 'axios'
 
-const signInCheck = () => {
-    if(localStorage.getItem('uId')) {
-        return true;
+export default {
+    name: "NewPostInput",
+    data() {
+        return {
+            text:null
+        }
+    },
+    props: {
+        username: String,
+        avatar: String
+    },
+    methods: {
+        signInCheck() {
+            if(localStorage.getItem("uId")) {
+                return true
+            }
+            return false
+        },
+        async handleSubmit() {
+            if(this.text !== null) {
+                const res = await axios.post("http://localhost:3001/post/newpost", {
+                    text: this.text,
+                    id: localStorage.getItem("uId")
+                })
+                this.text = null
+            }
+        }
     }
-    return false;
 }
 </script>
 
@@ -18,9 +38,9 @@ const signInCheck = () => {
         <div id='accounticon'>
           <img id='new-post-accounticon' v-bind:src=avatar alt='account-icon' />
         </div>
-        <input id="new-post-input" placeholder="Whats happening?" type='text' spellcheck="false" autocomplete="false" />
+        <input id="new-post-input" v-model="text" v-bind:placeholder="`Whats new, ${username}?`" type='text' spellcheck="false" autocomplete="false" />
         <div id='submitBtn'>
-            <button id='submitSpark'>
+            <button id='submitSpark' v-on:click="handleSubmit">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-send" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
                 </svg>
@@ -35,9 +55,10 @@ const signInCheck = () => {
 
 input {
     width: 80%;
-    height: 97%;
+    height: 90%;
     border: none;
-    font-size: x-large;
+    font-size: large;
+    resize: none;
 }
 
 input:focus {
@@ -45,10 +66,10 @@ input:focus {
 }
 
 #new-post {
-  height: 7vh;
+  height: 5vh;
   width: 80%;
   background-color: white;
-  border-radius: 15px;
+  border-radius: 5px;
   box-shadow: 0px 0px 10px 1px rgba(128, 128, 128, .3);
   display: flex;
   justify-content: space-between;
@@ -57,7 +78,7 @@ input:focus {
 #new-post-accounticon {
   height: 100%;
   float: left;
-  width: 50%;
+  width: 60%;
   height: 65%;
   border-radius: 5px;
 }
@@ -70,7 +91,7 @@ input:focus {
 }
 
 #submitBtn {
-    width: 10%;
+    width: 20%;
     height: 100%;
     display: flex;
     justify-content: flex-end;
@@ -88,5 +109,9 @@ input:focus {
     font-family: 'Inter', sans-serif;
     font-size: large;
     padding-top: 5px;
+}
+
+#submitSpark:hover {
+    cursor: pointer;
 }
 </style>

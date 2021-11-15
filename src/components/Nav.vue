@@ -54,7 +54,7 @@ export default {
     display: flex;
     flex-direction: row;
     width: 100%;
-    height: 10vh;
+    height: 8vh;
     border-bottom: 2px solid lightgray;
     background-color: white;
     border-bottom-width: thin;
@@ -79,7 +79,7 @@ export default {
 }
 
 img {
-    width: 4vw;
+    width: 3vw;
     height: 65%;
     border-radius: 10px;
     margin:auto 10px;
@@ -91,7 +91,7 @@ button {
     border-radius: 10px;
     border: none;
     width: 10%;
-    height: 5vh;
+    height: 4vh;
     font-size: large;
 }
 

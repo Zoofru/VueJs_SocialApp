@@ -39,7 +39,7 @@ export default {
     flex-direction: row;
     border-radius: 15px;
     background-color: white;
-    width: 75%;
+    width: 60%;
     margin-bottom: 5vh;
     height: 10vh;
     box-shadow: 0px 0px 10px 1px rgba(128, 128, 128, .3);
@@ -70,8 +70,7 @@ export default {
 }
 
 img {
-    border: 2px solid red;
-    height: 60%;
+    height: 50%;
     width: 60%;
     border-radius: 15px;
 }

@@ -3,7 +3,7 @@ import Nav from '../components/Nav.vue'
 import NewPostInput from '../components/NewPostInput.vue'
 import SideTabs from '../components/SideTabs.vue'
 import UserCard from '../components/UserCard.vue'
-import {computed, onMounted} from 'vue'
+import FeedPosts from '../components/FeedPosts.vue'
 import axios from 'axios'
 
 export default {
@@ -12,6 +12,7 @@ export default {
     Nav, 
     NewPostInput,
     SideTabs,
+    FeedPosts,
     UserCard
   },
   data() {
@@ -25,14 +26,11 @@ export default {
       if(res.data.user){
         this.user = res.data.user
       }
-    }
+    },
   },
   mounted() {
     this.getUser()
   },
-  created() {
-    this.getUser()
-  }
 }
 </script>
 
@@ -47,11 +45,11 @@ export default {
         </div>
 
         <div id='center-body'>
-            <NewPostInput v-if="user !== null" :avatar=this.user.avatar />
+            <NewPostInput v-if="user !== null" :avatar=this.user.avatar :username=this.user.username />
+            <FeedPosts v-if="user !== null" :username=this.user.username />
         </div>
 
         <div id='right-body'>
-          <router-link to='/about' exact>about</router-link>
         </div>
       </div>
   </div>
@@ -63,21 +61,35 @@ export default {
   flex-direction: row;
 }
 
+
 #left-body, #right-body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 20%;
-  border: 2px solid red;
+  width: 30%;
+  /* border: 2px solid red; */
   margin-top: 5vh;
 }
 
+#left-body {
+  margin-left: 7vw;
+  display: flex;
+  align-items: flex-end;
+}
+
+#right-body {
+  margin-right: 7vw;
+}
+
 #center-body {
-  width: 60%;
-  border: 2px solid green;
+  width: 40%;
+  /* border: 2px solid green; */
   display: flex;
   justify-content: center;
   margin-top: 5vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 #app {
