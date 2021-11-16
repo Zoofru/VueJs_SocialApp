@@ -53,7 +53,9 @@ export default {
                         </svg>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="#" @click="$emit('invite', $event, post.userId)">Invite user to community</a>
+                        <!-- THIS WILL BE AN ISSUE. ALLOW TO SEE ONLY A CERTAIN AMOUNT OF SPARKS, 
+                        OR FROM USERS WITH A RESPECTABLE REP -->
+                        <a class="dropdown-item" href="#" @click="$emit('invite', $event, post.userId)">Invite User To A Spark</a>
                         <a class="dropdown-item" href="#">Report</a>
                     </div>
                 </div>
@@ -78,7 +80,7 @@ export default {
 #action-icons {
     display: flex;
     justify-content: flex-end;
-    padding-right: 2.5%;
+    padding-right: .45vw;
 }
 
 #username {
@@ -94,7 +96,6 @@ export default {
     width: 2.5vw;
     height: 80%;
     border-radius: 5px;
-    margin-bottom: 1vh;
 }
 
 #hidden {

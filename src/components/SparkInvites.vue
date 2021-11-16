@@ -15,9 +15,9 @@ export default {
     <div id="root">
         <div id="header">
             <p id="invitation-title">INVITATIONS</p>
-            <NotificationBadge v-if="this.userInvitations.length >= 1" v-bind:notifCount=invitations />
+            <NotificationBadge v-if="invitations >= 1" v-bind:notifCount=invitations />
         </div>
-        <div id="container">
+        <div v-if="invitations >=1" id="container">
             <div id='invite-info'>
                 <img id='avatar' src='https://robohash.org/27.115.124.66.png' alt='avatar' />
                 <img id='invite-background' src='https://static.vecteezy.com/system/resources/previews/001/849/553/original/modern-gold-background-free-vector.jpg' alt='bg-cover' >
@@ -29,6 +29,7 @@ export default {
                 <button id='decline-btn'>&#10006;</button>
             </div>
         </div>
+        <!-- ELSE A BOX THAT SAYS NO INVITATIONS YET -->
     </div>
 </template>
 
