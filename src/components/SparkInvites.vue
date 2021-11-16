@@ -1,15 +1,22 @@
 <script>
+import NotificationBadge from '../components/NotificationBadge.vue'
 
 export default {
-    setup() {
-        
+    props: {
+        invitations: Number
+    },
+    components: {
+        NotificationBadge
     },
 }
 </script>
 
 <template>
     <div id="root">
-        <p id="invitation-title">INVITATIONS</p>
+        <div id="header">
+            <p id="invitation-title">INVITATIONS</p>
+            <NotificationBadge v-if="this.userInvitations.length >= 1" v-bind:notifCount=invitations />
+        </div>
         <div id="container">
             <div id='invite-info'>
                 <img id='avatar' src='https://robohash.org/27.115.124.66.png' alt='avatar' />
@@ -45,6 +52,15 @@ export default {
     border-radius: 15px;
 }
 
+#header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 0px;
+
+    padding-right: 10px;
+}
+
 #accept-btn:hover, #decline-btn:hover {
     cursor: pointer;
 }
@@ -70,8 +86,9 @@ export default {
 }
 
 #invitation-title {
-    margin: 1.5vh 0 .5vh 0;
+    /* margin: 1.5vh 0 .5vh 0; */
     font-size: 15px;
+    margin: 0;
 }
 
 #title-invite {
@@ -100,11 +117,10 @@ export default {
 }
 
 #container {
-    /* border: 2px solid red; */
     height: 80%;
     background-color: white;
     border-radius: 15px;
-    width: 93%;
+    width: 100%;
     box-shadow: 0px 0px 10px 1px rgba(128, 128, 128, .3);
     padding: 10px 10px 25px 10px;
 }

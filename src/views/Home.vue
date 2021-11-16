@@ -19,7 +19,8 @@ export default {
   },
   data() {
     return {
-      user:null
+      user:null,
+      userInvitations: []
     }
   },
   methods: {
@@ -28,10 +29,25 @@ export default {
       if(res.data.user){
         this.user = res.data.user
       }
+    },   
+    async inviteUser(evt, invitedUser) {
+        const res = await axios.post('http://localhost:3001/invitations/inviteUser', {
+            invitingUserId: localStorage.getItem("uId"),
+            invitedUserId: invitedUser
+        })
+        console.log(res);
     },
+    async getUserInvitations() {
+        const res = await axios.post('http://localhost:3001/invitations/getUserInvitations', {
+            id: localStorage.getItem("uId")
+        })
+        this.userInvitations = res.data.invitations
+        console.log(res)
+    }
   },
   mounted() {
     this.getUser()
+    this.getUserInvitations()
   },
 }
 </script>
@@ -44,12 +60,12 @@ export default {
         <div id='left-body'>
           <UserCard v-if="user !== null" :fullname=this.user.name :username=this.user.username :avatar=this.user.avatar />
           <SideTabs  />
-          <SparkInvites />
+          <SparkInvites :invitations=this.userInvitations.length />
         </div>
 
         <div id='center-body'>
             <NewPostInput v-if="user !== null" :avatar=this.user.avatar :username=this.user.username />
-            <FeedPosts v-if="user !== null" :username=this.user.username />
+            <FeedPosts v-if="user !== null" :username=this.user.username @invite="inviteUser"/>
         </div>
 
         <div id='right-body'>

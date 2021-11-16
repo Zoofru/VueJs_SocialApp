@@ -10,7 +10,6 @@ export default {
         return {
             posts: [],
             postOwner:null,
-            userInvitations: []
         }
     },
     methods: {
@@ -22,7 +21,6 @@ export default {
         },
         async getPostOwner(id) {
             const res = await axios.get(`http://localhost:3001/user/finduser/${id}`)
-            // this.postOwner = res.data.user
             console.log(res);
             return res.data.user
         },
@@ -33,26 +31,9 @@ export default {
                 post.ownerAvatar = owner.avatar
             }
         },
-        // FUTURE : 
-        // BELOW SHOULD GO IN INVITATIONS COMPONENT
-        async inviteUser(invitedUser) {
-            const res = await axios.post('http://localhost:3001/invitations/inviteUser', {
-                invitingUserId: localStorage.getItem("uId"),
-                invitedUserId: invitedUser
-            })
-            console.log(res);
-        },
-        async getUserInvitations() {
-            const res = await axios.post('http://localhost:3001/invitations/getUserInvitations', {
-                id: localStorage.getItem("uId")
-            })
-            this.userInvitations = res.data.invitations
-            console.log(res)
-        }
     },
     created() {
         this.getRandomPosts()
-        this.getUserInvitations()
     }
 }
 </script>
@@ -72,7 +53,7 @@ export default {
                         </svg>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="#" @click="this.inviteUser(post.userId)">Invite user to community</a>
+                        <a class="dropdown-item" href="#" @click="$emit('invite', $event, post.userId)">Invite user to community</a>
                         <a class="dropdown-item" href="#">Report</a>
                     </div>
                 </div>
