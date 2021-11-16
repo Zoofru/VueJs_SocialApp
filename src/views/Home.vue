@@ -4,6 +4,7 @@ import NewPostInput from '../components/NewPostInput.vue'
 import SideTabs from '../components/SideTabs.vue'
 import UserCard from '../components/UserCard.vue'
 import FeedPosts from '../components/FeedPosts.vue'
+import SparkInvites from '../components/SparkInvites.vue'
 import axios from 'axios'
 
 export default {
@@ -13,6 +14,7 @@ export default {
     NewPostInput,
     SideTabs,
     FeedPosts,
+    SparkInvites,
     UserCard
   },
   data() {
@@ -42,6 +44,7 @@ export default {
         <div id='left-body'>
           <UserCard v-if="user !== null" :fullname=this.user.name :username=this.user.username :avatar=this.user.avatar />
           <SideTabs  />
+          <SparkInvites />
         </div>
 
         <div id='center-body'>
