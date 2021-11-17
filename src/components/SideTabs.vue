@@ -78,7 +78,7 @@ const signInCheck = () => {
                 </div>
 
                 <p v-else id="tabText"> {{ item }} </p>
-                <div id='flex-border'>
+                <div v-if="item !== 'Settings'" id='flex-border'>
                     <div id='border'></div>
                 </div>
             </div>
