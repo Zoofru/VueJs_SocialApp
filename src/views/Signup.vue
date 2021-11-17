@@ -68,6 +68,8 @@ export default {
                 </button>
             </div>
         </div>
+        <!-- THIS NEEDS USER FEEDBACK IF EMAIL IS ALREADY
+        IN USE -->
         <div id="container">
             <h1>Create Account</h1>
             <form @submit.prevent="handleSignup" id="login-form">
@@ -150,7 +152,7 @@ export default {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    width: 103%;
+    width: 100%;
     margin-top: 2vh;
 }
 

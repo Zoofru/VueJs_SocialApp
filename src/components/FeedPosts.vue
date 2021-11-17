@@ -53,7 +53,7 @@ export default {
                         </svg>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <!-- THIS WILL BE AN ISSUE. ALLOW TO SEE ONLY A CERTAIN AMOUNT OF SPARKS, 
+                        <!-- THIS WILL BE AN ISSUE. (Spam someone with invitations) ALLOW TO SEE ONLY A CERTAIN AMOUNT OF SPARKS, 
                         OR FROM USERS WITH A RESPECTABLE REP -->
                         <a class="dropdown-item" href="#" @click="$emit('invite', $event, post.userId)">Invite User To A Spark</a>
                         <a class="dropdown-item" href="#">Report</a>

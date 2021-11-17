@@ -60,7 +60,7 @@ export default {
         <div id='left-body'>
           <UserCard v-if="user !== null" :fullname=this.user.name :username=this.user.username :avatar=this.user.avatar />
           <SideTabs  />
-          <SparkInvites :invitations=this.userInvitations.length />
+          <SparkInvites :invitations=this.userInvitations />
         </div>
 
         <div id='center-body'>

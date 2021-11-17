@@ -1,44 +1,85 @@
 <script>
 import NotificationBadge from '../components/NotificationBadge.vue'
+import axios from 'axios'
 
 export default {
     props: {
-        invitations: Number
+        invitations: Array
     },
     components: {
         NotificationBadge
     },
-}
+    data() {
+        return {
+            invitingUser:null,
+            componentKey: 0
+        }
+    },
+    watch: {
+        invitations: async function() {
+            const res = await axios.get(`http://localhost:3001/user/finduser/${this.invitations[0].invitingUser}`)
+            if(res.data.user){
+                this.invitingUser = res.data.user
+            }
+            console.log(this.invitingUser);
+        }
+    }, methods: {
+        async deleteInvitation() {
+            const res = await axios.delete(`http://localhost:3001/invitations/deleteinvitation/${this.invitations[0].id}/${this.invitations[0].invitingUser}/${this.invitations[0].invitedUser}`)
+            console.log(res);
+            this.invitations.shift()
+            this.componentKey += 1
+        }
+    }
+} 
+
 </script>
 
 <template>
     <div id="root">
         <div id="header">
             <p id="invitation-title">INVITATIONS</p>
-            <NotificationBadge v-if="invitations >= 1" v-bind:notifCount=invitations />
+            <NotificationBadge v-if="invitations.length >= 1" v-bind:notifCount=invitations.length />
         </div>
-        <div v-if="invitations >=1" id="container">
+        <div v-if="invitations.length >=1" id="container">
             <div id='invite-info'>
-                <img id='avatar' src='https://robohash.org/27.115.124.66.png' alt='avatar' />
-                <img id='invite-background' src='https://static.vecteezy.com/system/resources/previews/001/849/553/original/modern-gold-background-free-vector.jpg' alt='bg-cover' >
-                <p id='title-invite'>hh</p>
+                <img id='avatar' v-if="this.invitingUser != null" v-bind:src=this.invitingUser.avatar alt='avatar' />
+                <img id='invite-background' src='https://i.imgur.com/Nn5He8I.jpg' alt='bg-cover' >
+                <p id='title-invite' v-if="this.invitingUser != null">{{`${invitations[0].invitationTitle} by ${this.invitingUser.username}`}}</p>
             </div>
             <div id='buttons-div'>
                 <button id='accept-btn'>Accept Invitation</button>
                 <span id='spacer'></span>
-                <button id='decline-btn'>&#10006;</button>
+                <button id='decline-btn' @click="this.deleteInvitation()">&#10006;</button>
             </div>
         </div>
-        <!-- ELSE A BOX THAT SAYS NO INVITATIONS YET -->
+        <div v-else-if="invitations.length === 0 && invitations" id='no-invitations'>
+            <p id='no-invitations-p'>There Are No Invitations Yet</p>
+        </div>
     </div>
 </template>
 
 <style scoped>
 #root {
-    /* border: 2px solid green */
     width: 59%;
     height: 45vh;
     padding: 3% 0 3% 0;
+}
+
+#no-invitations {
+    background-color: white;
+    height: 8vh;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 1px rgba(128, 128, 128, .3);
+    color: lightgray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#no-invitations-p {
+    color: lightgray;
+    margin: 0;
 }
 
 #buttons-div {
@@ -87,7 +128,6 @@ export default {
 }
 
 #invitation-title {
-    /* margin: 1.5vh 0 .5vh 0; */
     font-size: 15px;
     margin: 0;
 }
@@ -95,10 +135,11 @@ export default {
 #title-invite {
     position: absolute;
     margin: 0;
-    top: 75%;
-    left: 5%;
+    top: 70%;
+    padding: 0 5% 3% 5%;
     color: white;
     font-weight: bold;
+    text-align: center;
 }
 
 #avatar {
