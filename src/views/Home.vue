@@ -20,7 +20,8 @@ export default {
   data() {
     return {
       user:null,
-      userInvitations: []
+      userInvitations: [],
+      componentKey: 0
     }
   },
   methods: {
@@ -60,7 +61,7 @@ export default {
         <div id='left-body'>
           <UserCard v-if="user !== null" :fullname=this.user.name :username=this.user.username :avatar=this.user.avatar />
           <SideTabs  />
-          <SparkInvites :invitations=this.userInvitations />
+          <SparkInvites :invitations=this.userInvitations :key="componentKey" @rerender="componentKey++" />
         </div>
 
         <div id='center-body'>
