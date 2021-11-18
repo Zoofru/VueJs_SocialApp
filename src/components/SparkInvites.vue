@@ -4,7 +4,7 @@ import axios from 'axios'
 
 export default {
     props: {
-        invitations: Array
+        invitations: Array,
     },
     components: {
         NotificationBadge
@@ -12,45 +12,73 @@ export default {
     data() {
         return {
             invitingUser:null,
-            componentKey: 0
+            componentKey: 0,
         }
     },
     watch: {
         invitations: async function() {
-            const res = await axios.get(`http://localhost:3001/user/finduser/${this.invitations[0].invitingUser}`)
-            if(res.data.user){
-                this.invitingUser = res.data.user
+            if(this.invitations[0] !== undefined) {
+                const res = await axios.get(`http://localhost:3001/user/finduser/${this.invitations[0].invitingUser}`)
+                if(res.data.user){
+                    this.invitingUser = res.data.user
+                }
+                console.log(this.invitingUser);
             }
-            console.log(this.invitingUser);
-        }
+        },
     }, methods: {
-        async deleteInvitation() {
-            const res = await axios.delete(`http://localhost:3001/invitations/deleteinvitation/${this.invitations[0].id}/${this.invitations[0].invitingUser}/${this.invitations[0].invitedUser}`)
-            console.log(res);
-            this.invitations.shift()
+        forceRerender() {
             this.componentKey += 1
-        }
+            console.log(this.componentKey);
+        },
+        async deleteInvitation() {
+            if(this.invitations.length >= 1) {
+                const res = await axios.delete(`http://localhost:3001/invitations/deleteinvitation/${this.invitations[0].id}/${this.invitations[0].invitingUser}/${this.invitations[0].invitedUser}`)
+                console.log(res);
+                this.invitations.shift()
+            }
+        },
+        async setUser() {
+            if(this.invitations !== undefined) {
+                const res = await axios.get(`http://localhost:3001/user/finduser/${this.invitations[0].invitingUser}`)
+                if(res.data.user){
+                    this.invitingUser = res.data.user
+                }
+                console.log(this.invitingUser);
+            }
+        } 
+    },
+    mounted() {
+        console.log('hi');
     }
-} 
+}
 
 </script>
 
+
+
+
 <template>
+<!-- // TODO: RE RENDER THE COMPONENT WHEN USER HIT DECLINE BUTTON ON INVITE
+// CURRENTLY WILL DELETE INVITATION BUT WILL ONLY RERENDER IF IT IS THE LAST INVITATION -->
     <div id="root">
         <div id="header">
             <p id="invitation-title">INVITATIONS</p>
             <NotificationBadge v-if="invitations.length >= 1" v-bind:notifCount=invitations.length />
         </div>
-        <div v-if="invitations.length >=1" id="container">
-            <div id='invite-info'>
-                <img id='avatar' v-if="this.invitingUser != null" v-bind:src=this.invitingUser.avatar alt='avatar' />
+        <div v-if="invitations.length >=1" id="container" :key="componentKey">
+            <div id='invite-info' :key="componentKey">
+                <img id='avatar' :key="componentKey" v-if="this.invitingUser != null" v-bind:src=this.invitingUser.avatar alt='avatar'/>
                 <img id='invite-background' src='https://i.imgur.com/Nn5He8I.jpg' alt='bg-cover' >
-                <p id='title-invite' v-if="this.invitingUser != null">{{`${invitations[0].invitationTitle} by ${this.invitingUser.username}`}}</p>
+                <p id='title-invite' :key="componentKey" v-if="this.invitingUser != null">{{`${invitations[0].invitationTitle} by ${this.invitingUser.username}`}}</p>
             </div>
             <div id='buttons-div'>
                 <button id='accept-btn'>Accept Invitation</button>
                 <span id='spacer'></span>
-                <button id='decline-btn' @click="this.deleteInvitation()">&#10006;</button>
+                <button id='decline-btn' @click="() => {
+                        this.deleteInvitation()
+                        this.setUser()
+                        //this.forceRerender()
+                    }">&#10006;</button> 
             </div>
         </div>
         <div v-else-if="invitations.length === 0 && invitations" id='no-invitations'>
