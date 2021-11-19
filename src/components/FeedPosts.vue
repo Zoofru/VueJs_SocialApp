@@ -31,6 +31,18 @@ export default {
                 post.ownerAvatar = owner.avatar
             }
         },
+        async addFriend(postUserId) {
+            const userTwo = localStorage.getItem('uId')
+            if(userOne !== userTwo) {
+                const res = await axios.post('http://localhost:3001/friend/new', {
+                    userOneId: postUserId,
+                    userTwoId: userTwo,
+
+                })
+                console.log(res);
+            }
+            // console.log(userOne);
+        }
     },
     created() {
         this.getRandomPosts()
@@ -56,6 +68,7 @@ export default {
                         <!-- THIS WILL BE AN ISSUE. (Spam someone with invitations) ALLOW TO SEE ONLY A CERTAIN AMOUNT OF SPARKS, 
                         OR FROM USERS WITH A RESPECTABLE REP -->
                         <a class="dropdown-item" href="#" @click="$emit('invite', $event, post.userId)">Invite User To A Spark</a>
+                        <a class="dropdown-item" href="#" @click="this.addFriend(post.userId)">Add Friend</a>
                         <a class="dropdown-item" href="#">Report</a>
                     </div>
                 </div>
