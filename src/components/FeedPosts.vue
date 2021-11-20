@@ -33,7 +33,7 @@ export default {
         },
         async addFriend(postUserId) {
             const userTwo = localStorage.getItem('uId')
-            if(userOne !== userTwo) {
+            if(postUserId !== userTwo) {
                 const res = await axios.post('http://localhost:3001/friend/new', {
                     userOneId: postUserId,
                     userTwoId: userTwo,
@@ -41,7 +41,6 @@ export default {
                 })
                 console.log(res);
             }
-            // console.log(userOne);
         }
     },
     created() {
@@ -127,7 +126,7 @@ export default {
 }
 
 #post {
-    width: 75%;
+    width: 80%;
     border-radius: 5px;
     box-shadow: 0px 0px 3px 0px gray;
     background-color: white;

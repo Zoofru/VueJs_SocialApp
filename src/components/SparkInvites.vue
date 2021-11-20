@@ -12,6 +12,7 @@ export default {
     data() {
         return {
             invitingUser:null,
+            loggedIn:null,
             componentKey: 0,
         }
     },
@@ -52,6 +53,11 @@ export default {
     },
     mounted() {
         this.setUser()
+        if(localStorage.getItem('uId')) {
+            this.loggedIn = true
+        } else {
+            this.loggedIn= false
+        }
     }
 }
 
@@ -61,7 +67,7 @@ export default {
 
 
 <template>
-    <div id="root">
+    <div id="root" v-if="this.loggedIn">
         <div id="header">
             <p id="invitation-title">INVITATIONS</p>
             <NotificationBadge v-if="invitations.length >= 1" v-bind:notifCount=invitations.length />
