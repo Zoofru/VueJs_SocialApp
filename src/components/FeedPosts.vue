@@ -31,13 +31,15 @@ export default {
                 post.ownerAvatar = owner.avatar
             }
         },
-        async addFriend(postUserId) {
-            const userTwo = localStorage.getItem('uId')
-            if(postUserId !== userTwo) {
-                const res = await axios.post('http://localhost:3001/friend/new', {
-                    userOneId: postUserId,
-                    userTwoId: userTwo,
-
+        async addFriendRequest(invitedUserID, invitedUsername) {
+            const invitingUserID = localStorage.getItem('uId')
+            if(invitedUserID !== invitingUserID) {
+                const res = await axios.post('http://localhost:3001/friendreq/new', {
+                    invitedUID: invitedUserID,
+                    invitingUID: invitingUserID,
+                    invitedUserName: invitedUsername,
+                    invitingUserName: this.username,
+                    invitingUserAvatar: this.avatar
                 })
                 console.log(res);
             }
@@ -67,7 +69,7 @@ export default {
                         <!-- THIS WILL BE AN ISSUE. (Spam someone with invitations) ALLOW TO SEE ONLY A CERTAIN AMOUNT OF SPARKS, 
                         OR FROM USERS WITH A RESPECTABLE REP -->
                         <a class="dropdown-item" href="#" @click="$emit('invite', $event, post.userId)">Invite User To A Spark</a>
-                        <a class="dropdown-item" href="#" @click="this.addFriend(post.userId)">Add Friend</a>
+                        <a class="dropdown-item" href="#" @click="this.addFriendRequest(post.userId, post.owner)">Add Friend</a>
                         <a class="dropdown-item" href="#">Report</a>
                     </div>
                 </div>

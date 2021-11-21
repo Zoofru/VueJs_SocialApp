@@ -6,6 +6,7 @@ import UserCard from '../components/UserCard.vue'
 import FeedPosts from '../components/FeedPosts.vue'
 import SparkInvites from '../components/SparkInvites.vue'
 import SideFriends from '../components/SideFriends.vue'
+import FriendInvites from '../components/FriendInvites.vue'
 import axios from 'axios'
 
 export default {
@@ -17,6 +18,7 @@ export default {
     FeedPosts,
     SparkInvites,
     SideFriends,
+    FriendInvites,
     UserCard
   },
   data() {
@@ -72,6 +74,7 @@ export default {
         </div>
 
         <div id='right-body'>
+          <FriendInvites />
           <SideFriends />
         </div>
       </div>
