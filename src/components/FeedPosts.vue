@@ -4,7 +4,8 @@ import axios from 'axios'
 export default {
     name: "FeedPosts",
     props: {
-        username: String
+        username: String,
+        avatar: String
     },
     data() {
         return {
@@ -33,13 +34,14 @@ export default {
         },
         async addFriendRequest(invitedUserID, invitedUsername) {
             const invitingUserID = localStorage.getItem('uId')
+            console.log(this.avatar);
             if(invitedUserID !== invitingUserID) {
                 const res = await axios.post('http://localhost:3001/friendreq/new', {
                     invitedUID: invitedUserID,
                     invitingUID: invitingUserID,
                     invitedUserName: invitedUsername,
                     invitingUserName: this.username,
-                    invitingUserAvatar: this.avatar
+                    avatar: this.avatar
                 })
                 console.log(res);
             }

@@ -60,9 +60,11 @@ export default {
 </script>
 
 <template>
+    <!-- BUG SOMEWHERE USER WILL SOMETIMES SEE THEMSELVES IN FRIENDS LIST -->
     <div id='root'>
         <h1 id='friends-title'>FRIENDS</h1>
         <div id='container'>
+            <p id='nofriends-sadge' v-if="this.currentFriends.length === 0">Add some friends</p>
             <div id='friend-tab' v-for="(item, index) in this.currentFriends" :key='index'>
                 <div id='tab'>
                     <div id='userinfo'>
@@ -83,6 +85,12 @@ export default {
 <style scoped>
 #root {
     width: 70%;
+}
+
+#nofriends-sadge {
+    display: flex;
+    justify-content: center;
+    color: lightgray;
 }
 
 #container {

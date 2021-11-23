@@ -18,7 +18,7 @@ export default {
     },
     watch: {
         invitations: async function() {
-            if(this.invitations[0] !== undefined) {
+            if(this.invitations !== undefined && this.invitations[0] !== undefined) {
                 const res = await axios.get(`http://localhost:3001/user/finduser/${this.invitations[0].invitingUser}`)
                 if(res.data.user){
                     this.invitingUser = res.data.user
