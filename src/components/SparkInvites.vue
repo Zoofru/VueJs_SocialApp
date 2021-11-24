@@ -12,12 +12,13 @@ export default {
     data() {
         return {
             invitingUser:null,
+            loggedIn:null,
             componentKey: 0,
         }
     },
     watch: {
         invitations: async function() {
-            if(this.invitations[0] !== undefined) {
+            if(this.invitations !== undefined && this.invitations[0] !== undefined) {
                 const res = await axios.get(`http://localhost:3001/user/finduser/${this.invitations[0].invitingUser}`)
                 if(res.data.user){
                     this.invitingUser = res.data.user
@@ -52,6 +53,11 @@ export default {
     },
     mounted() {
         this.setUser()
+        if(localStorage.getItem('uId')) {
+            this.loggedIn = true
+        } else {
+            this.loggedIn= false
+        }
     }
 }
 
@@ -61,7 +67,7 @@ export default {
 
 
 <template>
-    <div id="root">
+    <div id="root" v-if="this.loggedIn">
         <div id="header">
             <p id="invitation-title">INVITATIONS</p>
             <NotificationBadge v-if="invitations.length >= 1" v-bind:notifCount=invitations.length />

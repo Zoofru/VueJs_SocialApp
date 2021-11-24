@@ -4,7 +4,8 @@ import axios from 'axios'
 export default {
     name: "FeedPosts",
     props: {
-        username: String
+        username: String,
+        avatar: String
     },
     data() {
         return {
@@ -31,6 +32,20 @@ export default {
                 post.ownerAvatar = owner.avatar
             }
         },
+        async addFriendRequest(invitedUserID, invitedUsername) {
+            const invitingUserID = localStorage.getItem('uId')
+            console.log(this.avatar);
+            if(invitedUserID !== invitingUserID) {
+                const res = await axios.post('http://localhost:3001/friendreq/new', {
+                    invitedUID: invitedUserID,
+                    invitingUID: invitingUserID,
+                    invitedUserName: invitedUsername,
+                    invitingUserName: this.username,
+                    avatar: this.avatar
+                })
+                console.log(res);
+            }
+        }
     },
     created() {
         this.getRandomPosts()
@@ -56,6 +71,7 @@ export default {
                         <!-- THIS WILL BE AN ISSUE. (Spam someone with invitations) ALLOW TO SEE ONLY A CERTAIN AMOUNT OF SPARKS, 
                         OR FROM USERS WITH A RESPECTABLE REP -->
                         <a class="dropdown-item" href="#" @click="$emit('invite', $event, post.userId)">Invite User To A Spark</a>
+                        <a class="dropdown-item" href="#" @click="this.addFriendRequest(post.userId, post.owner)">Add Friend</a>
                         <a class="dropdown-item" href="#">Report</a>
                     </div>
                 </div>
@@ -114,7 +130,7 @@ export default {
 }
 
 #post {
-    width: 75%;
+    width: 80%;
     border-radius: 5px;
     box-shadow: 0px 0px 3px 0px gray;
     background-color: white;

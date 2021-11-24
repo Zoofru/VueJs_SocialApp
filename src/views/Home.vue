@@ -5,6 +5,8 @@ import SideTabs from '../components/SideTabs.vue'
 import UserCard from '../components/UserCard.vue'
 import FeedPosts from '../components/FeedPosts.vue'
 import SparkInvites from '../components/SparkInvites.vue'
+import SideFriends from '../components/SideFriends.vue'
+import FriendRequest from '../components/FriendRequest.vue'
 import axios from 'axios'
 
 export default {
@@ -15,6 +17,8 @@ export default {
     SideTabs,
     FeedPosts,
     SparkInvites,
+    SideFriends,
+    FriendRequest,
     UserCard
   },
   data() {
@@ -65,11 +69,13 @@ export default {
         </div>
 
         <div id='center-body'>
-            <NewPostInput v-if="user !== null" :avatar=this.user.avatar :username=this.user.username />
-            <FeedPosts v-if="user !== null" :username=this.user.username @invite="inviteUser"/>
+          <NewPostInput v-if="user !== null" :avatar=this.user.avatar :username=this.user.username />
+          <FeedPosts v-if="user !== null" :username=this.user.username :avatar=this.user.avatar @invite="inviteUser"/>
         </div>
 
         <div id='right-body'>
+          <FriendRequest />
+          <SideFriends v-if="user !== null"/>
         </div>
       </div>
   </div>
