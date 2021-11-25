@@ -43,7 +43,10 @@ export default {
             <p>You Have No Friend Requests</p>
         </div>
         <div id='request' v-for="(request, index) in this.requests" :key='index'>
-            <h1 id='request-info'><span id='name'>{{request.invitingUserUsername}}</span> wants to add you to their friends</h1>
+            <div id='request-header'>
+                <img id='request-img' :src=request.invitingUserAvatar :key=request.invitingUserUsername />
+                <h1 id='request-info'><span id='name'>{{request.invitingUserUsername}}</span> wants to add you to their friends</h1>
+            </div>
             <div id='request-btn'>
                 <button id='acceptbtn'>Accept</button>
                 <button id='declinebtn'>Decline</button>
@@ -61,6 +64,17 @@ export default {
     align-items: flex-start;
     width: 70%;
     margin-bottom: 10%;
+}
+
+#request-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#request-img {
+    height: 45px;
+    width: 45px;
 }
 
 #title:hover {
@@ -82,7 +96,9 @@ export default {
 }
 
 #request-info {
-    margin-bottom: 1vh;
+    /* margin-bottom: 1vh; */
+    margin-left: 1vw;
+    line-height: 2.5vh;
 }
 
 #request-btn {
@@ -133,7 +149,7 @@ button:hover {
 }
 
 #name {
-    font-size: 20px;
+    font-size: 17px;
     font-weight: bold;
 }
 
