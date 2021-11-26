@@ -42,7 +42,7 @@ export default {
     width: 60%;
     margin-bottom: 5vh;
     height: 10vh;
-    box-shadow: 0px 0px 10px 1px rgba(128, 128, 128, .3);
+    box-shadow: 0px 0px 3px 0px gray;
 }
 
 #username {

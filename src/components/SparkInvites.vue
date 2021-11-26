@@ -101,11 +101,11 @@ export default {
     background-color: white;
     height: 8vh;
     border-radius: 10px;
-    box-shadow: 0px 0px 10px 1px rgba(128, 128, 128, .3);
     color: lightgray;
     display: flex;
     justify-content: center;
     align-items: center;
+    box-shadow: 0px 0px 3px 0px gray;
 }
 
 #no-invitations-p {

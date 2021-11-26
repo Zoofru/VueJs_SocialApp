@@ -93,7 +93,7 @@ const signInCheck = () => {
     border-radius: 15px;
     background-color: white;
     width: 60%;
-    box-shadow: 0px 0px 10px 1px rgba(128, 128, 128, .3);
+    box-shadow: 0px 0px 3px 0px gray;
 }
 
 #tab > #tab-content, #tabSettings {
