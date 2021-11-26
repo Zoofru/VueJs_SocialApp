@@ -24,10 +24,7 @@ export default {
             }
             this.requestsLength = res.data.request.length
         },
-        async deleteRequest(requestIndex) {
-            // TODO: Delete request and remove request from requests array
-            // and requests length - 1
-            
+        async handleRequest(request, requestIndex, requestAccepted=false) {
             const res = await axios.delete(`http://localhost:3001/friendreq/delete/request/${this.requests[requestIndex].id}`)
             console.log(res)
 
@@ -38,6 +35,15 @@ export default {
             setTimeout(() => {
                 this.$emit('rerender')
             }, 200)
+
+            //TODO: On accept add friend
+            if(requestAccepted) {
+                const res = await axios.post('http://localhost:3001/friend/new', {
+                    userOneId: request.invitedUserId,
+                    userTwoId: request.invitingUserId
+                })
+                console.log(res);
+            }
         }
     },
     created() {
@@ -58,13 +64,14 @@ export default {
             <p>You Have No Friend Requests</p>
         </div>
         <div id='request' v-for="(request, index) in this.requests" :key='index'>
+            {{request}}
             <div id='request-header'>
                 <img id='request-img' :src=request.invitingUserAvatar :key=request.invitingUserUsername />
                 <h1 id='request-info'><span id='name'>{{request.invitingUserUsername}}</span> has requested to add you to their friends</h1>
             </div>
             <div id='request-btn'>
-                <button id='acceptbtn'>Accept</button>
-                <button id='declinebtn' @click=this.deleteRequest(index) >Decline</button>
+                <button id='acceptbtn' @click=this.handleRequest(request,index,true)>Accept</button>
+                <button id='declinebtn' @click=this.handleRequest(request,index) >Decline</button>
             </div>
         </div>
     </div>
