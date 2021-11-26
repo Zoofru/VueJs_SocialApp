@@ -25,7 +25,8 @@ export default {
     return {
       user:null,
       userInvitations: [],
-      componentKey: 0
+      componentKey: 0,
+      friendRequestKey: 0
     }
   },
   methods: {
@@ -74,7 +75,7 @@ export default {
         </div>
 
         <div id='right-body'>
-          <FriendRequest />
+          <FriendRequest :key="friendRequestKey" @rerender="friendRequestKey++" />
           <SideFriends v-if="user !== null"/>
         </div>
       </div>
@@ -105,6 +106,7 @@ export default {
 
 #right-body {
   margin-right: 7vw;
+  align-items: flex-start;
 }
 
 #center-body {

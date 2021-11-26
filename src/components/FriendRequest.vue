@@ -23,6 +23,21 @@ export default {
                 this.requests = res.data.request
             }
             this.requestsLength = res.data.request.length
+        },
+        async deleteRequest(requestIndex) {
+            // TODO: Delete request and remove request from requests array
+            // and requests length - 1
+            
+            const res = await axios.delete(`http://localhost:3001/friendreq/delete/request/${this.requests[requestIndex].id}`)
+            console.log(res)
+
+            let newReq = this.requests.splice(requestIndex, 1)
+            this.requests = newReq
+            this.requestsLength--
+
+            setTimeout(() => {
+                this.$emit('rerender')
+            }, 200)
         }
     },
     created() {
@@ -37,7 +52,7 @@ export default {
     <div id='root'>
         <div id='header'>
             <h1 id='title'>REQUESTS</h1>
-            <NotificationBadge id="notif" v-if="this.requests.length >= 0" :notifCount=this.requestsLength />
+            <NotificationBadge id="notif" v-if="this.requests.length > 0" :notifCount=this.requestsLength />
         </div>
         <div id='container' v-if="this.requests.length === 0">
             <p>You Have No Friend Requests</p>
@@ -45,11 +60,11 @@ export default {
         <div id='request' v-for="(request, index) in this.requests" :key='index'>
             <div id='request-header'>
                 <img id='request-img' :src=request.invitingUserAvatar :key=request.invitingUserUsername />
-                <h1 id='request-info'><span id='name'>{{request.invitingUserUsername}}</span> wants to add you to their friends</h1>
+                <h1 id='request-info'><span id='name'>{{request.invitingUserUsername}}</span> has requested to add you to their friends</h1>
             </div>
             <div id='request-btn'>
                 <button id='acceptbtn'>Accept</button>
-                <button id='declinebtn'>Decline</button>
+                <button id='declinebtn' @click=this.deleteRequest(index) >Decline</button>
             </div>
         </div>
     </div>
