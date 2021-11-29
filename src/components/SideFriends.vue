@@ -20,7 +20,9 @@ export default {
         },
     },
     watch: {
+        //Getting friends from friends
         friends: async function() {
+            console.log(this.friends)
             const loggedInUID = localStorage.getItem("uId")
             if(this.friends.length >= 10) {
                 for (let i = 0 ; i <= 10 ; i++) {
@@ -37,8 +39,11 @@ export default {
                     }
                 }
             } else {
+                //ID = ids of friends user one/user two
                 for(let id of this.friends) {
-                    if(id.userOneId !== loggedInUID) {
+                    console.log(id)
+                    if(id === localStorage.getItem('uId')) { return }
+                    if(id.userOneId == loggedInUID) {
                         const res = await axios.get(`http://localhost:3001/user/finduser/${id.userTwoId}`)
                         console.log(res);
                         this.currentFriends.push(res.data.user)

@@ -32,9 +32,6 @@ export default {
             this.requests = newReq
             this.requestsLength--
 
-            setTimeout(() => {
-                this.$emit('rerender')
-            }, 200)
 
             //TODO: On accept add friend
             if(requestAccepted) {
@@ -44,6 +41,10 @@ export default {
                 })
                 console.log(res);
             }
+            
+            setTimeout(() => {
+                this.$emit('rerender')
+            }, 200)
         }
     },
     created() {
