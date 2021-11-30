@@ -1,10 +1,10 @@
 <script>
 export default {
     name: "UserCard",
-    props: {
-        fullname: String,
-        username: String,
-        avatar: String
+    computed: {
+        user() {
+            return this.$store.getters.user
+        }
     },
     methods: {
         signInCheck() {
@@ -23,12 +23,12 @@ export default {
 <template>
     <div v-if="this.signInCheck()" id='container'>
         <div id='account-icon'>
-            <img v-bind:src=avatar alt='account-icon'/>
+            <img v-bind:src=user.avatar alt='account-icon'/>
         </div>
     
         <div id='username'>
-            <p id='name'>{{fullname}}</p>
-            <p id='username-name'>@{{username}}</p>
+            <p id='name'>{{user.name}}</p>
+            <p id='username-name'>@{{user.username}}</p>
         </div>
     </div>
 </template>

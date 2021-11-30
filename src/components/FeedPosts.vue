@@ -3,14 +3,15 @@ import axios from 'axios'
 
 export default {
     name: "FeedPosts",
-    props: {
-        username: String,
-        avatar: String
-    },
     data() {
         return {
             posts: [],
             postOwner:null,
+        }
+    },
+    computed: {
+        user() {
+            return this.$store.getters.user
         }
     },
     methods: {
@@ -34,14 +35,13 @@ export default {
         },
         async addFriendRequest(invitedUserID, invitedUsername) {
             const invitingUserID = localStorage.getItem('uId')
-            console.log(this.avatar);
             if(invitedUserID !== invitingUserID) {
                 const res = await axios.post(`${import.meta.env.VITE_API}/friendreq/new`, {
                     invitedUID: invitedUserID,
                     invitingUID: invitingUserID,
                     invitedUserName: invitedUsername,
-                    invitingUserName: this.username,
-                    avatar: this.avatar
+                    invitingUserName: this.user.username,
+                    avatar: this.user.avatar
                 })
                 console.log(res);
             }

@@ -130,6 +130,10 @@ export default {
     font-size: 15px;
 }
 
+#friends-title:hover {
+    cursor: pointer;
+}
+
 #userinfo {
     display: flex;
     align-items: center;

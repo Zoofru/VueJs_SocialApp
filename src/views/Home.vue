@@ -23,19 +23,17 @@ export default {
   },
   data() {
     return {
-      user:null,
       userInvitations: [],
       componentKey: 0,
       friendRequestKey: 0
     }
   },
+  computed: {
+    user() {
+      return this.$store.getters.user
+    }
+  },
   methods: {
-    async getUser() {
-      const res = await axios.get(`${import.meta.env.VITE_API}/user/finduser/${localStorage.getItem("uId")}`)
-      if(res.data.user){
-        this.user = res.data.user
-      }
-    },   
     async inviteUser(evt, invitedUser) {
         const res = await axios.post(`${import.meta.env.VITE_API}/invitations/inviteUser`, {
             invitingUserId: localStorage.getItem("uId"),
@@ -48,13 +46,14 @@ export default {
             id: localStorage.getItem("uId")
         })
         this.userInvitations = res.data.invitations
-        console.log(res)
     }
   },
   mounted() {
-    this.getUser()
     this.getUserInvitations()
   },
+  created() {
+    this.$store.dispatch('getUser')
+  }
 }
 </script>
 
@@ -64,14 +63,14 @@ export default {
       <Nav v-else />
       <div id="body">
         <div id='left-body'>
-          <UserCard v-if="user !== null" :fullname=this.user.name :username=this.user.username :avatar=this.user.avatar />
-          <SideTabs  />
+          <UserCard v-if="user !== null" />
+          <SideTabs v-if="user !== null" />
           <SparkInvites :invitations=this.userInvitations :key="componentKey" @rerender="componentKey++" />
         </div>
 
         <div id='center-body'>
-          <NewPostInput v-if="user !== null" :avatar=this.user.avatar :username=this.user.username />
-          <FeedPosts v-if="user !== null" :username=this.user.username :avatar=this.user.avatar @invite="inviteUser"/>
+          <NewPostInput v-if="user !== null" />
+          <FeedPosts v-if="user !== null" @invite="inviteUser"/>
         </div>
 
         <div id='right-body'>
@@ -94,7 +93,6 @@ export default {
   flex-direction: column;
   align-items: center;
   width: 30%;
-  /* border: 2px solid red; */
   margin-top: 5vh;
 }
 
@@ -111,7 +109,6 @@ export default {
 
 #center-body {
   width: 40%;
-  /* border: 2px solid green; */
   display: flex;
   justify-content: center;
   margin-top: 5vh;

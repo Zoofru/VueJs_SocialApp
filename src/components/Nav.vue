@@ -30,7 +30,7 @@ export default {
 <template>
     <div id='nav'>
         <div id="logo">
-            <h1> SparkWire </h1>
+            <h1 @click='this.$router.push("/")'> SparkWire </h1>
         </div>
         <div id="infonav">
             <input type='text' autocomplete="false" spellcheck="false" placeholder="Search">
@@ -50,6 +50,11 @@ export default {
 </template>
 
 <style scoped>
+
+h1:hover {
+    cursor: pointer;
+}
+
 #nav {
     display: flex;
     flex-direction: row;
