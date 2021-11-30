@@ -1,8 +1,9 @@
 <script>
 import axios from 'axios'
-
+import Modal from './Modal.vue'
 export default {
     name: 'SideFriends',
+    components: {Modal},
     data() {
         return {
             friends:null,
@@ -18,6 +19,11 @@ export default {
             console.log(res);
             this.friends = res.data.friends
         },
+
+        async removeFriend(friend) {
+            const res = await axios.delete(`http://localhost:3001/friend/delete/${friend.id}/${localStorage.getItem('uId')}`)
+            console.log(res)
+        }
     },
     watch: {
         //Getting friends from friends
@@ -83,12 +89,21 @@ export default {
                             </svg>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Remove Friend</a>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalCenter">Remove Friend</a>
                         </div>
                     </div>
                 </div>
+                <Modal 
+                    modalTitle="Are You Sure?" 
+                    :modalContent='`You are about to remove ${item.username} from your friends list.\
+                     To confrim this simply tap remove.`'
+                    confirmButtonText="Remove"
+                    @remove=this.removeFriend(item)
+                />
             </div>
         </div>
+
+
     </div>
 </template>
 
