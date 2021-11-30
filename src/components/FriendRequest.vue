@@ -49,8 +49,6 @@ export default {
     },
     created() {
         this.getFriendReqs()
-        setTimeout(() => {
-        }, 200)
     }
 }
 </script>
@@ -65,7 +63,6 @@ export default {
             <p>You Have No Friend Requests</p>
         </div>
         <div id='request' v-for="(request, index) in this.requests" :key='index'>
-            {{request}}
             <div id='request-header'>
                 <img id='request-img' :src=request.invitingUserAvatar :key=request.invitingUserUsername />
                 <h1 id='request-info'><span id='name'>{{request.invitingUserUsername}}</span> has requested to add you to their friends</h1>
