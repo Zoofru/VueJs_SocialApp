@@ -1,8 +1,9 @@
 <script>
 import axios from 'axios'
-
+import Modal from './Modal.vue'
 export default {
     name: 'SideFriends',
+    components: {Modal},
     data() {
         return {
             friends:null,
@@ -18,9 +19,16 @@ export default {
             console.log(res);
             this.friends = res.data.friends
         },
+
+        async removeFriend(friend) {
+            const res = await axios.delete(`http://localhost:3001/friend/delete/${friend.id}/${localStorage.getItem('uId')}`)
+            console.log(res)
+        }
     },
     watch: {
+        //Getting friends from friends
         friends: async function() {
+            console.log(this.friends)
             const loggedInUID = localStorage.getItem("uId")
             if(this.friends.length >= 10) {
                 for (let i = 0 ; i <= 10 ; i++) {
@@ -37,8 +45,11 @@ export default {
                     }
                 }
             } else {
+                //ID = ids of friends user one/user two
                 for(let id of this.friends) {
-                    if(id.userOneId !== loggedInUID) {
+                    console.log(id)
+                    if(id === localStorage.getItem('uId')) { return }
+                    if(id.userOneId == loggedInUID) {
                         const res = await axios.get(`http://localhost:3001/user/finduser/${id.userTwoId}`)
                         console.log(res);
                         this.currentFriends.push(res.data.user)
@@ -71,14 +82,28 @@ export default {
                         <img v-bind:src=item.avatar alt='' />
                         <p  v-if="this.currentFriends !== null">{{item.username}}</p>
                     </div>
-                    <div id='dots'>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
-                        </svg>
+                    <div id='options'>
+                        <a href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                            </svg>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalCenter">Remove Friend</a>
+                        </div>
                     </div>
                 </div>
+                <Modal 
+                    modalTitle="Are You Sure?" 
+                    :modalContent='`You are about to remove ${item.username} from your friends list.\
+                     To confrim this simply tap remove.`'
+                    confirmButtonText="Remove"
+                    @remove=this.removeFriend(item)
+                />
             </div>
         </div>
+
+
     </div>
 </template>
 
@@ -120,7 +145,7 @@ export default {
     
 }
 
-#dots {
+#options {
     width: 50%;
     display: flex;
     justify-content: flex-end;

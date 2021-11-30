@@ -70,7 +70,7 @@ input:focus {
   width: 80%;
   background-color: white;
   border-radius: 5px;
-  box-shadow: 0px 0px 10px 1px rgba(128, 128, 128, .3);
+  box-shadow: 0px 0px 3px 0px gray;
   display: flex;
   justify-content: space-between;
 }
