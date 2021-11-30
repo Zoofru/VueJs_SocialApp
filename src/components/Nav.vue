@@ -41,7 +41,7 @@ export default {
                     Login
                 </router-link>
             </button>
-            <button v-if="signInCheck()" type="button" @click="logout">
+            <button id='logout-btn' v-if="signInCheck()" type="button" @click="logout">
                 Logout
             </button>
             <img v-if="signInCheck()" v-bind:src=avatar alt='accountimg'>
@@ -76,6 +76,12 @@ export default {
 
 #login {
     margin-right: 20px;
+}
+
+#logout-btn:hover{
+    background-color: white;
+    border: 1px solid gray;
+    color: #0165fc;
 }
 
 img {

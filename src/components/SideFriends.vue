@@ -163,5 +163,8 @@ p {
 
 svg:hover {
     cursor: pointer;
+    fill: white;
+    background-color: gray;
+    border-radius: 5px;
 }
 </style>
