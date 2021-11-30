@@ -19,7 +19,7 @@ export default {
     watch: {
         invitations: async function() {
             if(this.invitations !== undefined && this.invitations[0] !== undefined) {
-                const res = await axios.get(`http://localhost:3001/user/finduser/${this.invitations[0].invitingUser}`)
+                const res = await axios.get(`${import.meta.env.VITE_API}/user/finduser/${this.invitations[0].invitingUser}`)
                 if(res.data.user){
                     this.invitingUser = res.data.user
                 }
@@ -29,14 +29,14 @@ export default {
     }, methods: {
         async deleteInvitation() {
             if(this.invitations.length >= 1) {
-                const res = await axios.delete(`http://localhost:3001/invitations/deleteinvitation/${this.invitations[0].id}/${this.invitations[0].invitingUser}/${this.invitations[0].invitedUser}`)
+                const res = await axios.delete(`${import.meta.env.VITE_API}/invitations/deleteinvitation/${this.invitations[0].id}/${this.invitations[0].invitingUser}/${this.invitations[0].invitedUser}`)
                 console.log(res);
                 this.invitations.shift()
             }
         },
         async setUser() {
             if(this.invitations[0] !== undefined) {
-                const res = await axios.get(`http://localhost:3001/user/finduser/${this.invitations[0].invitingUser}`)
+                const res = await axios.get(`${import.meta.env.VITE_API}/user/finduser/${this.invitations[0].invitingUser}`)
                 if(res.data.user){
                     this.invitingUser = res.data.user
                 }

@@ -13,7 +13,7 @@ export default {
     methods: {
         async getFriends() {
             const userId = localStorage.getItem('uId')
-            const res = await axios.post(`http://localhost:3001/friend/getfriends`, {
+            const res = await axios.post(`${import.meta.env.VITE_API}/friend/getfriends`, {
                 id: userId
             })
             console.log(res);
@@ -21,7 +21,7 @@ export default {
         },
 
         async removeFriend(friend) {
-            const res = await axios.delete(`http://localhost:3001/friend/delete/${friend.id}/${localStorage.getItem('uId')}`)
+            const res = await axios.delete(`${import.meta.env.VITE_API}/friend/delete/${friend.id}/${localStorage.getItem('uId')}`)
             console.log(res)
         }
     },
@@ -30,16 +30,17 @@ export default {
         friends: async function() {
             console.log(this.friends)
             const loggedInUID = localStorage.getItem("uId")
+            const userRoute = `${import.meta.env.VITE_API}/user/finduser`
             if(this.friends.length >= 10) {
                 for (let i = 0 ; i <= 10 ; i++) {
                     if(this.friends[i].userOneId !== loggedInUID) {
-                        const res = await axios.get(`http://localhost:3001/finduser/${this.friends[i].userTwoId}`)
+                        const res = await axios.get(`${userRoute}/${this.friends[i].userTwoId}`)
                         this.currentFriend = res.data.user
                         console.log(res);
                     } 
     
                     if (this.friends[i].userTwoId !== loggedInUID) {
-                        const res = await axios.get(`http://localhost:3001/finduser/${this.friends[i].userOneId}`)
+                        const res = await axios.get(`${userRoute}/${this.friends[i].userOneId}`)
                         this.currentFriend = res.data.user
                         console.log(res);
                     }
@@ -50,13 +51,13 @@ export default {
                     console.log(id)
                     if(id === localStorage.getItem('uId')) { return }
                     if(id.userOneId == loggedInUID) {
-                        const res = await axios.get(`http://localhost:3001/user/finduser/${id.userTwoId}`)
+                        const res = await axios.get(`${userRoute}/${id.userTwoId}`)
                         console.log(res);
                         this.currentFriends.push(res.data.user)
                     } 
     
                     if (id.userTwoId == loggedInUID) {
-                        const res = await axios.get(`http://localhost:3001/user/finduser/${id.userOneId}`)
+                        const res = await axios.get(`${userRoute}/${id.userOneId}`)
                         console.log(res);
                         this.currentFriends.push(res.data.user)
                     }

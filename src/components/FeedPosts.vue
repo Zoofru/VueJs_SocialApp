@@ -15,13 +15,13 @@ export default {
     },
     methods: {
         async getRandomPosts() {
-            const res = await axios.get("http://localhost:3001/post/randomposts")
+            const res = await axios.get(`${import.meta.env.VITE_API}/post/randomposts`)
             this.posts = res.data.posts
             this.attachOwnerToPost()
             console.log(res)
         },
         async getPostOwner(id) {
-            const res = await axios.get(`http://localhost:3001/user/finduser/${id}`)
+            const res = await axios.get(`${import.meta.env.VITE_API}/user/finduser/${id}`)
             console.log(res);
             return res.data.user
         },
@@ -36,7 +36,7 @@ export default {
             const invitingUserID = localStorage.getItem('uId')
             console.log(this.avatar);
             if(invitedUserID !== invitingUserID) {
-                const res = await axios.post('http://localhost:3001/friendreq/new', {
+                const res = await axios.post(`${import.meta.env.VITE_API}/friendreq/new`, {
                     invitedUID: invitedUserID,
                     invitingUID: invitingUserID,
                     invitedUserName: invitedUsername,

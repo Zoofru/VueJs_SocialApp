@@ -1,9 +1,4 @@
 <script>
-// const handleSignup = async () => {
-//     const res = await axios.post('http://localhost:3000/user/signup', {
-
-//     })
-// }
 import axios from 'axios'
 
 export default {
@@ -24,7 +19,7 @@ export default {
             console.log('hi');
             console.log('values : ', this.email)
             if (this.username && this.password && this.email) {
-                const res = await axios.post('http://localhost:3001/user/signup', {
+                const res = await axios.post(`${import.meta.env.VITE_API}/user/signup`, {
                     username: this.username,
                     password: this.password,
                     email: this.email,
@@ -84,12 +79,6 @@ export default {
                 <p class='req'>Password must be atleast 8 characters.</p>
                 <p v-if='this.signupError' id=error>There was and error. Please check your information and try again.</p>
                 <button id='signup-btn' type='submit'>
-                    <!-- <router-link
-                        to='/login'
-                        exact
-                        style='text-decoration: none; color: white;'>
-                        Sign Up
-                    </router-link> -->
                     Sign Up
                 </button>
             </form>

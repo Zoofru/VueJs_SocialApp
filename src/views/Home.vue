@@ -31,20 +31,20 @@ export default {
   },
   methods: {
     async getUser() {
-      const res = await axios.get(`http://localhost:3001/user/finduser/${localStorage.getItem("uId")}`)
+      const res = await axios.get(`${import.meta.env.VITE_API}/user/finduser/${localStorage.getItem("uId")}`)
       if(res.data.user){
         this.user = res.data.user
       }
     },   
     async inviteUser(evt, invitedUser) {
-        const res = await axios.post('http://localhost:3001/invitations/inviteUser', {
+        const res = await axios.post(`${import.meta.env.VITE_API}/invitations/inviteUser`, {
             invitingUserId: localStorage.getItem("uId"),
             invitedUserId: invitedUser
         })
         console.log(res);
     },
     async getUserInvitations() {
-        const res = await axios.post('http://localhost:3001/invitations/getUserInvitations', {
+        const res = await axios.post(`${import.meta.env.VITE_API}/invitations/getUserInvitations`, {
             id: localStorage.getItem("uId")
         })
         this.userInvitations = res.data.invitations
