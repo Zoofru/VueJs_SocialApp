@@ -59,8 +59,7 @@ export default {
 
 <template>
   <div>
-      <Nav v-if="user !== null" :avatar=this.user.avatar />
-      <Nav v-else />
+      <Nav id='nav' />
       <div id="body">
         <div id='left-body'>
           <UserCard v-if="user !== null" />
@@ -90,12 +89,15 @@ export default {
   flex-direction: row;
 }
 
+#nav {
+  position: fixed;
+}
 
 #left-body, #right-body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 5vh;
+  margin-top: 15vh;
 }
 
 #left-body {
@@ -121,7 +123,7 @@ export default {
   width: 40%;
   display: flex;
   justify-content: center;
-  margin-top: 5vh;
+  margin-top: 15vh;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;

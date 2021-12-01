@@ -2,11 +2,10 @@
 
 export default {
     name: 'Nav',
-    props: {
-        avatar: String
-    },
-    data() {
-        return {}
+    computed: {
+        user() {
+            return this.$store.getters.user
+        }
     },
     methods: {
         signInCheck() {
@@ -20,7 +19,9 @@ export default {
             localStorage.removeItem("uId")
             location.reload()
         }
-
+    },
+    created() {
+        this.$store.dispatch('getUser')
     }
 }
 
@@ -30,7 +31,7 @@ export default {
 <template>
     <div id='nav'>
         <div id="logo">
-            <h1 @click='this.$router.push("/")'> SparkWire </h1>
+            <h1 @click='this.$router.push("/")'>SPARKWIRE</h1>
         </div>
         <div id="infonav">
             <input type='text' autocomplete="false" spellcheck="false" placeholder="Search">
@@ -44,7 +45,7 @@ export default {
             <button id='logout-btn' v-if="signInCheck()" type="button" @click="logout">
                 Logout
             </button>
-            <img v-if="signInCheck()" v-bind:src=avatar alt='accountimg'>
+            <img v-if="signInCheck() && user !== null" v-bind:src=user.avatar alt='accountimg'>
         </div>
     </div>
 </template>
@@ -63,6 +64,7 @@ h1:hover {
     border-bottom: 2px solid lightgray;
     background-color: white;
     border-bottom-width: thin;
+    /* position: fixed; */
 }
 
 #logo {

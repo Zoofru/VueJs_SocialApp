@@ -6,11 +6,10 @@
 </template>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed&family=Inter&family=Josefin+Sans&display=swap');
 html * {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Fira Sans Condensed', sans-serif;
   color: #3a4943;
-
 }
 
 body {
