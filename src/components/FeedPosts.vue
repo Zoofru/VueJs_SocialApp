@@ -127,7 +127,7 @@ export default {
 }
 
 #post-container {
-    width: 100%;
+    width: 90%;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -138,12 +138,13 @@ export default {
 }
 
 #post {
-    width: 80%;
+    width: 100%;
     border-radius: 5px;
     box-shadow: 0px 0px 3px 0px gray;
     background-color: white;
     padding: .5vh 1vw 2vh 1vw; 
     overflow: auto;
+    margin-top: 2vh;
 }
 
 #post-header {

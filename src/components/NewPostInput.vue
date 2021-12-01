@@ -68,7 +68,7 @@ input:focus {
 
 #new-post {
   height: 5vh;
-  width: 80%;
+  width: 90%;
   background-color: white;
   border-radius: 5px;
   box-shadow: 0px 0px 3px 0px gray;

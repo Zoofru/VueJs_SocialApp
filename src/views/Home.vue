@@ -68,6 +68,8 @@ export default {
           <SparkInvites :invitations=this.userInvitations :key="componentKey" @rerender="componentKey++" />
         </div>
 
+        <div id='spacer'></div>
+
         <div id='center-body'>
           <NewPostInput v-if="user !== null" />
           <FeedPosts v-if="user !== null" @invite="inviteUser"/>
@@ -78,6 +80,7 @@ export default {
           <SideFriends v-if="user !== null"/>
         </div>
       </div>
+      <!-- <div>Icons made by <a href="https://www.flaticon.com/authors/good-ware" title="Good Ware">Good Ware</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div> -->
   </div>
 </template>
 
@@ -92,19 +95,26 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 30%;
   margin-top: 5vh;
 }
 
 #left-body {
-  margin-left: 7vw;
   display: flex;
   align-items: flex-end;
+  position: fixed;
+  width: 25%;
+  margin-left: 7vw;
 }
 
 #right-body {
   margin-right: 7vw;
   align-items: flex-start;
+  width: 30%;
+}
+
+#spacer {
+  width: 30%;
+  margin-left: 7vw;
 }
 
 #center-body {
