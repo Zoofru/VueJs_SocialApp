@@ -1,5 +1,6 @@
 <script>
 import axios from 'axios'
+import moment from 'moment'
 
 export default {
     name: "FeedPosts",
@@ -46,6 +47,9 @@ export default {
                 console.log(res);
             }
         },
+        convertToTimePassed(date) {
+            return moment(date).fromNow()
+        }
     },
     created() {
         this.getRandomPosts()
@@ -59,7 +63,10 @@ export default {
             <div id='post-header'>
                 <div id='left'>
                     <img id='avatar' v-bind:src=post.ownerAvatar alt='avatar' />
-                    <p id='username'>{{post.owner}}</p>
+                    <div id='username-timeago'>
+                        <p id='username'>{{post.owner}}</p>
+                        <p id='timeago'>{{this.convertToTimePassed(post.createdAt)}}</p>
+                    </div>
                 </div>
                 <div id='right'>
                     <a href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -105,6 +112,20 @@ export default {
     display: flex;
     justify-content: flex-end;
     padding-right: .45vw;
+}
+
+#timeago {
+    margin: 0;
+    margin-left: 10px;
+    color: gray;
+    font-size: 13px;
+}
+
+#username-timeago {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
 }
 
 #username {

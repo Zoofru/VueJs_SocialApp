@@ -42,7 +42,7 @@ export default {
         <input id="new-post-input" v-model="text" v-bind:placeholder="`Whats new, ${user.username}?`" type='text' spellcheck="false" autocomplete="false" />
         <div id='submitBtn'>
             <button id='submitSpark' v-on:click="handleSubmit">
-                <p id="test">Post</p>
+                <p id="post-content-p">Post</p>
             </button>
         </div>
     </div>
@@ -61,13 +61,14 @@ input:focus {
     outline: none !important;
 }
 
-#test {
+#post-content-p {
     color: white;
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    top: 5px;
+    margin-bottom: 4px;
+    font-size: 16px;
 }
 
 #new-post {
