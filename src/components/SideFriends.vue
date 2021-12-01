@@ -16,19 +16,16 @@ export default {
             const res = await axios.post(`${import.meta.env.VITE_API}/friend/getfriends`, {
                 id: userId
             })
-            console.log(res);
             this.friends = res.data.friends
         },
 
         async removeFriend(friend) {
             const res = await axios.delete(`${import.meta.env.VITE_API}/friend/delete/${friend.id}/${localStorage.getItem('uId')}`)
-            console.log(res)
         }
     },
     watch: {
         //Getting friends from friends
         friends: async function() {
-            console.log(this.friends)
             const loggedInUID = localStorage.getItem("uId")
             const userRoute = `${import.meta.env.VITE_API}/user/finduser`
             if(this.friends.length >= 10) {
@@ -36,29 +33,24 @@ export default {
                     if(this.friends[i].userOneId !== loggedInUID) {
                         const res = await axios.get(`${userRoute}/${this.friends[i].userTwoId}`)
                         this.currentFriend = res.data.user
-                        console.log(res);
                     } 
     
                     if (this.friends[i].userTwoId !== loggedInUID) {
                         const res = await axios.get(`${userRoute}/${this.friends[i].userOneId}`)
                         this.currentFriend = res.data.user
-                        console.log(res);
                     }
                 }
             } else {
                 //ID = ids of friends user one/user two
                 for(let id of this.friends) {
-                    console.log(id)
                     if(id === localStorage.getItem('uId')) { return }
                     if(id.userOneId == loggedInUID) {
                         const res = await axios.get(`${userRoute}/${id.userTwoId}`)
-                        console.log(res);
                         this.currentFriends.push(res.data.user)
                     } 
     
                     if (id.userTwoId == loggedInUID) {
                         const res = await axios.get(`${userRoute}/${id.userOneId}`)
-                        console.log(res);
                         this.currentFriends.push(res.data.user)
                     }
                 }
@@ -84,7 +76,7 @@ export default {
                         <p  v-if="this.currentFriends !== null">{{item.username}}</p>
                     </div>
                     <div id='options'>
-                        <a href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
                                 <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
                             </svg>

@@ -16,7 +16,6 @@ export default {
     methods: {
         async getFriendReqs () {
             const res = await axios.get(`${import.meta.env.VITE_API}/friendreq/requests/${localStorage.getItem('uId')}`)
-            console.log(res);
             if(res.data.request.length > 2) {
                 this.requests = res.data.request.slice(0, 2)
             } else {
@@ -26,7 +25,6 @@ export default {
         },
         async handleRequest(request, requestIndex, requestAccepted=false) {
             const res = await axios.delete(`${import.meta.env.VITE_API}/friendreq/delete/request/${this.requests[requestIndex].id}`)
-            console.log(res)
 
             let newReq = this.requests.splice(requestIndex, 1)
             this.requests = newReq
@@ -39,7 +37,6 @@ export default {
                     userOneId: request.invitedUserId,
                     userTwoId: request.invitingUserId
                 })
-                console.log(res);
             }
             
             setTimeout(() => {

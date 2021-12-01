@@ -20,11 +20,9 @@ export default {
             const res = await axios.get(`${import.meta.env.VITE_API}/post/randomposts`)
             this.posts = res.data.posts
             this.attachOwnerToPost()
-            console.log(res)
         },
         async getPostOwner(id) {
             const res = await axios.get(`${import.meta.env.VITE_API}/user/finduser/${id}`)
-            console.log(res);
             return res.data.user
         },
         async attachOwnerToPost() {
@@ -44,7 +42,6 @@ export default {
                     invitingUserName: this.user.username,
                     avatar: this.user.avatar
                 })
-                console.log(res);
             }
         },
         convertToTimePassed(date) {
@@ -69,7 +66,7 @@ export default {
                     </div>
                 </div>
                 <div id='right'>
-                    <a href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                         <svg id="dot-menu" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
                             <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
                         </svg>
@@ -77,9 +74,9 @@ export default {
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <!-- THIS WILL BE AN ISSUE. (Spam someone with invitations) ALLOW TO SEE ONLY A CERTAIN AMOUNT OF SPARKS, 
                         OR FROM USERS WITH A RESPECTABLE REP -->
-                        <a class="dropdown-item" href="#" @click="$emit('invite', $event, post.userId)">Invite User To A Spark</a>
-                        <a class="dropdown-item" href="#" @click="this.addFriendRequest(post.userId, post.owner)">Add Friend</a>
-                        <a class="dropdown-item" href="#">Report</a>
+                        <a class="dropdown-item" @click="$emit('invite', $event, post.userId)">Invite User To A Spark</a>
+                        <a class="dropdown-item" @click="this.addFriendRequest(post.userId, post.owner)">Add Friend</a>
+                        <a class="dropdown-item">Report</a>
                     </div>
                 </div>
             </div>
@@ -198,7 +195,7 @@ export default {
 
 #post-content {
     width: 100%;
-    padding: 0 10px;
+    padding: 2% 10px;
     word-wrap: break-word;
 }
 
