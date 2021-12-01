@@ -91,7 +91,6 @@ export default {
 </template>
 
 <style scoped>
-
 #tabBox {
     background-color: white;
     border-radius: 15px;

@@ -69,6 +69,8 @@ input:focus {
     align-items: center;
     margin-bottom: 4px;
     font-size: 16px;
+    width: 100%;
+    height: 100%;
 }
 
 #new-post {
@@ -123,5 +125,7 @@ input:focus {
 
 #submitSpark:hover {
     cursor: pointer;
+    background-color: #0062cc;
 }
+
 </style>

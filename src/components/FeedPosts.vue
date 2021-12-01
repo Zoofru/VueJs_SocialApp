@@ -101,6 +101,7 @@ export default {
 .heart {
     color: white;
 }
+
 #heart-outline:hover {
     fill: red;
 }
@@ -160,7 +161,7 @@ export default {
     border-radius: 5px;
     box-shadow: 0px 0px 3px 0px gray;
     background-color: white;
-    padding: .5vh 1vw 2vh 1vw; 
+    padding: .5vh 1vw 2vh .5vw; 
     overflow: auto;
     margin-top: 2vh;
 }
@@ -172,7 +173,6 @@ export default {
 
 #left, #right {
     width: 50%;
-    padding-left: 10px;
 }
 
 #left {
@@ -195,7 +195,7 @@ export default {
 
 #post-content {
     width: 100%;
-    padding: 2% 10px;
+    padding: 2% 10px 2% 0;
     word-wrap: break-word;
 }
 
