@@ -34,16 +34,27 @@ export default {
 </script>
 
 
-<template>      
+<template>
     <div v-if="signInCheck()" id='new-post'>
-        <div id='accounticon'>
-          <img id='new-post-accounticon' v-bind:src=user.avatar alt='account-icon' />
+        <div id='input'>
+            <div id='accounticon'>
+                <img id='new-post-accounticon' v-bind:src=user.avatar alt='account-icon' />
+            </div>
+            <input id="new-post-input" v-model="text" v-bind:placeholder="`Whats new, ${user.username}?`" type='text' spellcheck="false" autocomplete="false" />
         </div>
-        <input id="new-post-input" v-model="text" v-bind:placeholder="`Whats new, ${user.username}?`" type='text' spellcheck="false" autocomplete="false" />
-        <div id='submitBtn'>
-            <button id='submitSpark' v-on:click="handleSubmit">
-                <p id="post-content-p">Post</p>
-            </button>
+        <div class='border'></div>
+        <div id='icons'>
+            <div id='submitBtn'>
+                <div class='btn-group'>
+                    <button type="button" class="btn btn-primary" v-on:click="handleSubmit">Post</button>
+                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="visually-hidden">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item">Full Editor</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -51,14 +62,49 @@ export default {
 <style scoped>
 input {
     width: 80%;
-    height: 90%;
+    height: 40%;
     border: none;
-    font-size: large;
+    font-size: x-large;
     resize: none;
 }
 
 input:focus {
     outline: none !important;
+}
+
+svg:hover {
+    cursor: pointer;
+    fill: var(--main-color-blue);
+}
+
+.dropdown-item:hover {
+    cursor: pointer;
+}
+
+.border {
+    border: 1px solid var(--main-color-blue) !important;
+    width: 95%;
+    margin-bottom: 10px;
+    opacity: .3;
+}
+
+#input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 8vh;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#icons {
+    width: 100%;
+    margin-left: 2vw;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: fit-content;
+    margin-bottom: 10px;
 }
 
 #post-content-p {
@@ -74,58 +120,34 @@ input:focus {
 }
 
 #new-post {
-  height: 5vh;
+  height: fit-content;
   width: 90%;
   background-color: white;
   border-radius: 5px;
   box-shadow: 0px 0px 3px 0px gray;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  height: fit-content;
 }
 
 #new-post-accounticon {
-  height: 100%;
-  float: left;
-  width: 60%;
-  height: 65%;
+  width: 100%;
+  height: 80%;
   border-radius: 5px;
 }
 
 #accounticon {
-  display: flex;
-  justify-content: center;
   width: 10%;
-  align-items: center;
+  margin-right: 1vw;
 }
 
 #submitBtn {
-    width: 20%;
-    height: 100%;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-right: 10px;
-}
-
-#submitSpark {
-    color: white;
-    background-color: var(--main-color-blue);
-    border: none;
-    height: 60%;
-    width: 50%;
-    border-radius: 15px;
-    font-family: 'Inter', sans-serif;
-    font-size: large;
-    padding-top: 5px;
+    width: 30%;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-#submitSpark:hover {
-    cursor: pointer;
-    background-color: #0062cc;
 }
 
 </style>
