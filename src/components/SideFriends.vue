@@ -64,7 +64,6 @@ export default {
 </script>
 
 <template>
-    <!-- BUG SOMEWHERE USER WILL SOMETIMES SEE THEMSELVES IN FRIENDS LIST -->
     <div id='root'>
         <h1 id='friends-title'>FRIENDS</h1>
         <div id='container'>
@@ -82,15 +81,13 @@ export default {
                             </svg>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalCenter">Remove Friend</a>
+                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#remove-friend-modal">Remove Friend</a>
                         </div>
                     </div>
                 </div>
                 <Modal 
-                    modalTitle="Are You Sure?" 
-                    :modalContent='`You are about to remove ${item.username} from your friends list.\
-                     To confrim this simply tap remove.`'
-                    confirmButtonText="Remove"
+                    :modalTitle='`Remove ${item.username}?`'
+                    :modalContent='`You are about to remove your friend, ${item.username}. To confirm this click confirm below.`'
                     @remove=this.removeFriend(item)
                 />
             </div>
@@ -103,6 +100,10 @@ export default {
 <style scoped>
 #root {
     width: 70%;
+}
+
+.dropdown-item:hover {
+    cursor: pointer;
 }
 
 #nofriends-sadge {

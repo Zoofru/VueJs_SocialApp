@@ -28,7 +28,15 @@ export default {
                 })
                 this.text = null
             }
+        },
+        setPlaceholder() {
+            console.log(this.text);
+            const inputPlaceholder = document.querySelector('#textarea')
+            inputPlaceholder.setAttribute('placeholder', `What's new ${this.user.username}?`)
         }
+    },
+    mounted() {
+        this.setPlaceholder()
     }
 }
 </script>
@@ -40,32 +48,37 @@ export default {
             <div id='accounticon'>
                 <img id='new-post-accounticon' v-bind:src=user.avatar alt='account-icon' />
             </div>
-            <input id="new-post-input" v-model="text" v-bind:placeholder="`Whats new, ${user.username}?`" type='text' spellcheck="false" autocomplete="false" />
+            <div id='textarea' contenteditable=true role="textbox" :v-model="text">
+
+            </div>
+            <!-- <input id="new-post-input" v-model="text" v-bind:placeholder="`Whats new, ${user.username}?`" type='text' spellcheck="false" autocomplete="false" /> -->
         </div>
         <div class='border'></div>
         <div id='icons'>
+            <div id='icn'>
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="20" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
+                    <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                    <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/>
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="22" fill="currentColor" class="bi bi-play-btn" viewBox="0 0 16 16">
+                    <path d="M6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z"/>
+                    <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+                </svg>
+            </div>
             <div id='submitBtn'>
-                <div class='btn-group'>
-                    <button type="button" class="btn btn-primary" v-on:click="handleSubmit">Post</button>
-                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="visually-hidden">Toggle Dropdown</span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item">Full Editor</a></li>
-                    </ul>
-                </div>
+                <button id='post-btn'>Post</button>
             </div>
         </div>
     </div>
 </template>
 
 <style scoped>
-input {
-    width: 80%;
-    height: 40%;
-    border: none;
-    font-size: x-large;
-    resize: none;
+[contenteditable=true]:empty:before {
+  content: attr(placeholder);
+  width: inherit;
+  height: inherit;
+  color: grey;
+  display: block;
 }
 
 input:focus {
@@ -75,6 +88,27 @@ input:focus {
 svg:hover {
     cursor: pointer;
     fill: var(--main-color-blue);
+}
+
+#textarea {
+    padding: 10px;
+    word-wrap: break-word;
+    width: 75%;
+    font-size: large;
+}
+
+#textarea:hover {
+    cursor: text;
+}
+
+#textarea:focus {
+    outline: none;
+    outline: 2px solid #0165fc8a;
+}
+
+#textarea-content {
+    color: gray;
+    margin: 0;
 }
 
 .dropdown-item:hover {
@@ -92,19 +126,23 @@ svg:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 8vh;
+    height: fit-content;
     margin-top: 10px;
     margin-bottom: 10px;
+    width: 100%;
+}
+
+#icn {
+    width: 50%;
+    padding-left: 10px;
 }
 
 #icons {
     width: 100%;
-    margin-left: 2vw;
     display: flex;
-    justify-content: flex-end;
     align-items: center;
-    height: fit-content;
-    margin-bottom: 10px;
+    height: 40px;
+    padding-bottom: 10px;
 }
 
 #post-content-p {
@@ -121,7 +159,7 @@ svg:hover {
 
 #new-post {
   height: fit-content;
-  width: 90%;
+  width: 31vw;
   background-color: white;
   border-radius: 5px;
   box-shadow: 0px 0px 3px 0px gray;
@@ -143,11 +181,26 @@ svg:hover {
   margin-right: 1vw;
 }
 
+#post-btn {
+    background-color: var(--main-color-blue);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    width:35%;
+}
+
+#post-btn:hover {
+    background-color: white;
+    border: 1px solid var(--main-color-blue);
+    color: var(--main-color-blue);
+}
+
 #submitBtn {
-    width: 30%;
+    width: 50%;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
+    padding-right: 15px;
 }
 
 </style>

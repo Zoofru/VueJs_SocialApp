@@ -66,7 +66,7 @@ export default {
           <SideTabs v-if="user !== null" />
           <SparkInvites :invitations=this.userInvitations :key="componentKey" @rerender="componentKey++" />
         </div>
-
+        
         <div id='spacer'></div>
 
         <div id='center-body'>
