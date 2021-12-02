@@ -3,17 +3,45 @@ import axios from 'axios'
 export default {
     data() {
         return {
-            url:null
+            url:null,
+            errorStatus:null
+        }
+    },
+    watch: {
+        errorStatus: function() {
+            let errorEl = document.querySelector('.alert-danger')
+            let successEl = document.querySelector('.alert-success')
+            console.log(this.errorStatus)
+            if(this.errorStatus) {
+                errorEl.style.display = 'block'
+                successEl.style.display = 'none'
+            } else if (this.errorStatus === false) {
+                errorEl.style.display = 'none'
+                successEl.style.display = 'block'
+            } else {
+                errorEl.style.display = 'none'
+                successEl.style.display = 'none'
+            }
         }
     },
     methods: {
         async handleAvatarUpdate() {
-            const res = await axios.put(`${import.meta.env.VITE_API}/user/update/avatar`, {
-                uID: this.$store.getters.user.id,
-                avatarLink: this.url 
-            })
-            console.log(res)
-            this.url = null
+            try {
+                const response = await fetch(this.url)
+                const buff = await response.blob()
+                if(buff.type.startsWith('image/')) {
+                    this.errorStatus = false
+                    const res = await axios.put(`${import.meta.env.VITE_API}/user/update/avatar`, {
+                        uID: this.$store.getters.user.id,
+                        avatarLink: this.url 
+                    })
+                    this.url = null
+                } else {
+                    throw Error;
+                }
+            } catch(error) {
+                this.errorStatus = true
+            }
         }
     }
 }
@@ -48,10 +76,24 @@ export default {
             </div>
             <button class='submitBtn' type="submit">Submit</button>
         </form>
+        <div class="alert alert-danger hidden" role="alert">
+            The link you entered is either invalid or not an image!
+        </div>
+        <div class="alert alert-success hidden" role="alert">
+            Success!
+        </div>
     </div>
 </template>
 
 <style scoped>
+.hidden {
+    display: none;
+}
+
+.alert {
+    margin-top: 5%;
+    width: 50%;
+}
 .submitBtn {
     color: white;
     background-color: var(--main-color-blue);
