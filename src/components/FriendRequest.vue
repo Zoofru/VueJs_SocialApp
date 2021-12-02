@@ -15,8 +15,7 @@ export default {
     },
     methods: {
         async getFriendReqs () {
-            const res = await axios.get(`http://localhost:3001/friendreq/requests/${localStorage.getItem('uId')}`)
-            console.log(res);
+            const res = await axios.get(`${import.meta.env.VITE_API}/friendreq/requests/${localStorage.getItem('uId')}`)
             if(res.data.request.length > 2) {
                 this.requests = res.data.request.slice(0, 2)
             } else {
@@ -25,8 +24,7 @@ export default {
             this.requestsLength = res.data.request.length
         },
         async handleRequest(request, requestIndex, requestAccepted=false) {
-            const res = await axios.delete(`http://localhost:3001/friendreq/delete/request/${this.requests[requestIndex].id}`)
-            console.log(res)
+            const res = await axios.delete(`${import.meta.env.VITE_API}/friendreq/delete/request/${this.requests[requestIndex].id}`)
 
             let newReq = this.requests.splice(requestIndex, 1)
             this.requests = newReq
@@ -35,11 +33,10 @@ export default {
 
             //TODO: On accept add friend
             if(requestAccepted) {
-                const res = await axios.post('http://localhost:3001/friend/new', {
+                const res = await axios.post(`${import.meta.env.VITE_API}/friend/new`, {
                     userOneId: request.invitedUserId,
                     userTwoId: request.invitingUserId
                 })
-                console.log(res);
             }
             
             setTimeout(() => {
@@ -128,7 +125,7 @@ export default {
 }
 
 #acceptbtn {
-    background-color: #0165fc;
+    background-color: var(--main-color-blue);
     color: white;
 }
 

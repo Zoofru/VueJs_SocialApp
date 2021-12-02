@@ -2,11 +2,10 @@
 
 export default {
     name: 'Nav',
-    props: {
-        avatar: String
-    },
-    data() {
-        return {}
+    computed: {
+        user() {
+            return this.$store.getters.user
+        }
     },
     methods: {
         signInCheck() {
@@ -20,7 +19,9 @@ export default {
             localStorage.removeItem("uId")
             location.reload()
         }
-
+    },
+    created() {
+        this.$store.dispatch('getUser')
     }
 }
 
@@ -30,7 +31,7 @@ export default {
 <template>
     <div id='nav'>
         <div id="logo">
-            <h1> SparkWire </h1>
+            <h1 @click='this.$router.push("/")'>SPARKWIRE</h1>
         </div>
         <div id="infonav">
             <input type='text' autocomplete="false" spellcheck="false" placeholder="Search">
@@ -41,15 +42,20 @@ export default {
                     Login
                 </router-link>
             </button>
-            <button v-if="signInCheck()" type="button" @click="logout">
+            <button id='logout-btn' v-if="signInCheck()" type="button" @click="logout">
                 Logout
             </button>
-            <img v-if="signInCheck()" v-bind:src=avatar alt='accountimg'>
+            <img v-if="signInCheck() && user !== null" v-bind:src=user.avatar alt='accountimg'>
         </div>
     </div>
 </template>
 
 <style scoped>
+
+h1:hover {
+    cursor: pointer;
+}
+
 #nav {
     display: flex;
     flex-direction: row;
@@ -58,6 +64,7 @@ export default {
     border-bottom: 2px solid lightgray;
     background-color: white;
     border-bottom-width: thin;
+    /* position: fixed; */
 }
 
 #logo {
@@ -78,6 +85,12 @@ export default {
     margin-right: 20px;
 }
 
+#logout-btn:hover{
+    background-color: white;
+    border: 1px solid gray;
+    color: var(--main-color-blue);
+}
+
 img {
     width: 3vw;
     height: 65%;
@@ -87,7 +100,7 @@ img {
 
 button {
     color: white;
-    background-color: #0165fc;
+    background-color: var(--main-color-blue);
     border-radius: 10px;
     border: none;
     width: 10%;

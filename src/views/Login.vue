@@ -14,7 +14,7 @@ export default {
         async Login() {
             try {
                 if(this.email && this.password)  {
-                    const res = await axios.post('http://localhost:3001/user/login', {
+                    const res = await axios.post(`${import.meta.env.VITE_API}/user/login`, {
                         email: this.email,
                         password: this.password
                     })

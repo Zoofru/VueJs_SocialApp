@@ -1,28 +1,28 @@
 <script>
 import axios from 'axios'
+import moment from 'moment'
 
 export default {
     name: "FeedPosts",
-    props: {
-        username: String,
-        avatar: String
-    },
     data() {
         return {
             posts: [],
             postOwner:null,
         }
     },
+    computed: {
+        user() {
+            return this.$store.getters.user
+        }
+    },
     methods: {
         async getRandomPosts() {
-            const res = await axios.get("http://localhost:3001/post/randomposts")
+            const res = await axios.get(`${import.meta.env.VITE_API}/post/randomposts`)
             this.posts = res.data.posts
             this.attachOwnerToPost()
-            console.log(res)
         },
         async getPostOwner(id) {
-            const res = await axios.get(`http://localhost:3001/user/finduser/${id}`)
-            console.log(res);
+            const res = await axios.get(`${import.meta.env.VITE_API}/user/finduser/${id}`)
             return res.data.user
         },
         async attachOwnerToPost() {
@@ -34,17 +34,18 @@ export default {
         },
         async addFriendRequest(invitedUserID, invitedUsername) {
             const invitingUserID = localStorage.getItem('uId')
-            console.log(this.avatar);
             if(invitedUserID !== invitingUserID) {
-                const res = await axios.post('http://localhost:3001/friendreq/new', {
+                const res = await axios.post(`${import.meta.env.VITE_API}/friendreq/new`, {
                     invitedUID: invitedUserID,
                     invitingUID: invitingUserID,
                     invitedUserName: invitedUsername,
-                    invitingUserName: this.username,
-                    avatar: this.avatar
+                    invitingUserName: this.user.username,
+                    avatar: this.user.avatar
                 })
-                console.log(res);
             }
+        },
+        convertToTimePassed(date) {
+            return moment(date).fromNow()
         }
     },
     created() {
@@ -59,20 +60,23 @@ export default {
             <div id='post-header'>
                 <div id='left'>
                     <img id='avatar' v-bind:src=post.ownerAvatar alt='avatar' />
-                    <p id='username'>{{post.owner}}</p>
+                    <div id='username-timeago'>
+                        <p id='username'>{{post.owner}}</p>
+                        <p id='timeago'>{{this.convertToTimePassed(post.createdAt)}}</p>
+                    </div>
                 </div>
                 <div id='right'>
-                    <a href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                    <a role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        <svg id="dot-menu" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
                             <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
                         </svg>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <!-- THIS WILL BE AN ISSUE. (Spam someone with invitations) ALLOW TO SEE ONLY A CERTAIN AMOUNT OF SPARKS, 
                         OR FROM USERS WITH A RESPECTABLE REP -->
-                        <a class="dropdown-item" href="#" @click="$emit('invite', $event, post.userId)">Invite User To A Spark</a>
-                        <a class="dropdown-item" href="#" @click="this.addFriendRequest(post.userId, post.owner)">Add Friend</a>
-                        <a class="dropdown-item" href="#">Report</a>
+                        <a class="dropdown-item" @click="$emit('invite', $event, post.userId)">Invite User To A Spark</a>
+                        <a class="dropdown-item" @click="this.addFriendRequest(post.userId, post.owner)">Add Friend</a>
+                        <a class="dropdown-item">Report</a>
                     </div>
                 </div>
             </div>
@@ -80,7 +84,7 @@ export default {
                 <p>{{post.body}}</p>
             </div>
             <div id='action-icons'>
-                <svg id="icons" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                <svg id="heart-outline" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
                     <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
                 </svg>
             </div>
@@ -89,14 +93,41 @@ export default {
 </template>
 
 <style scoped>
-#icons {
-    margin: 0 1%
+#heart-outline {
+    margin: 0 1%;
+    color: white;
+}
+
+.dropdown-item:hover {
+    cursor: pointer;
+}
+
+.heart {
+    color: white;
+}
+
+#heart-outline:hover {
+    fill: red;
 }
 
 #action-icons {
     display: flex;
     justify-content: flex-end;
     padding-right: .45vw;
+}
+
+#timeago {
+    margin: 0;
+    margin-left: 10px;
+    color: gray;
+    font-size: 13px;
+}
+
+#username-timeago {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
 }
 
 #username {
@@ -109,8 +140,8 @@ export default {
 }
 
 #avatar {
-    width: 2.5vw;
-    height: 80%;
+    width: 40px;
+    height: 40px;
     border-radius: 5px;
 }
 
@@ -119,7 +150,7 @@ export default {
 }
 
 #post-container {
-    width: 100%;
+    width: 90%;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -130,12 +161,13 @@ export default {
 }
 
 #post {
-    width: 80%;
+    width: 100%;
     border-radius: 5px;
     box-shadow: 0px 0px 3px 0px gray;
     background-color: white;
-    padding: .5vh 1vw 2vh 1vw; 
+    padding: .5vh 1vw 2vh .5vw; 
     overflow: auto;
+    margin-top: 2vh;
 }
 
 #post-header {
@@ -145,8 +177,6 @@ export default {
 
 #left, #right {
     width: 50%;
-    /* padding-top: 5px; */
-    padding-left: 10px;
 }
 
 #left {
@@ -161,13 +191,25 @@ export default {
     padding-right: 2%;
 }
 
-svg:hover {
-    cursor: pointer;
+#dot-menu:hover {
+    fill: white;
+    background-color: gray;
+    border-radius: 5px;
 }
 
 #post-content {
     width: 100%;
-    padding: 0 10px;
+    padding: 2% 10px 2% 0;
     word-wrap: break-word;
 }
+
+#heart:hover {
+    fill: red;
+    background-color: red;
+}
+
+svg:hover {
+    cursor: pointer;
+}
+
 </style>

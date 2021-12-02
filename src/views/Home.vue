@@ -23,55 +23,55 @@ export default {
   },
   data() {
     return {
-      user:null,
       userInvitations: [],
       componentKey: 0,
       friendRequestKey: 0
     }
   },
+  computed: {
+    user() {
+      return this.$store.getters.user
+    }
+  },
   methods: {
-    async getUser() {
-      const res = await axios.get(`http://localhost:3001/user/finduser/${localStorage.getItem("uId")}`)
-      if(res.data.user){
-        this.user = res.data.user
-      }
-    },   
     async inviteUser(evt, invitedUser) {
-        const res = await axios.post('http://localhost:3001/invitations/inviteUser', {
+        const res = await axios.post(`${import.meta.env.VITE_API}/invitations/inviteUser`, {
             invitingUserId: localStorage.getItem("uId"),
             invitedUserId: invitedUser
         })
         console.log(res);
     },
     async getUserInvitations() {
-        const res = await axios.post('http://localhost:3001/invitations/getUserInvitations', {
+        const res = await axios.post(`${import.meta.env.VITE_API}/invitations/getUserInvitations`, {
             id: localStorage.getItem("uId")
         })
         this.userInvitations = res.data.invitations
-        console.log(res)
     }
   },
   mounted() {
-    this.getUser()
     this.getUserInvitations()
   },
+  created() {
+    this.$store.dispatch('getUser')
+  }
 }
 </script>
 
 <template>
   <div>
-      <Nav v-if="user !== null" :avatar=this.user.avatar />
-      <Nav v-else />
+      <Nav id='nav' />
       <div id="body">
         <div id='left-body'>
-          <UserCard v-if="user !== null" :fullname=this.user.name :username=this.user.username :avatar=this.user.avatar />
-          <SideTabs  />
+          <UserCard v-if="user !== null" />
+          <SideTabs v-if="user !== null" />
           <SparkInvites :invitations=this.userInvitations :key="componentKey" @rerender="componentKey++" />
         </div>
 
+        <div id='spacer'></div>
+
         <div id='center-body'>
-          <NewPostInput v-if="user !== null" :avatar=this.user.avatar :username=this.user.username />
-          <FeedPosts v-if="user !== null" :username=this.user.username :avatar=this.user.avatar @invite="inviteUser"/>
+          <NewPostInput v-if="user !== null" />
+          <FeedPosts v-if="user !== null" @invite="inviteUser"/>
         </div>
 
         <div id='right-body'>
@@ -79,6 +79,7 @@ export default {
           <SideFriends v-if="user !== null"/>
         </div>
       </div>
+      <!-- <div>Icons made by <a href="https://www.flaticon.com/authors/good-ware" title="Good Ware">Good Ware</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div> -->
   </div>
 </template>
 
@@ -88,33 +89,41 @@ export default {
   flex-direction: row;
 }
 
+#nav {
+  position: fixed;
+}
 
 #left-body, #right-body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 30%;
-  /* border: 2px solid red; */
-  margin-top: 5vh;
+  margin-top: 15vh;
 }
 
 #left-body {
-  margin-left: 7vw;
   display: flex;
   align-items: flex-end;
+  position: fixed;
+  width: 25%;
+  margin-left: 7vw;
 }
 
 #right-body {
   margin-right: 7vw;
   align-items: flex-start;
+  width: 30%;
+}
+
+#spacer {
+  width: 30%;
+  margin-left: 7vw;
 }
 
 #center-body {
   width: 40%;
-  /* border: 2px solid green; */
   display: flex;
   justify-content: center;
-  margin-top: 5vh;
+  margin-top: 15vh;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;

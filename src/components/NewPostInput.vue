@@ -8,9 +8,10 @@ export default {
             text:null
         }
     },
-    props: {
-        username: String,
-        avatar: String
+    computed: {
+        user() {
+            return this.$store.getters.user
+        }
     },
     methods: {
         signInCheck() {
@@ -21,7 +22,7 @@ export default {
         },
         async handleSubmit() {
             if(this.text !== null) {
-                const res = await axios.post("http://localhost:3001/post/newpost", {
+                const res = await axios.post(`${import.meta.env.VITE_API}/post/newpost`, {
                     text: this.text,
                     id: localStorage.getItem("uId")
                 })
@@ -36,23 +37,18 @@ export default {
 <template>      
     <div v-if="signInCheck()" id='new-post'>
         <div id='accounticon'>
-          <img id='new-post-accounticon' v-bind:src=avatar alt='account-icon' />
+          <img id='new-post-accounticon' v-bind:src=user.avatar alt='account-icon' />
         </div>
-        <input id="new-post-input" v-model="text" v-bind:placeholder="`Whats new, ${username}?`" type='text' spellcheck="false" autocomplete="false" />
+        <input id="new-post-input" v-model="text" v-bind:placeholder="`Whats new, ${user.username}?`" type='text' spellcheck="false" autocomplete="false" />
         <div id='submitBtn'>
             <button id='submitSpark' v-on:click="handleSubmit">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-send" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
-                </svg>
+                <p id="post-content-p">Post</p>
             </button>
         </div>
     </div>
 </template>
 
 <style scoped>
-
-
-
 input {
     width: 80%;
     height: 90%;
@@ -65,14 +61,27 @@ input:focus {
     outline: none !important;
 }
 
+#post-content-p {
+    color: white;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 4px;
+    font-size: 16px;
+    width: 100%;
+    height: 100%;
+}
+
 #new-post {
   height: 5vh;
-  width: 80%;
+  width: 90%;
   background-color: white;
   border-radius: 5px;
   box-shadow: 0px 0px 3px 0px gray;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 #new-post-accounticon {
@@ -101,17 +110,22 @@ input:focus {
 
 #submitSpark {
     color: white;
-    background-color: #0165fc;
+    background-color: var(--main-color-blue);
     border: none;
     height: 60%;
     width: 50%;
-    border-radius: 10px;
+    border-radius: 15px;
     font-family: 'Inter', sans-serif;
     font-size: large;
     padding-top: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #submitSpark:hover {
     cursor: pointer;
+    background-color: #0062cc;
 }
+
 </style>
