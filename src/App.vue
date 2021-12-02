@@ -10,6 +10,7 @@
 html * {
   font-family: 'Fira Sans Condensed', sans-serif;
   color: #3a4943;
+  --main-color-blue: #0165fc;
 }
 
 body {

@@ -98,6 +98,10 @@ export default {
     color: white;
 }
 
+.dropdown-item:hover {
+    cursor: pointer;
+}
+
 .heart {
     color: white;
 }
@@ -136,8 +140,8 @@ export default {
 }
 
 #avatar {
-    width: 2.5vw;
-    height: 80%;
+    width: 40px;
+    height: 40px;
     border-radius: 5px;
 }
 

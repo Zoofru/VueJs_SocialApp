@@ -125,7 +125,7 @@ export default {
 }
 
 #acceptbtn {
-    background-color: #0165fc;
+    background-color: var(--main-color-blue);
     color: white;
 }
 

@@ -110,7 +110,7 @@ input:focus {
 
 #submitSpark {
     color: white;
-    background-color: #0165fc;
+    background-color: var(--main-color-blue);
     border: none;
     height: 60%;
     width: 50%;

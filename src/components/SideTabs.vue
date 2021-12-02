@@ -122,10 +122,10 @@ export default {
 }
 
 #tab:hover, #tabSettings:hover {
-    color: #0165fc;
+    color: var(--main-color-blue);
     background-color: #f5f5f5;
     cursor: pointer;
-    border-left: 2px solid #0165fc;
+    border-left: 2px solid var(--main-color-blue);
 }
 
 #flex-border {

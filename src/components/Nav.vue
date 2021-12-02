@@ -88,7 +88,7 @@ h1:hover {
 #logout-btn:hover{
     background-color: white;
     border: 1px solid gray;
-    color: #0165fc;
+    color: var(--main-color-blue);
 }
 
 img {
@@ -100,7 +100,7 @@ img {
 
 button {
     color: white;
-    background-color: #0165fc;
+    background-color: var(--main-color-blue);
     border-radius: 10px;
     border: none;
     width: 10%;
