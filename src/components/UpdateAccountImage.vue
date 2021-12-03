@@ -1,5 +1,6 @@
 <script>
 import axios from 'axios'
+import fs from 'fs'
 export default {
     data() {
         return {
@@ -42,7 +43,7 @@ export default {
             } catch(error) {
                 this.errorStatus = true
             }
-        }
+        },
     }
 }
 </script>

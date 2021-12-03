@@ -5,7 +5,7 @@ export default {
     name: "NewPostInput",
     data() {
         return {
-            text:null
+            text:null,
         }
     },
     computed: {
@@ -29,14 +29,18 @@ export default {
                 this.text = null
             }
         },
-        setPlaceholder() {
-            console.log(this.text);
-            const inputPlaceholder = document.querySelector('#textarea')
-            inputPlaceholder.setAttribute('placeholder', `What's new ${this.user.username}?`)
-        }
+        setupAutoResize() {
+            let ta = document.querySelector("#textarea")
+            ta.addEventListener('input', this.autoResize, false)
+        },
+        autoResize() {
+            let ta = document.querySelector("#textarea")
+            ta.style.height = 'auto'
+            ta.style.height = ta.scrollHeight + 'px'
+        },
     },
     mounted() {
-        this.setPlaceholder()
+        this.setupAutoResize()
     }
 }
 </script>
@@ -48,10 +52,7 @@ export default {
             <div id='accounticon'>
                 <img id='new-post-accounticon' v-bind:src=user.avatar alt='account-icon' />
             </div>
-            <div id='textarea' contenteditable=true role="textbox" :v-model="text">
-
-            </div>
-            <!-- <input id="new-post-input" v-model="text" v-bind:placeholder="`Whats new, ${user.username}?`" type='text' spellcheck="false" autocomplete="false" /> -->
+            <textarea id='textarea' autocomplete="false" spellcheck="false" v-model="text" v-bind:placeholder="`Whats new, ${user.username}?`"></textarea>
         </div>
         <div class='border'></div>
         <div id='icons'>
@@ -60,30 +61,19 @@ export default {
                     <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                     <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/>
                 </svg>
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="22" fill="currentColor" class="bi bi-play-btn" viewBox="0 0 16 16">
+                <svg id='test' xmlns="http://www.w3.org/2000/svg" width="32" height="22" fill="currentColor" class="bi bi-play-btn" viewBox="0 0 16 16">
                     <path d="M6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z"/>
                     <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
                 </svg>
             </div>
             <div id='submitBtn'>
-                <button id='post-btn'>Post</button>
+                <button id='post-btn' @click="this.handleSubmit()">Post</button>
             </div>
         </div>
     </div>
 </template>
 
 <style scoped>
-[contenteditable=true]:empty:before {
-  content: attr(placeholder);
-  width: inherit;
-  height: inherit;
-  color: grey;
-  display: block;
-}
-
-input:focus {
-    outline: none !important;
-}
 
 svg:hover {
     cursor: pointer;
@@ -95,6 +85,9 @@ svg:hover {
     word-wrap: break-word;
     width: 75%;
     font-size: large;
+    overflow: hidden;
+    resize: none;
+    border: none;
 }
 
 #textarea:hover {
