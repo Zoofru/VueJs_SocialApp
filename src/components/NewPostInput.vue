@@ -1,11 +1,18 @@
 <script>
 import axios from 'axios'
+import InputModal from './InputModal.vue'
 
 export default {
     name: "NewPostInput",
+    components: {
+        InputModal
+    },
     data() {
         return {
             text:null,
+            imageurl:null,
+            videourl:null,
+            type:null
         }
     },
     computed: {
@@ -24,9 +31,14 @@ export default {
             if(this.text !== null) {
                 const res = await axios.post(`${import.meta.env.VITE_API}/post/newpost`, {
                     text: this.text,
-                    id: localStorage.getItem("uId")
+                    id: localStorage.getItem("uId"),
+                    imageurl: this.imageurl,
+                    videourl: this.videourl,
+                    type: this.type
                 })
                 this.text = null
+                document.querySelector('#inputimage').src = ''
+                console.log(res);
             }
         },
         setupAutoResize() {
@@ -38,6 +50,24 @@ export default {
             ta.style.height = 'auto'
             ta.style.height = ta.scrollHeight + 'px'
         },
+        handleModalInput(input, type) {
+            document.querySelector('#inputimage').src = input
+            
+            if(type === 'image') {
+                this.imageurl = input
+                this.type = type
+                console.log('hit');
+            }
+        },
+        confirmLinkValid(input) {
+            const extension = input.split('').splice(input.length - 4, 4).join('')
+            if(extension === '.jpg' || extension === 'jpeg' || extension === '.png') {
+                this.handleModalInput(input, 'image')
+            } else {
+                // Send user an error as feedback for invalid file type
+                console.log('not image');
+            }
+        }
     },
     mounted() {
         this.setupAutoResize()
@@ -52,12 +82,17 @@ export default {
             <div id='accounticon'>
                 <img id='new-post-accounticon' v-bind:src=user.avatar alt='account-icon' />
             </div>
-            <textarea id='textarea' autocomplete="false" spellcheck="false" v-model="text" v-bind:placeholder="`Whats new, ${user.username}?`"></textarea>
+            <div id='inputarea'>
+                <textarea id='textarea' autocomplete="false" spellcheck="false" v-model="text" v-bind:placeholder="`Whats new, ${user.username}?`">ass</textarea>
+                <img id='inputimage' src='' />
+            </div>
         </div>
         <div class='border'></div>
+
+        <!-- bottom bar (icons and post button) -->
         <div id='icons'>
             <div id='icn'>
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="20" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="20" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16" data-bs-toggle="modal" data-bs-target="#input-modal">
                     <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                     <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/>
                 </svg>
@@ -70,6 +105,14 @@ export default {
                 <button id='post-btn' @click="this.handleSubmit()">Post</button>
             </div>
         </div>
+
+        <!-- MODAL -->
+        <InputModal 
+            :modalTitle="'Attach Image'"
+            :modalContent="'Copy the image url and paste\
+            it below, then click confirm to add it to your post.'"
+            @inputSent="confirmLinkValid"
+        />
     </div>
 </template>
 
@@ -88,6 +131,7 @@ svg:hover {
     overflow: hidden;
     resize: none;
     border: none;
+    margin-bottom: 10px;
 }
 
 #textarea:hover {
@@ -96,7 +140,6 @@ svg:hover {
 
 #textarea:focus {
     outline: none;
-    outline: 2px solid #0165fc8a;
 }
 
 #textarea-content {
@@ -113,6 +156,16 @@ svg:hover {
     width: 95%;
     margin-bottom: 10px;
     opacity: .3;
+}
+
+#inputimage {
+    width: 75%;
+}
+
+#inputarea {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
 }
 
 #input {

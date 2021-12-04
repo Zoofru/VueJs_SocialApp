@@ -77,11 +77,16 @@ export default {
                         <a class="dropdown-item" @click="$emit('invite', $event, post.userId)">Invite User To A Spark</a>
                         <a class="dropdown-item" @click="this.addFriendRequest(post.userId, post.owner)">Add Friend</a>
                         <a class="dropdown-item">Report</a>
+                        <a class="dropdown-item" v-if="this.user.super">Delete Post</a>
+                        
                     </div>
                 </div>
             </div>
             <div id='post-content'>
-                <p>{{post.body}}</p>
+                <p id='post-text'>{{post.body}}</p>
+                <div id='postimage-container'>
+                    <img id='postimage' v-if="post.imagesrc !== null" v-bind:src=post.imagesrc />
+                </div>
             </div>
             <div id='action-icons'>
                 <svg id="heart-outline" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
@@ -104,6 +109,24 @@ export default {
 
 .heart {
     color: white;
+}
+
+#post-text {
+    max-width: 80%;
+    height: fit-content;
+}
+
+#postimage-container {
+    display: flex;
+    justify-content: center;
+    height: fit-content;
+}
+
+#postimage {
+    max-height: 450px;
+    max-width: 90%;
+    border-radius: 10px;
+    box-shadow: 0px 0px 1px 0px gray;
 }
 
 #heart-outline:hover {
@@ -161,6 +184,8 @@ export default {
 }
 
 #post {
+    max-width: 100%;
+    min-width: 100%;
     width: 100%;
     border-radius: 5px;
     box-shadow: 0px 0px 3px 0px gray;
@@ -172,11 +197,12 @@ export default {
 
 #post-header {
     display: flex;
-    height: 30%;
+    height: fit-content;
 }
 
 #left, #right {
     width: 50%;
+    height: fit-content;
 }
 
 #left {

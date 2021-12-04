@@ -45,7 +45,7 @@ export default {
             <button id='logout-btn' v-if="signInCheck()" type="button" @click="logout">
                 Logout
             </button>
-            <img v-if="signInCheck() && user !== null" v-bind:src=user.avatar alt='accountimg'>
+            <img v-if="this.user !== null" v-bind:src=user.avatar alt='accountimg'>
         </div>
     </div>
 </template>
