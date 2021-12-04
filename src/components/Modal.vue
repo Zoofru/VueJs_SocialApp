@@ -29,7 +29,7 @@ export default {
 
 <template>
     <div>
-        <div class="modal fade" id="remove-friend-modal" tabindex="-1" aria-labelledby="label" aria-hidden="true">
+        <div class="modal fade" id="remove-modal" tabindex="-1" aria-labelledby="label" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">

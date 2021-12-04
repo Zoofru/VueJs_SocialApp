@@ -81,7 +81,7 @@ export default {
                             </svg>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#remove-friend-modal">Remove Friend</a>
+                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#remove-modal">Remove Friend</a>
                         </div>
                     </div>
                 </div>
