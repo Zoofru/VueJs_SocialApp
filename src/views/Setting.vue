@@ -1,14 +1,18 @@
 <script>
 import Nav from '../components/Nav.vue'
-import UpdateAccountImage from '../components/UpdateAccountImage.vue'
+import ProfileSettings from '../components/ProfileSettings.vue'
+import SecuritySettings from '../components/SecuritySettings.vue'
+
 export default {
     components: {
         Nav,
-        UpdateAccountImage
+        ProfileSettings,
+        SecuritySettings
     },
     data() {
         return {
-            tabs: ["Profile", "Security"]
+            tabs: ["Profile", "Security"],
+            currentTab: "Profile"
         }
     },
     computed: {
@@ -26,14 +30,15 @@ export default {
             <div id='settings-tab-container'>
                 <div id="tabs">
                     <div id ='tabs-content' v-for="(tab, index) in this.tabs" :key="index">
-                        <div id='tab'>
+                        <div id='tab' @click="this.currentTab=tab">
                             <p>{{tab}}</p>
                             <p id='border'></p>
                         </div>
                     </div>
                 </div>
             </div>
-            <UpdateAccountImage />
+            <ProfileSettings v-if="this.currentTab === 'Profile'" />
+            <SecuritySettings v-if="this.currentTab === 'Security'" />
         </div>
     </div>
 </template>

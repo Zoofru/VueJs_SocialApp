@@ -25,6 +25,30 @@ export default {
             const res = await axios.get(`${import.meta.env.VITE_API}/user/finduser/${id}`)
             return res.data.user
         },
+        async deletePost(postId,index) {
+            const res = await axios.delete(`${import.meta.env.VITE_API}/post/delete/post/${postId}`)
+            console.log(res);
+
+            const elements = document.querySelectorAll(`#pos-${index}`)
+            this.clearDeleteElements(index)
+            document.querySelector(`.pos-${index}`).style.backgroundColor = 'gray'
+        },
+        // adds style and selection when deleting post
+        handleDeleteStyle(postId, index) {
+            document.querySelector(`.pos-${index}`).style.backgroundColor = 'lightgray'
+            const elements = document.querySelectorAll(`#pos-${index}`)
+            for(let el of elements) {
+                el.style.display = 'block'
+            }
+        },
+        // clear style elements
+        clearDeleteElements(index) {
+            const elements = document.querySelectorAll(`#pos-${index}`)
+            const postBG = document.querySelector(`.pos-${index}`).style.backgroundColor = 'white'
+            for(let el of elements) {
+                el.style.display = 'none'
+            }
+        },
         async attachOwnerToPost() {
             for (let post of this.posts) {
                 let owner = await this.getPostOwner(post.userId)
@@ -56,7 +80,7 @@ export default {
 
 <template>
     <div id='post-container'>
-        <div id='post' v-for="(post, index) in this.posts" :key="index">
+        <div id='post' v-for="(post, index) in this.posts" :key="index" :class="[`pos-${index}`]">
             <div id='post-header'>
                 <div id='left'>
                     <img id='avatar' v-bind:src=post.ownerAvatar alt='avatar' />
@@ -64,6 +88,8 @@ export default {
                         <p id='username'>{{post.owner}}</p>
                         <p id='timeago'>{{this.convertToTimePassed(post.createdAt)}}</p>
                     </div>
+                    <!-- NEED NEW MODELS FOR USER TAGS AND USE V-FOR TO DISPLAY THEM -->
+                    <p v-if="user.super" id='user-tag'>Super</p>
                 </div>
                 <div id='right'>
                     <a role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
@@ -77,22 +103,70 @@ export default {
                         <a class="dropdown-item" @click="$emit('invite', $event, post.userId)">Invite User To A Spark</a>
                         <a class="dropdown-item" @click="this.addFriendRequest(post.userId, post.owner)">Add Friend</a>
                         <a class="dropdown-item">Report</a>
+                        <a class="dropdown-item" v-if="this.user.super" @click="this.handleDeleteStyle(post.id, index)">Delete</a>
+                        
                     </div>
                 </div>
             </div>
+
+            <!-- POST BODY  /  CONTENT -->
             <div id='post-content'>
-                <p>{{post.body}}</p>
+                <p id='post-text'>{{post.body}}</p>
+                <div id='postimage-container'>
+                    <img id='postimage' v-if="post.imagesrc !== null" v-bind:src=post.imagesrc />
+                </div>
+                <div class="delete hidden">
+                    <button class='hidden decline-del btn btn-danger' :id="[`pos-${index}`]" @click="this.clearDeleteElements(index)">Nevermind</button>
+                    <button class='hidden accept-del btn btn-success' :id="[`pos-${index}`]" @click="this.deletePost(post.id, index)">Delete Post</button>
+                </div>
             </div>
             <div id='action-icons'>
                 <svg id="heart-outline" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
                     <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
                 </svg>
             </div>
+
         </div>
     </div>
 </template>
 
 <style scoped>
+p {
+    margin: 0;
+}
+
+#user-tag {
+    margin-left: 10%;
+    background-color: var(--main-color-blue);
+    height: 50%;
+    padding: 0 15px;
+    border-radius: 10px;
+    color: white;
+    font-size: small;
+    margin-top: 2px;
+}
+
+.hidden {
+    display: none;
+}
+
+.delete {
+    width: 29%;
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+}
+
+.accept-del {
+    background-color: green;
+    width: 48%;
+}
+
+.decline-del {
+    width: 48%;
+    background-color: red;
+}
+
 #heart-outline {
     margin: 0 1%;
     color: white;
@@ -104,6 +178,24 @@ export default {
 
 .heart {
     color: white;
+}
+
+#post-text {
+    max-width: 80%;
+    height: fit-content;
+}
+
+#postimage-container {
+    display: flex;
+    justify-content: center;
+    height: fit-content;
+}
+
+#postimage {
+    max-height: 450px;
+    max-width: 90%;
+    border-radius: 10px;
+    box-shadow: 0px 0px 1px 0px gray;
 }
 
 #heart-outline:hover {
@@ -161,6 +253,8 @@ export default {
 }
 
 #post {
+    max-width: 100%;
+    min-width: 100%;
     width: 100%;
     border-radius: 5px;
     box-shadow: 0px 0px 3px 0px gray;
@@ -172,16 +266,17 @@ export default {
 
 #post-header {
     display: flex;
-    height: 30%;
+    height: fit-content;
 }
 
 #left, #right {
     width: 50%;
+    height: fit-content;
 }
 
 #left {
     display: flex;
-    align-items: center;
+    /* align-items: center; */
 }
 
 #right {

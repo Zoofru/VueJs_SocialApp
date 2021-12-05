@@ -18,7 +18,6 @@ export default {
                         email: this.email,
                         password: this.password
                     })
-                    console.log(res);
                     if(res.data.user) {
                         this.unAuth = false
                         localStorage.setItem("uId", res.data.user.id)
@@ -49,14 +48,16 @@ export default {
             </div>
             <div id="right">
                 <p>New to SparkWire?</p>
-                <button id='signup-btn'>
+                <div id="signup-btn-container">
                     <router-link
                         to='/signup'
                         exact
                         style='text-decoration: none; color: white;'>
-                        Create Account?
+                        <button id='signup-btn'>
+                                Create Account?
+                        </button>
                     </router-link>
-                </button>
+                </div>
             </div>
         </div>
         <div id="container">
@@ -72,6 +73,10 @@ export default {
 </template>
 
 <style scoped>
+p {
+    margin: 0;
+}
+
 #container {
     margin-top: 10vh;
     display: flex;
@@ -82,6 +87,10 @@ export default {
 
 #error {
     color: red;
+}
+
+#signup-btn-container {
+    width: 20%;
 }
 
 #login-form {
@@ -137,7 +146,7 @@ input {
 }
 
 #signup-btn {
-    width: 18%;
+    width: 100%;
     padding: none;
     margin-top: none;
     height: 4vh;
@@ -152,5 +161,8 @@ input {
 
 #signup-btn:hover, #signin-btn:hover {
     cursor: pointer;
+    background-color: white;
+    color: var(--main-color-blue);
+    border: 1px solid var(--main-color-blue);
 }
 </style>

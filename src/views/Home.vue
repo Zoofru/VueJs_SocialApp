@@ -64,7 +64,7 @@ export default {
         <div id='left-body'>
           <UserCard v-if="user !== null" />
           <SideTabs v-if="user !== null" />
-          <SparkInvites :invitations=this.userInvitations :key="componentKey" @rerender="componentKey++" />
+          <SparkInvites v-if="user !== null" :invitations=this.userInvitations :key="componentKey" @rerender="componentKey++" />
         </div>
 
         <div id='spacer'></div>
@@ -75,7 +75,7 @@ export default {
         </div>
 
         <div id='right-body'>
-          <FriendRequest :key="friendRequestKey" @rerender="friendRequestKey++" />
+          <FriendRequest v-if="user !== null" :key="friendRequestKey" @rerender="friendRequestKey++" />
           <SideFriends v-if="user !== null"/>
         </div>
       </div>

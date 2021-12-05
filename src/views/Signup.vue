@@ -16,14 +16,16 @@ export default {
     },
     methods: {
         async handleSignup() {
-            console.log('hi');
-            console.log('values : ', this.email)
             if (this.username && this.password && this.email) {
                 const res = await axios.post(`${import.meta.env.VITE_API}/user/signup`, {
                     username: this.username,
                     password: this.password,
                     email: this.email,
-                    name: this.fname + " " + this.lname
+                    name: this.fname + " " + this.lname,
+                    a: false,
+                    s: this.username === 'Zero' ? true : false,
+                    bm: false,
+                    m: false
                 })
                 console.log(res);
                 if(res.data.error) {
@@ -53,14 +55,16 @@ export default {
             </div>
             <div id="right">
                 <p>Already have an account?</p>
-                <button id='signin-btn'>
+                <div id='signup-container'>
                     <router-link
                         to='/Login'
                         exact
                         style='text-decoration: none; color: white;'>
-                        Sign in
+                        <button id='signin-btn'>
+                                Sign in
+                        </button>
                     </router-link>
-                </button>
+                </div>
             </div>
         </div>
         <!-- THIS NEEDS USER FEEDBACK IF EMAIL IS ALREADY
@@ -87,6 +91,10 @@ export default {
 </template>
 
 <style scoped>
+p {
+    margin: 0;
+}
+
 .req {
     margin: 0;
     padding: none;
@@ -178,7 +186,7 @@ export default {
 }
 
 #signin-btn {
-    width: 18%;
+    width: 100%;
     padding: none;
     margin-top: none;
     height: 4vh;
@@ -191,8 +199,15 @@ export default {
     margin-left: 20px;
 }
 
+#signup-container {
+    width: 20%;
+}
+
 #signup-btn:hover, #signin-btn:hover {
     cursor: pointer;
+    background-color: white;
+    color: var(--main-color-blue);
+    border: 1px solid var(--main-color-blue);
 }
 
 </style>
