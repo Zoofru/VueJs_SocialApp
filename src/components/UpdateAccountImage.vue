@@ -100,7 +100,7 @@ export default {
     background-color: var(--main-color-blue);
     border: none;
     border-radius: 5px;
-    width: 10%;
+    width: 20%;
     height: 3vh;
     margin-top: 1vh;
 }
@@ -128,7 +128,7 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    width: 65%;
+    width: 100%;
     margin-left: 5%;
 }
 </style>

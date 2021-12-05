@@ -88,6 +88,8 @@ export default {
                         <p id='username'>{{post.owner}}</p>
                         <p id='timeago'>{{this.convertToTimePassed(post.createdAt)}}</p>
                     </div>
+                    <!-- NEED NEW MODELS FOR USER TAGS AND USE V-FOR TO DISPLAY THEM -->
+                    <p v-if="user.super" id='user-tag'>Super</p>
                 </div>
                 <div id='right'>
                     <a role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
@@ -129,6 +131,21 @@ export default {
 </template>
 
 <style scoped>
+p {
+    margin: 0;
+}
+
+#user-tag {
+    margin-left: 10%;
+    background-color: var(--main-color-blue);
+    height: 50%;
+    padding: 0 15px;
+    border-radius: 10px;
+    color: white;
+    font-size: small;
+    margin-top: 2px;
+}
+
 .hidden {
     display: none;
 }
@@ -259,7 +276,7 @@ export default {
 
 #left {
     display: flex;
-    align-items: center;
+    /* align-items: center; */
 }
 
 #right {
