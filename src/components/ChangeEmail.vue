@@ -16,10 +16,23 @@ export default {
                     email: this.newEmail
                 })
                 console.log(res);
+                if(res.data.user) {
+                    this.sendVerify()
+                }
             }
             this.newEmail = null
             this.pass = null
-        }
+        },
+        sendVerify() {
+            let templateParams = {
+                to_name: this.user.name,
+                new_email: this.newEmail,
+                send_to: this.user.email,
+            }
+
+            emailjs.init('user_hMm4eqaajygnM7MazWT2c')
+            emailjs.send('service_60o48ue', 'template_7xhi2uh', templateParams)
+        },
     }
 }
 </script>
