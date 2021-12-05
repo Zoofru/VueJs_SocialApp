@@ -17,7 +17,8 @@ export default {
         closeButtonText: {
             default: 'Close',
             type: String
-        }
+        },
+        type:null
     },
     data() {
         return {
@@ -29,7 +30,7 @@ export default {
 
 <template>
     <div>
-        <div class="modal fade" id="input-modal" tabindex="-1" aria-labelledby="label" aria-hidden="true">
+        <div class="modal fade" :id="`${type}-modal`" tabindex="-1" aria-labelledby="label" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -38,7 +39,7 @@ export default {
                     </div>
                     <div class="modal-body">
                         {{modalContent}}
-                        <input class='input' type='text' spellcheck="off" autocomplete="off" placeholder="Image url" v-model="this.input" />
+                        <input class='input' type='text' spellcheck="off" autocomplete="off" :placeholder="`${this.type} url`" v-model="this.input" />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{closeButtonText}}</button>

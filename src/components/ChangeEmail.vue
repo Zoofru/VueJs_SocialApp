@@ -30,8 +30,8 @@ export default {
                 send_to: this.user.email,
             }
 
-            emailjs.init('user_hMm4eqaajygnM7MazWT2c')
-            emailjs.send('service_60o48ue', 'template_7xhi2uh', templateParams)
+            emailjs.init(import.meta.env.EMAIL_USER)
+            emailjs.send(import.meta.env.EMAIL_SERVICE, 'template_7xhi2uh', templateParams)
         },
     }
 }

@@ -88,7 +88,7 @@ export default {
                         <p id='username'>{{post.owner}}</p>
                         <p id='timeago'>{{this.convertToTimePassed(post.createdAt)}}</p>
                     </div>
-                    <!-- NEED NEW MODELS FOR USER TAGS AND USE V-FOR TO DISPLAY THEM -->
+                    <!-- NEED NEW MODELS (Database models) FOR USER TAGS AND USE V-FOR TO DISPLAY THEM -->
                     <p v-if="user.super" id='user-tag'>Super</p>
                 </div>
                 <div id='right'>
@@ -114,6 +114,11 @@ export default {
                 <p id='post-text'>{{post.body}}</p>
                 <div id='postimage-container'>
                     <img id='postimage' v-if="post.imagesrc !== null" v-bind:src=post.imagesrc />
+                    <video class='video' controls width='400px' v-if="post.videourl !== null">
+                        <source v-bind:src=post.videourl type="video/mp4">
+                        <source v-bind:src=post.videourl type="video/webm">
+                        <source v-bind:src=post.videourl type="video/ogg">
+                    </video>
                 </div>
                 <div class="delete hidden">
                     <button class='hidden decline-del btn btn-danger' :id="[`pos-${index}`]" @click="this.clearDeleteElements(index)">Nevermind</button>
@@ -133,6 +138,12 @@ export default {
 <style scoped>
 p {
     margin: 0;
+}
+
+.video {
+    height: 70%;
+    width: 70%;
+    border-radius: 5px;
 }
 
 #user-tag {

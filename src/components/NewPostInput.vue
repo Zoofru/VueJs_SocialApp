@@ -51,21 +51,45 @@ export default {
             ta.style.height = ta.scrollHeight + 'px'
         },
         handleModalInput(input, type) {
-            document.querySelector('#inputimage').src = input
-            
             if(type === 'image') {
+                document.querySelector('#inputimage').src = input
                 this.imageurl = input
                 this.type = type
-                console.log('hit');
+                
+            } else if (type === 'video') {
+                let video = document.querySelector('.video')
+                video.load()
+                video.classList.remove('hidden')
+                
+                let elements = document.querySelectorAll('#input-video-src')
+                for(let el of elements) {
+                    el.src = input
+                }
+
+                this.videourl = input
+                this.type = type
             }
         },
         confirmLinkValid(input) {
             const extension = input.split('').splice(input.length - 4, 4).join('')
-            if(extension === '.jpg' || extension === 'jpeg' || extension === '.png') {
+            if(extension === '.jpg' || extension === 'jpeg' || extension === '.png' || extension ==='.gif' || extension === 'gifv') {
                 this.handleModalInput(input, 'image')
             } else {
                 // Send user an error as feedback for invalid file type
-                console.log('not image');
+                console.log('not valid');
+            }
+        },
+        confirmVideoValid(input) {
+            console.log(input);
+            const extension = input.split('').splice(input.length - 4, 4).join('')
+            console.log(extension)
+            if(extension ==='.gif' || extension === 'gifv') {
+                this.confirmLinkValid(input)
+            } else if (extension === '.mp4' || extension === 'webm') {
+                this.handleModalInput(input, 'video')
+            } else {
+                // Send user an error as feedback for invalid file type
+                console.log('not valid')
             }
         }
     },
@@ -85,6 +109,11 @@ export default {
             <div id='inputarea'>
                 <textarea id='textarea' autocomplete="false" spellcheck="false" v-model="text" v-bind:placeholder="`Whats new, ${user.username}?`">ass</textarea>
                 <img id='inputimage' src='' />
+                <video controls class='video hidden' muted width="400">
+                    <source id='input-video-src' src='' type="video/mp4">
+                    <source id='input-video-src' src='' type="video/webm">
+                    <source id='input-video-src' src='' type="video/ogg">
+                </video>
             </div>
         </div>
         <div class='border'></div>
@@ -96,7 +125,7 @@ export default {
                     <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                     <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/>
                 </svg>
-                <svg id='test' xmlns="http://www.w3.org/2000/svg" width="32" height="22" fill="currentColor" class="bi bi-play-btn" viewBox="0 0 16 16">
+                <svg id='test' xmlns="http://www.w3.org/2000/svg" width="32" height="22" fill="currentColor" class="bi bi-play-btn" viewBox="0 0 16 16" data-bs-toggle="modal" data-bs-target="#video-modal">
                     <path d="M6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z"/>
                     <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
                 </svg>
@@ -107,16 +136,28 @@ export default {
         </div>
 
         <!-- MODAL -->
-        <InputModal 
+        <InputModal
+            type='input'
             :modalTitle="'Attach Image'"
             :modalContent="'Copy the image url and paste\
             it below, then click confirm to add it to your post.'"
             @inputSent="confirmLinkValid"
         />
+
+        <InputModal
+            type='video'
+            :modalTitle="'Attach video'"
+            :modalContent="'Copy the video or gif url and past\
+            it below, then click confirm to add it to your post.'"
+            @inputSent="confirmVideoValid"
+        />
     </div>
 </template>
 
 <style scoped>
+.hidden {
+    display: none;
+}
 
 svg:hover {
     cursor: pointer;
