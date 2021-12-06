@@ -57,14 +57,27 @@ export default {
                 this.type = type
                 
             } else if (type === 'video') {
-                let video = document.querySelector('.video')
-                video.load()
-                video.classList.remove('hidden')
+                const divInput = document.querySelector('#inputarea')
+                const vid = document.createElement('video')
+                let sourceMp4 = document.createElement('source')
+                let sourceWebm = document.createElement('source')
+                let sourceOgg = document.createElement('source')
+
+                const sources = [sourceOgg, sourceWebm, sourceMp4]
                 
-                let elements = document.querySelectorAll('#input-video-src')
-                for(let el of elements) {
-                    el.src = input
+                sourceWebm.type = 'video/webm'
+                sourceOgg.type = 'video/ogg'
+                sourceMp4.type = 'video/mp4'
+                
+                for(let s of sources) {
+                    s.src = input
+                    vid.appendChild(s)
                 }
+
+                vid.controls = true
+                vid.muted = true
+
+                divInput.appendChild(vid)
 
                 this.videourl = input
                 this.type = type
@@ -80,12 +93,11 @@ export default {
             }
         },
         confirmVideoValid(input) {
-            console.log(input);
             const extension = input.split('').splice(input.length - 4, 4).join('')
-            console.log(extension)
+
             if(extension ==='.gif' || extension === 'gifv') {
                 this.confirmLinkValid(input)
-            } else if (extension === '.mp4' || extension === 'webm') {
+            } else if (extension === '.mp4' || extension === 'webm' || extension === 'ogg') {
                 this.handleModalInput(input, 'video')
             } else {
                 // Send user an error as feedback for invalid file type
@@ -109,11 +121,6 @@ export default {
             <div id='inputarea'>
                 <textarea id='textarea' autocomplete="false" spellcheck="false" v-model="text" v-bind:placeholder="`Whats new, ${user.username}?`">ass</textarea>
                 <img id='inputimage' src='' />
-                <video controls class='video hidden' muted width="400">
-                    <source id='input-video-src' src='' type="video/mp4">
-                    <source id='input-video-src' src='' type="video/webm">
-                    <source id='input-video-src' src='' type="video/ogg">
-                </video>
             </div>
         </div>
         <div class='border'></div>

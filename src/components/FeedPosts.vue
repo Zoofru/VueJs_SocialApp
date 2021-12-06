@@ -52,7 +52,7 @@ export default {
         async attachOwnerToPost() {
             for (let post of this.posts) {
                 let owner = await this.getPostOwner(post.userId)
-                post.owner = owner.username
+                post.owner = owner
                 post.ownerAvatar = owner.avatar
             }
         },
@@ -74,6 +74,10 @@ export default {
     },
     created() {
         this.getRandomPosts()
+        fetch('https://www.dailywire.com/news/republicans-business-leaders-slam-aoc-for-tone-deaf-remark-about-smash-and-grab-robberies')
+        .then(res => {
+            console.log(res);
+        })
     }
 }
 </script>
@@ -81,31 +85,29 @@ export default {
 <template>
     <div id='post-container'>
         <div id='post' v-for="(post, index) in this.posts" :key="index" :class="[`pos-${index}`]">
-            <div id='post-header'>
+            <div id='post-header' v-if="post.owner">
                 <div id='left'>
                     <img id='avatar' v-bind:src=post.ownerAvatar alt='avatar' />
                     <div id='username-timeago'>
-                        <p id='username'>{{post.owner}}</p>
+                        <p id='username'>{{post.owner.username}}</p>
                         <p id='timeago'>{{this.convertToTimePassed(post.createdAt)}}</p>
                     </div>
                     <!-- NEED NEW MODELS (Database models) FOR USER TAGS AND USE V-FOR TO DISPLAY THEM -->
-                    <p v-if="user.super" id='user-tag'>Super</p>
+                    <p v-if="post.owner.super" id='user-tag'>Super</p>
                 </div>
-                <div id='right'>
-                    <a role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                        <svg id="dot-menu" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
-                        </svg>
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <!-- THIS WILL BE AN ISSUE. (Spam someone with invitations) ALLOW TO SEE ONLY A CERTAIN AMOUNT OF SPARKS, 
-                        OR FROM USERS WITH A RESPECTABLE REP -->
-                        <a class="dropdown-item" @click="$emit('invite', $event, post.userId)">Invite User To A Spark</a>
-                        <a class="dropdown-item" @click="this.addFriendRequest(post.userId, post.owner)">Add Friend</a>
-                        <a class="dropdown-item">Report</a>
-                        <a class="dropdown-item" v-if="this.user.super" @click="this.handleDeleteStyle(post.id, index)">Delete</a>
-                        
-                    </div>
+                <a role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                    <svg id="dot-menu" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                        <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                    </svg>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <!-- THIS WILL BE AN ISSUE. (Spam someone with invitations) ALLOW TO SEE ONLY A CERTAIN AMOUNT OF SPARKS, 
+                    OR FROM USERS WITH A RESPECTABLE REP -->
+                    <a class="dropdown-item" @click="$emit('invite', $event, post.userId)">Invite User To A Spark</a>
+                    <a class="dropdown-item" @click="this.addFriendRequest(post.userId, post.owner.username)">Add Friend</a>
+                    <a class="dropdown-item">Report</a>
+                    <a class="dropdown-item" v-if="this.user.super || post.owner.username === this.user.username" @click="this.handleDeleteStyle(post.id, index)">Delete</a>
+                    
                 </div>
             </div>
 
@@ -144,10 +146,11 @@ p {
     height: 70%;
     width: 70%;
     border-radius: 5px;
+    margin-top: 5%;
 }
 
 #user-tag {
-    margin-left: 10%;
+    margin-left: 4%;
     background-color: var(--main-color-blue);
     height: 50%;
     padding: 0 15px;
@@ -192,8 +195,9 @@ p {
 }
 
 #post-text {
-    max-width: 80%;
+    max-width: 100%;
     height: fit-content;
+    padding: 0 2%;
 }
 
 #postimage-container {
@@ -207,6 +211,7 @@ p {
     max-width: 90%;
     border-radius: 10px;
     box-shadow: 0px 0px 1px 0px gray;
+    margin-top: 5%;
 }
 
 #heart-outline:hover {
@@ -280,21 +285,11 @@ p {
     height: fit-content;
 }
 
-#left, #right {
+#left {
     width: 50%;
     height: fit-content;
-}
-
-#left {
     display: flex;
-    /* align-items: center; */
-}
-
-#right {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding-right: 2%;
+    width: 95%;
 }
 
 #dot-menu:hover {
