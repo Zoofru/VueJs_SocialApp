@@ -38,6 +38,12 @@ export default {
                 })
                 this.text = null
                 document.querySelector('#inputimage').src = ''
+                if(document.querySelector('.video')) {
+                    document.querySelector('.video').remove()
+                } else if(document.querySelector('.iframe')) {
+                    document.querySelector('.iframe').src=''
+                }
+
                 console.log(res);
             }
         },
@@ -76,11 +82,28 @@ export default {
 
                 vid.controls = true
                 vid.muted = true
+                vid.classList.add('video')
 
                 divInput.appendChild(vid)
 
                 this.videourl = input
                 this.type = type
+            } else if (type === 'youtube') {
+                const videoId = input.split('').splice(input.length - 11, 11).join('')
+                const iFrame = document.createElement('iframe')
+                iFrame.width = '400px'
+                iFrame.height = '315px'
+                iFrame.src = 'https://www.youtube.com/embed/' + videoId
+                iFrame.title = 'Youtube video player'
+                // iFrame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;'
+                iFrame.allowFullscreen = true
+                iFrame.classList.add('iframe')
+
+                document.querySelector('#inputarea').appendChild(iFrame)
+
+                this.videourl = 'https://www.youtube.com/embed/' + videoId
+                this.type = type
+
             }
         },
         confirmLinkValid(input) {
@@ -92,16 +115,20 @@ export default {
                 console.log('not valid');
             }
         },
-        confirmVideoValid(input) {
-            const extension = input.split('').splice(input.length - 4, 4).join('')
-
-            if(extension ==='.gif' || extension === 'gifv') {
-                this.confirmLinkValid(input)
-            } else if (extension === '.mp4' || extension === 'webm' || extension === 'ogg') {
-                this.handleModalInput(input, 'video')
-            } else {
-                // Send user an error as feedback for invalid file type
-                console.log('not valid')
+        confirmVideoValid(input, isYoutube) {
+            if(!isYoutube) {
+                const extension = input.split('').splice(input.length - 4, 4).join('')
+    
+                if(extension ==='.gif' || extension === 'gifv') {
+                    this.confirmLinkValid(input)
+                } else if (extension === '.mp4' || extension === 'webm' || extension === 'ogg') {
+                    this.handleModalInput(input, 'video')
+                } else {
+                    // Send user an error as feedback for invalid file type
+                    console.log('not valid')
+                }
+            } else if(isYoutube) {
+                this.handleModalInput(input, 'youtube')
             }
         }
     },
@@ -138,7 +165,11 @@ export default {
                 </svg>
             </div>
             <div id='submitBtn'>
-                <button id='post-btn' @click="this.handleSubmit()">Post</button>
+                <button id='post-btn' @click="() => {
+                        this.handleSubmit()
+                        $emit('rerender')
+                    }
+                ">Post</button>
             </div>
         </div>
 
@@ -155,7 +186,9 @@ export default {
             type='video'
             :modalTitle="'Attach video'"
             :modalContent="'Copy the video or gif url and past\
-            it below, then click confirm to add it to your post.'"
+            it below, then click confirm to add it to your post.\
+            If your link if from youtube check the box that says youtube link\
+            otherwise it may not work correctly.'"
             @inputSent="confirmVideoValid"
         />
     </div>

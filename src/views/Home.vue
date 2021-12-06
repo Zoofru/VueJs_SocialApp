@@ -25,7 +25,8 @@ export default {
     return {
       userInvitations: [],
       componentKey: 0,
-      friendRequestKey: 0
+      friendRequestKey: 0,
+      NewPostInputKey: 0
     }
   },
   computed: {
@@ -70,7 +71,7 @@ export default {
         <div id='spacer'></div>
 
         <div id='center-body'>
-          <NewPostInput v-if="user !== null" />
+          <NewPostInput v-if="user !== null" :key='NewPostInputKey' @rerender='NewPostInputKey++' />
           <FeedPosts v-if="user !== null" @invite="inviteUser"/>
         </div>
 

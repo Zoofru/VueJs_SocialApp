@@ -44,7 +44,7 @@ export default {
         // clear style elements
         clearDeleteElements(index) {
             const elements = document.querySelectorAll(`#pos-${index}`)
-            const postBG = document.querySelector(`.pos-${index}`).style.backgroundColor = 'white'
+            document.querySelector(`.pos-${index}`).style.backgroundColor = 'white'
             for(let el of elements) {
                 el.style.display = 'none'
             }
@@ -74,10 +74,6 @@ export default {
     },
     created() {
         this.getRandomPosts()
-        fetch('https://www.dailywire.com/news/republicans-business-leaders-slam-aoc-for-tone-deaf-remark-about-smash-and-grab-robberies')
-        .then(res => {
-            console.log(res);
-        })
     }
 }
 </script>
@@ -116,11 +112,21 @@ export default {
                 <p id='post-text'>{{post.body}}</p>
                 <div id='postimage-container'>
                     <img id='postimage' v-if="post.imagesrc !== null" v-bind:src=post.imagesrc />
-                    <video class='video' controls width='400px' v-if="post.videourl !== null">
+                    <video class='video' controls width='400px' v-if="post.videourl !== null && post.type === 'video' ">
                         <source v-bind:src=post.videourl type="video/mp4">
                         <source v-bind:src=post.videourl type="video/webm">
                         <source v-bind:src=post.videourl type="video/ogg">
                     </video>
+                    <div id='iframe-div'>
+                        <iframe v-if="post.videourl !== null && post.type === 'youtube'"
+                            width="560" 
+                            height="315" 
+                            v-bind:src=post.videourl
+                            title="YouTube video player" 
+                            frameborder="0" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
                 </div>
                 <div class="delete hidden">
                     <button class='hidden decline-del btn btn-danger' :id="[`pos-${index}`]" @click="this.clearDeleteElements(index)">Nevermind</button>
@@ -142,6 +148,10 @@ p {
     margin: 0;
 }
 
+.iframe-div {
+    display: flex;
+    justify-content: center;
+}
 .video {
     height: 70%;
     width: 70%;
@@ -198,6 +208,7 @@ p {
     max-width: 100%;
     height: fit-content;
     padding: 0 2%;
+    margin-bottom: 2%;
 }
 
 #postimage-container {
@@ -211,7 +222,6 @@ p {
     max-width: 90%;
     border-radius: 10px;
     box-shadow: 0px 0px 1px 0px gray;
-    margin-top: 5%;
 }
 
 #heart-outline:hover {
@@ -275,7 +285,7 @@ p {
     border-radius: 5px;
     box-shadow: 0px 0px 3px 0px gray;
     background-color: white;
-    padding: .5vh 1vw 2vh .5vw; 
+    padding: .5vh .5vw 2vh .5vw; 
     overflow: auto;
     margin-top: 2vh;
 }
@@ -300,7 +310,7 @@ p {
 
 #post-content {
     width: 100%;
-    padding: 2% 10px 2% 0;
+    padding: 2% 0;
     word-wrap: break-word;
 }
 
