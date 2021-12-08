@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
 import Settings from '../views/Setting.vue'
+import Profile from '../views/Profile.vue'
 
 const routes = [
     {
@@ -26,6 +27,10 @@ const routes = [
         path: '/settings',
         name: 'Settings',
         component: Settings
+    }, {
+        path: '/profile',
+        name: 'Profile',
+        component: Profile
     }
 ]
 
