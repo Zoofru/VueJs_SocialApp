@@ -16,8 +16,8 @@ export default {
                 to_email: this.user.email
             }
 
-            emailjs.init('user_hMm4eqaajygnM7MazWT2c')
-            emailjs.send('service_60o48ue', 'template_5kmbr1c', templateParams)
+            emailjs.init(import.meta.env.EMAIL_USER)
+            emailjs.send(import.meta.env.EMAIL_SERVICE, 'template_5kmbr1c', templateParams)
         },
         async handleSubmit() {
             if(this.user.password === this.currentPass && this.newPass === this.newPassConfirm && this.newPass !== null) {

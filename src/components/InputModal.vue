@@ -17,10 +17,12 @@ export default {
         closeButtonText: {
             default: 'Close',
             type: String
-        }
+        },
+        type:null,
     },
     data() {
         return {
+            youtubeLink: false,
             input:null
         }
     },
@@ -29,7 +31,7 @@ export default {
 
 <template>
     <div>
-        <div class="modal fade" id="input-modal" tabindex="-1" aria-labelledby="label" aria-hidden="true">
+        <div class="modal fade" :id="`${type}-modal`" tabindex="-1" aria-labelledby="label" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -38,11 +40,17 @@ export default {
                     </div>
                     <div class="modal-body">
                         {{modalContent}}
-                        <input class='input' type='text' spellcheck="off" autocomplete="off" placeholder="Image url" v-model="this.input" />
+                        <input class='input' type='text' spellcheck="off" autocomplete="off" :placeholder="`${this.type} url`" v-model="this.input" />
+                    </div>
+                    <div class="form-check youtube-check" v-if="type === 'video'">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" @click='this.youtubeLink = !this.youtubeLink'>
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Youtube Link
+                        </label>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{closeButtonText}}</button>
-                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="$emit('inputSent', this.input)">{{confirmButtonText}}</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="$emit('inputSent', this.input, this.youtubeLink)">{{confirmButtonText}}</button>
                     </div>
                 </div>
             </div>
@@ -54,6 +62,10 @@ export default {
 .modal-body {
     display: flex;
     flex-direction: column;
+}
+
+.youtube-check {
+    margin-left: 3%;
 }
 
 .modal-header { 
