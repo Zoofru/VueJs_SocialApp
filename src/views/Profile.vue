@@ -58,6 +58,7 @@ export default {
     width: 60%;
     background-color: rgba(0, 0, 0, .1);
     box-shadow: 0px 0px 3px 1px black;
+    padding: 10px 0;
 }
 
 #profile-content-root {
