@@ -1,22 +1,30 @@
 <script>
 import Nav from '../components/Nav.vue'
 import SidebarProfile from '../components/SidebarProfile.vue'
+import ProfileNavBar from '../components/ProfileNavBar.vue'
+
 export default {
     name: 'Profile',
     components: {
         Nav,
-        SidebarProfile
+        SidebarProfile,
+        ProfileNavBar
     },
     computed: {
         user() {
             return this.$store.getters.user
         }
     },
+    watch: {
+        user() {
+            document.body.style.backgroundImage = `url(${this.user.profileBackgroundimage})`
+        }
+    }
 }
 </script>
 
 <template>
-    <div>
+    <div id='page'>
         <Nav />
         <div id='profile-content-root'>
             <div id='content'>
@@ -29,6 +37,7 @@ export default {
                             <p id='bio'>{{this.user.about}}</p>
                         </div>
                     </div>
+                    <ProfileNavBar />
                 </div>
                 <div id='sidebar'>
                     <SidebarProfile />
@@ -39,6 +48,10 @@ export default {
 </template>
 
 <style scoped>
+#page {
+    height: 100vh;
+}
+
 #sidebar {
     width: 20%;
     height: 100%;
@@ -47,7 +60,7 @@ export default {
 #profile-avatar {
     width: 20%;
     height: 90%;
-    border: 2px solid black;
+    border: 4px solid var(--main-color-blue);
     margin-top: 1%;
     margin-left: 1%;
 }
@@ -55,32 +68,33 @@ export default {
 #content {
     display: flex;
     justify-content: center;
-    width: 60%;
-    background-color: rgba(0, 0, 0, .1);
-    box-shadow: 0px 0px 3px 1px black;
-    padding: 10px 0;
+    width: 55%;
+    background-color: rgba(125, 125, 125, .4);
+    padding: 30px 0px 10px 0px;
+    padding-left: .7%;
+    padding-right: .7%;
 }
 
 #profile-content-root {
     display: flex;
     justify-content: center;
-    margin-top: 2%;
+    height: 100%;
 }
 
 #profile {
     width: 80%;
     display: flex;
     align-items: center;
-    flex-direction: row;
+    flex-direction: column;
     height: 21vh;
 }
 
 #profile-content {
-    background-color: white;
     width: 100%;
     display: flex;
     height: 21vh;
     border-radius: 5px;
+    background-color: rgba(125, 125, 125, 0);
 }
 
 #header-content {
@@ -92,6 +106,10 @@ export default {
 
 #bio {
     margin-top: 15%;
+}
+
+#username, #bio {
+    color: white;
 }
 
 #username, #fullname {

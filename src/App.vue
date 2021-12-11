@@ -39,5 +39,6 @@ body {
   padding-bottom: 50px;
   margin: 0px;
   background-color: #f5f5f5;
+  height: 0%;
 }
 </style>
