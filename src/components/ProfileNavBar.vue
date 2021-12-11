@@ -3,7 +3,7 @@ export default {
     name: "ProfileNavBar",
     data() {
         return {
-            navItems: ['Board', 'Liked Posts', 'Sparks', 'Posts', 'Top Posts']
+            navItems: ['Board', 'Liked Posts', 'Sparks', 'Posts', 'Top Posts'],
         }
     }, methods: {
         handleTabClicked(index) {
@@ -15,6 +15,7 @@ export default {
             }
 
             document.querySelector(cssSelector).classList.add('clicked')
+            this.$emit('tab', document.querySelector(cssSelector).textContent)
         }
     },
 }

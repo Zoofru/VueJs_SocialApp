@@ -2,13 +2,20 @@
 import Nav from '../components/Nav.vue'
 import SidebarProfile from '../components/SidebarProfile.vue'
 import ProfileNavBar from '../components/ProfileNavBar.vue'
+import Posts from '../components/ProfileNavComponents/Posts.vue'
 
 export default {
     name: 'Profile',
     components: {
         Nav,
         SidebarProfile,
-        ProfileNavBar
+        ProfileNavBar,
+        Posts
+    },
+    data() {
+        return {
+            focusedTab: 'Board'
+        }
     },
     computed: {
         user() {
@@ -17,7 +24,12 @@ export default {
     },
     watch: {
         user() {
-            document.body.style.backgroundImage = `url(${this.user.profileBackgroundimage})`
+            document.body.style.backgroundImage = `url(${this.user.profileBackgroundImage})`
+        }
+    },
+    methods: {
+        focusTab(tab) {
+            this.focusedTab = tab
         }
     }
 }
@@ -37,7 +49,8 @@ export default {
                             <p id='bio'>{{this.user.about}}</p>
                         </div>
                     </div>
-                    <ProfileNavBar />
+                    <ProfileNavBar @tab='focusTab'/>
+                    <Posts v-if="this.focusedTab == 'Posts'" />
                 </div>
                 <div id='sidebar'>
                     <SidebarProfile />

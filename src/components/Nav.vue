@@ -18,6 +18,11 @@ export default {
         logout() {
             localStorage.removeItem("uId")
             location.reload()
+        },
+        reloadHomeStyle() {
+            //Reload homepage to correct CSS values
+            document.body.style.backgroundImage = ''
+            this.$router.push("/")
         }
     },
     created() {
@@ -31,7 +36,7 @@ export default {
 <template>
     <div id='nav'>
         <div id="logo">
-            <h1 @click='this.$router.push("/")'>SPARKWIRE</h1>
+            <h1 @click='reloadHomeStyle'>SPARKWIRE</h1>
         </div>
         <div id="infonav">
             <input type='text' autocomplete="false" spellcheck="false" placeholder="Search">
