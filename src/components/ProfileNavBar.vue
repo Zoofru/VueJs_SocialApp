@@ -3,7 +3,7 @@ export default {
     name: "ProfileNavBar",
     data() {
         return {
-            navItems: ['Board', 'Liked Posts', 'Sparks', 'Posts', 'Top Posts'],
+            navItems: ['Sparks', 'Liked Posts', 'Posts', 'Top Posts'],
         }
     }, methods: {
         handleTabClicked(index) {
@@ -24,7 +24,7 @@ export default {
 <template>
     <div id='root'>
         <div id='bar' v-for="(item, index) in this.navItems" :key=index>
-            <button :id="[`nav-buttons-${index}`]" class='button clicked' v-if="item == 'Board'" @click="this.handleTabClicked(index)">{{item}}</button>
+            <button :id="[`nav-buttons-${index}`]" class='button clicked' v-if="item == 'Sparks'" @click="this.handleTabClicked(index)">{{item}}</button>
             <button :id="[`nav-buttons-${index}`]" class='button' v-else @click="this.handleTabClicked(index)">{{item}}</button>
         </div>
     </div>

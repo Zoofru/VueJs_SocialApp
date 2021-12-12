@@ -9,6 +9,11 @@ export default {
     components: {
         NotificationBadge
     },
+    computed: {
+        user() {
+            return this.$store.getters.user
+        }
+    },
     data() {
         return {
             invitingUser:null,
@@ -28,6 +33,7 @@ export default {
         },
     }, methods: {
         async deleteInvitation() {
+            // delete spark invite
             if(this.invitations.length >= 1) {
                 const res = await axios.delete(`${import.meta.env.VITE_API}/invitations/deleteinvitation/${this.invitations[0].id}/${this.invitations[0].invitingUser}/${this.invitations[0].invitedUser}`)
                 console.log(res);
@@ -35,6 +41,7 @@ export default {
             }
         },
         async setUser() {
+            //set Inviting user to be used in decline clicked and creating a new spark
             if(this.invitations[0] !== undefined) {
                 const res = await axios.get(`${import.meta.env.VITE_API}/user/finduser/${this.invitations[0].invitingUser}`)
                 if(res.data.user){
@@ -43,7 +50,25 @@ export default {
                 console.log(this.invitingUser);
             }
         },
+        async createSpark() {
+            //create a new spark between two users
+            // console.log(this.user.id);
+            const res = await axios.post(`${import.meta.env.VITE_API}/spark/new`, {
+                userOne: this.invitingUser.id,
+                userTwo: this.user.id
+            })
+            console.log(res);
+        },
         declineClicked() {
+            this.deleteInvitation()
+            this.setUser()
+            setTimeout(() => {
+                this.$emit('rerender')
+            }, 200)
+        },
+        acceptSparkInvite() {
+            //invite is accepted
+            this.createSpark()
             this.deleteInvitation()
             this.setUser()
             setTimeout(() => {
@@ -79,7 +104,7 @@ export default {
                 <p id='title-invite' v-if="this.invitingUser != null">{{`${invitations[0].invitationTitle} by ${this.invitingUser.username}`}}</p>
             </div>
             <div id='buttons-div'>
-                <button id='accept-btn'>Accept Invitation</button>
+                <button id='accept-btn' @click="this.acceptSparkInvite()">Accept Invitation</button>
                 <span id='spacer'></span>
                 <button id='decline-btn' @click="this.declineClicked()">&#10006;</button> 
             </div>
