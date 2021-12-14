@@ -2,6 +2,7 @@
 import Nav from '../components/Nav.vue'
 import SideTabs from '../components/SideTabs.vue'
 import axios from 'axios'
+
 export default {
     props: {
         id: String
@@ -17,27 +18,30 @@ export default {
     },
     data() {
         return {
-            token: null
+            spark: null,
+            otherUser:null
         }
     },
     methods: {
         async getSpark() {
             const res = await axios.get(`${import.meta.env.VITE_API}/spark/get/${parseInt(this.$route.query.id)}`)
             console.log(res);
+            this.spark = res.data.spark
         },
-        async test() {
-            const res = await axios.post(`${import.meta.env.VITE_API}/spark/test`)
-            console.log(res);
-            this.token = res.data.token
-        },
-        async testVerify() {
-            const res = await axios.get(`${import.meta.env.VITE_API}/spark/testy`, {
-                headers: {
-                    authorization: '55'
-                }
-            })
-            console.log(res);
-        },
+        async getUser() {
+            if(this.user.id === this.spark.userOneId) {
+                const res = await axios.get(`${import.meta.env.VITE_API}/user/finduser/${this.spark.userTwoId}`)
+                this.otherUser = res.data.user
+            } else {
+                const res = await axios.get(`${import.meta.env.VITE_API}/user/finduser/${this.spark.userOneId}`)
+                this.otherUser = res.data.user
+            }
+        }
+    },
+    watch: {
+        user() {
+            this.getUser()
+        }
     },
     created() {
         this.getSpark()
@@ -63,8 +67,6 @@ export default {
             </div>
 
             <div id='right'>
-                <button @click='this.test()'>hi</button>
-                <button @click='this.testVerify()'>test</button>
             </div>
 
         </div>
