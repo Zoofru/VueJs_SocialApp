@@ -20,7 +20,7 @@ export default {
                 const res = await axios.post(`${import.meta.env.VITE_API}/user/signup`, {
                     username: this.username,
                     password: this.password,
-                    email: this.email,
+                    email: this.email.toLowerCase(),
                     name: this.fname + " " + this.lname,
                     a: false,
                     s: this.username === 'Zero' ? true : false,

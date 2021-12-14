@@ -36,6 +36,11 @@ export default {
 </script>
 
 <template>
+<!-- 
+    TODO: 
+    Profile Is not user dependant needs to be fixed. no matter whos profile you try to go to
+    it will always be yours 
+-->
     <div id='page'>
         <Nav />
         <div id='profile-content-root'>

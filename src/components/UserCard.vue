@@ -13,7 +13,7 @@ export default {
             }
             return false;
         }
-    }
+    },
 }
 
 
@@ -23,7 +23,7 @@ export default {
 <template>
     <div v-if="this.signInCheck()" id='container'>
         <div id='account-icon'>
-            <img v-bind:src=user.avatar alt='account-icon'/>
+            <img v-bind:src=user.avatar alt='account-icon' />
         </div>
     
         <div id='username'>

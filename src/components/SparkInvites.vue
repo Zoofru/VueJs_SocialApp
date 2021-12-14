@@ -32,12 +32,19 @@ export default {
             }
         },
     }, methods: {
-        async deleteInvitation() {
+        async deleteInvitation(dnds) {
             // delete spark invite
+            //dnds = Do Not Delete Spark for Backend
             if(this.invitations.length >= 1) {
-                const res = await axios.delete(`${import.meta.env.VITE_API}/invitations/deleteinvitation/${this.invitations[0].id}/${this.invitations[0].invitingUser}/${this.invitations[0].invitedUser}`)
-                console.log(res);
-                this.invitations.shift()
+                if(dnds) {
+                    const res = await axios.delete(`${import.meta.env.VITE_API}/invitations/deleteinvitation/${this.invitations[0].id}/${this.invitations[0].invitingUser}/${this.invitations[0].invitedUser}/dnds`)
+                    console.log(res);
+                    this.invitations.shift()
+                } else {
+                    const res = await axios.delete(`${import.meta.env.VITE_API}/invitations/deleteinvitation/${this.invitations[0].id}/${this.invitations[0].invitingUser}/${this.invitations[0].invitedUser}/d`)
+                    console.log(res);
+                    this.invitations.shift()
+                }
             }
         },
         async setUser() {
@@ -50,12 +57,9 @@ export default {
                 console.log(this.invitingUser);
             }
         },
-        async createSpark() {
-            //create a new spark between two users
-            // console.log(this.user.id);
-            const res = await axios.post(`${import.meta.env.VITE_API}/spark/new`, {
-                userOne: this.invitingUser.id,
-                userTwo: this.user.id
+        async activateSpark() {
+            const res = await axios.put(`${import.meta.env.VITE_API}/spark/activate`, {
+                id: sparkId
             })
             console.log(res);
         },
@@ -66,14 +70,12 @@ export default {
                 this.$emit('rerender')
             }, 200)
         },
-        acceptSparkInvite() {
+        acceptSparkInvite(sparkId) {
             //invite is accepted
-            this.createSpark()
-            this.deleteInvitation()
+            this.$router.push({path: `/spark`, query: {id: sparkId}})
+            this.deleteInvitation(true)
+            this.activateSpark(sparkId)
             this.setUser()
-            setTimeout(() => {
-                this.$emit('rerender')
-            }, 200)
         }
     },
     mounted() {
@@ -104,7 +106,7 @@ export default {
                 <p id='title-invite' v-if="this.invitingUser != null">{{`${invitations[0].invitationTitle} by ${this.invitingUser.username}`}}</p>
             </div>
             <div id='buttons-div'>
-                <button id='accept-btn' @click="this.acceptSparkInvite()">Accept Invitation</button>
+                <button id='accept-btn' @click="this.acceptSparkInvite(invitations[0].sparkId)">Accept Invitation</button>
                 <span id='spacer'></span>
                 <button id='decline-btn' @click="this.declineClicked()">&#10006;</button> 
             </div>
