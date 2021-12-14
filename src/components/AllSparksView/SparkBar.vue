@@ -27,6 +27,9 @@ export default {
                 console.log(res);
                 this.otherUser = res.data.user
             }
+        },
+        routeTo(routeName) {
+            this.$router.push({path: `/${routeName}`, query: {id: this.spark.id}})
         }
     },
     created() {
@@ -38,7 +41,7 @@ export default {
 <template>
 <!-- DOSENT LOAD ON PAGE REFRESH -->
     <div id='root'>
-        <div id='bar-root'>
+        <div id='bar-root' @click="this.routeTo('spark')">
             <div id='question-title'>
                 <h3 id='title'>PLACEHOLDER FOR SPARK QUESTION</h3>
             </div>
@@ -50,7 +53,7 @@ export default {
                 </div>
 
                 <div id='user-two'>
-                    <img class='user-avatar' :src=this.otherUser.avatar />
+                    <img class='user-avatar' :src=this.otherUser.avatar  v-if="this.otherUser !== null"/>
                     <h3 id='user-two-username' v-if="this.otherUser !== null">{{this.otherUser.username}}</h3>
                 </div>
             </div>
@@ -69,10 +72,12 @@ h3 {
     margin-left: 5%;
     padding: 1vh 1.5vw;
     border-radius: 15px;
-    border: 1px solid var(--main-color-blue);
+    border: 3px solid var(--main-color-blue);
+
 }
 
 #bar-root:hover {
+    border: 3px solid darkblue;
     cursor: pointer;
 }
 
