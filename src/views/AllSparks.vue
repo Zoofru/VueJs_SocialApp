@@ -2,6 +2,7 @@
 import Nav from '../components/Nav.vue'
 import SideTabs from '../components/SideTabs.vue'
 import UserCard from '../components/UserCard.vue'
+import SparkBar from '../components/AllSparksView/SparkBar.vue'
 import axios from 'axios'
 
 export default {
@@ -9,11 +10,17 @@ export default {
     components: {
         Nav,
         SideTabs,
-        UserCard
+        UserCard,
+        SparkBar
     }, 
     computed: {
         user() {
             return this.$store.getters.user
+        }
+    },
+    data() {
+        return {
+            sparks: null
         }
     },
     methods: {
@@ -24,6 +31,7 @@ export default {
                 }
             })
             console.log(res);
+            this.sparks = res.data.spark
         }
     },
     created() {
@@ -44,6 +52,9 @@ export default {
             </div>
 
             <div id='center'>
+                <div v-for="(item, index) in this.sparks" :key=index>
+                    <SparkBar :spark="item" />
+                </div>
             </div>
 
             <div id='right'>

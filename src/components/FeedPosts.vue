@@ -28,7 +28,6 @@ export default {
         async deletePost(postId,index) {
             const res = await axios.delete(`${import.meta.env.VITE_API}/post/delete/post/${postId}`)
 
-            const elements = document.querySelectorAll(`#pos-${index}`)
             this.clearDeleteElements(index)
             document.querySelector(`.pos-${index}`).style.backgroundColor = 'gray'
         },
