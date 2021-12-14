@@ -57,7 +57,7 @@ export default {
                 console.log(this.invitingUser);
             }
         },
-        async activateSpark() {
+        async activateSpark(sparkId) {
             const res = await axios.put(`${import.meta.env.VITE_API}/spark/activate`, {
                 id: sparkId
             })

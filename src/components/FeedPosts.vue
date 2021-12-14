@@ -98,9 +98,9 @@ export default {
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <!-- THIS WILL BE AN ISSUE. (Spam someone with invitations) ALLOW TO SEE ONLY A CERTAIN AMOUNT OF SPARKS, 
                     OR FROM USERS WITH A RESPECTABLE REP -->
-                    <a class="dropdown-item" @click="$emit('invite', $event, post.userId)">Invite User To A Spark</a>
-                    <a class="dropdown-item" @click="this.addFriendRequest(post.userId, post.owner.username)">Add Friend</a>
-                    <a class="dropdown-item">Report</a>
+                    <a class="dropdown-item" @click="$emit('invite', $event, post.userId)" v-if="this.user.username !== post.owner.username">Invite User To A Spark</a>
+                    <a class="dropdown-item" @click="this.addFriendRequest(post.userId, post.owner.username)" v-if="this.user.username !== post.owner.username">Add Friend</a>
+                    <a class="dropdown-item" v-if="this.user.username !== post.owner.username">Report</a>
                     <a class="dropdown-item" v-if="this.user.super || post.owner.username === this.user.username" @click="this.handleDeleteStyle(post.id, index)">Delete</a>
                     
                 </div>
