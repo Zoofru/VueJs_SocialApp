@@ -3,6 +3,7 @@ import Nav from '../components/Nav.vue'
 import SideTabs from '../components/SideTabs.vue'
 import SparkUserCard from '../components/SparkComponents/SparkUserCard.vue'
 import UserCard from '../components/UserCard.vue'
+import moment from 'moment'
 import axios from 'axios'
 
 export default {
@@ -47,22 +48,30 @@ export default {
             }
         },
         async handleSubmit() {
-            const res = await axios.post(`${import.meta.env.VITE_API}/spark/message/new`, {
-                sparkId: this.spark.id,
-                message: this.message,
-                messageOwnerId: this.user.id,
-                type: this.type,
-                videourl: this.videourl,
-                imageurl: this.imageurl
-            })
-            this.message = null
-            this.socket()
+            if (this.message) {
+                const res = await axios.post(`${import.meta.env.VITE_API}/spark/message/new`, {
+                    sparkId: this.spark.id,
+                    message: this.message,
+                    messageOwnerId: this.user.id,
+                    type: this.type,
+                    videourl: this.videourl,
+                    imageurl: this.imageurl
+                })
+                this.message = null
+            }
         },
         async getAllSparkMessages() {
             const res = await axios.get(`${import.meta.env.VITE_API}/spark/messages/all/${parseInt(this.$route.query.id)}`)
             this.allSparkMessages = res.data.messages
-            this.lastMessageSent = res.data.messages[res.data.messages.length - 1].createdAt
+            this.lastMessageSent = res.data.messages[res.data.messages.length - 1]
         },
+        scrollToBottom(querySelect) {
+            let items = document.querySelectorAll(querySelect)
+            items[items.length -1].scrollIntoView(true)
+        },
+        timeFromNow(date) {
+            return moment(date).fromNow()
+        }
     },
     watch: {
         user() {
@@ -76,6 +85,11 @@ export default {
         this.getSpark()
         this.getAllSparkMessages()
     },
+    mounted() {
+        setTimeout(() => {            
+            this.scrollToBottom('#message')
+        }, 300)
+    }
 }
 </script>
 
@@ -90,7 +104,7 @@ export default {
                 </div>
 
                 <div id='user-card'>
-                    <SparkUserCard :user=this.otherUser side="right" />
+                    <SparkUserCard :otherUser=this.otherUser side="right" />
                 </div>
             </div>
 
@@ -101,13 +115,14 @@ export default {
                         <div id='message-chat' v-for="(msg, index) in this.allSparkMessages" :key=index>
                             <div v-if='this.user !== null'>
                                 <div id='message-container'>
+                                    <p v-if='this.lastMessageSent.id === msg.id' id='time'>{{this.timeFromNow(msg.createdAt)}}</p>
                                     <div id='message-current-user' v-if="msg.messageOwnerId == this.user.id">
                                         <p id='message'>{{msg.message}}</p>
                                     </div>
                                 </div>
 
                                 <!-- TODO: PUT WHAT TIME LAST MESSAGE WAS SENT -->
-                                <div id='time' v-if="Math.abs(new Date() - this.lastMessageSent) / (1000 * 30 * 24)">
+                                <div id='time' v-if="Math.abs(new Date() - this.lastMessageSent.createdAt) / (1000 * 30 * 24)">
                                     <p>{{new Date().toDateString()}}</p>
                                 </div>
 
@@ -137,7 +152,7 @@ export default {
 
             <div id='right'>
                 <div id='user-card'>
-                    <SparkUserCard :user=this.user side="left" />
+                    <SparkUserCard side="left" />
                 </div>
             </div>
         </div>
@@ -151,19 +166,24 @@ export default {
     height: 20%;
 }
 
+#time {
+    margin-top: 2%;
+    margin-bottom: 0;
+    margin-right: 53%;
+}
+
 #other-user-message-container {
     display: flex;
     flex-direction: column;
     width: 100%;
     margin-left: 4%;
-
 }
 
 #message-other-user {
     background-color: lightgray;
     width: 30%;
     padding: .5%;
-    width: 40%;
+    width: 60%;
     margin: 1% 0;
     border-radius: 10px; 
 }
@@ -176,8 +196,9 @@ export default {
 
 #message-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: flex-end;
+    align-items: flex-end;
     width: 100%;
 }
 
@@ -192,9 +213,10 @@ export default {
     background-color: var(--main-color-blue);
     width: 30%;
     padding: .5%;
-    width: 40%;
+    width: 60%;
     margin: 1% 4%;
     border-radius: 10px;
+    overflow-wrap: break-word;
 }
 
 #send-btn {

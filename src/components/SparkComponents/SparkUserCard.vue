@@ -1,16 +1,35 @@
 <script>
+import axios from 'axios'
+
 export default {
     name:'SparkUserCard',
     props: {
-        user: Object,
+        otherUser: Object,
         side: String
+    },
+    computed: {
+        user() {
+            return this.$store.getters.user
+        }
+    },
+    methods: {
+        async addFriendRequest() {
+            const res = await axios.post(`${import.meta.env.VITE_API}/friendreq/new`, {
+                invitedUID: this.otherUser.id,
+                invitingUID: this.user.id,
+                invitedUserName: this.otherUser.username,
+                invitingUserName: this.user.username,
+                avatar: this.user.avatar
+            })
+            console.log(res);
+        }
     }
 }
 </script>
 
 <template>
     <div id='root'>
-        <div v-if="this.side === 'left'">
+        <div id='flex-container' v-if="this.side === 'left'">
             <div id='container' v-if="this.user !== null">
                 <img :src=this.user.avatar />
                 
@@ -19,7 +38,7 @@ export default {
                         <p id='user-username'>{{this.user.username}}</p>
                     </div>
 
-                    <div id='icons'>
+                    <!-- <div id='icons'>
                         <div id='add-friend'>
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
                                 <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
@@ -39,21 +58,20 @@ export default {
                                 <path d="M14.778.085A.5.5 0 0 1 15 .5V8a.5.5 0 0 1-.314.464L14.5 8l.186.464-.003.001-.006.003-.023.009a12.435 12.435 0 0 1-.397.15c-.264.095-.631.223-1.047.35-.816.252-1.879.523-2.71.523-.847 0-1.548-.28-2.158-.525l-.028-.01C7.68 8.71 7.14 8.5 6.5 8.5c-.7 0-1.638.23-2.437.477A19.626 19.626 0 0 0 3 9.342V15.5a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 1 0v.282c.226-.079.496-.17.79-.26C4.606.272 5.67 0 6.5 0c.84 0 1.524.277 2.121.519l.043.018C9.286.788 9.828 1 10.5 1c.7 0 1.638-.23 2.437-.477a19.587 19.587 0 0 0 1.349-.476l.019-.007.004-.002h.001M14 1.221c-.22.078-.48.167-.766.255-.81.252-1.872.523-2.734.523-.886 0-1.592-.286-2.203-.534l-.008-.003C7.662 1.21 7.139 1 6.5 1c-.669 0-1.606.229-2.415.478A21.294 21.294 0 0 0 3 1.845v6.433c.22-.078.48-.167.766-.255C4.576 7.77 5.638 7.5 6.5 7.5c.847 0 1.548.28 2.158.525l.028.01C9.32 8.29 9.86 8.5 10.5 8.5c.668 0 1.606-.229 2.415-.478A21.317 21.317 0 0 0 14 7.655V1.222z"/>
                             </svg>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
 
-        <div v-else-if="this.side === 'right'">
-            <div id='container-left' v-if="this.user !== null">
-                
+        <div id='flex-container' v-else-if="this.side === 'right'">
+            <div id='container-left' v-if="this.otherUser !== null">
                 <div id='content-left'>
                     <div id='user-info-left'>
-                        <p id='user-username'>{{this.user.username}}</p>
+                        <p id='user-username'>{{this.otherUser.username}}</p>
                     </div>
 
                     <div id='icons-left'>
-                        <div id='add-friend'>
+                        <div id='add-friend' @click="this.addFriendRequest()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
                                 <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
                                 <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
@@ -74,7 +92,7 @@ export default {
                         </div>
                     </div>
                 </div>
-                <img :src=this.user.avatar />
+                <img :src=this.otherUser.avatar />
             </div>
         </div>
     </div>
@@ -85,6 +103,8 @@ export default {
 #root {
     box-shadow: 0px 0px 5px 1px black;
     height: 100%;
+    display: flex;
+    width: 100%;
 }
 
 #add-friend, #respect, #report {
@@ -93,6 +113,13 @@ export default {
     margin-right: 2%;
     display: flex;
     align-items: flex-end;
+}
+
+#flex-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 #add-friend:hover, #respect:hover, #report:hover {
@@ -114,14 +141,16 @@ img {
     justify-content: center;
     align-items: center;
     height: 100%;
+    width: 100%;
 }
 
 #container-left {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     height: 100%;
     margin-right: 3%;
+    width: 100%;
 }
 
 #content-left {
@@ -167,6 +196,7 @@ img {
     width: 100%;
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     height: 50%;
 }
 
@@ -175,6 +205,7 @@ img {
     width: 100%;
     display: flex;
     justify-content: flex-start;
+    align-items: center;
     height: 50%;
 }
 
