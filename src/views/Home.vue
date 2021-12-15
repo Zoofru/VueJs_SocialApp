@@ -26,7 +26,7 @@ export default {
       userInvitations: [],
       componentKey: 0,
       friendRequestKey: 0,
-      NewPostInputKey: 0
+      NewPostInputKey: 0,
     }
   },
   computed: {
