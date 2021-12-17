@@ -103,9 +103,6 @@ export default {
                     <SideTabs />
                 </div>
 
-                <div id='user-card'>
-                    <SparkUserCard :otherUser=this.otherUser side="right" />
-                </div>
             </div>
 
             <div id='center'>
@@ -115,10 +112,10 @@ export default {
                         <div id='message-chat' v-for="(msg, index) in this.allSparkMessages" :key=index>
                             <div v-if='this.user !== null'>
                                 <div id='message-container'>
-                                    <p v-if='this.lastMessageSent.id === msg.id' id='time'>{{this.timeFromNow(msg.createdAt)}}</p>
                                     <div id='message-current-user' v-if="msg.messageOwnerId == this.user.id">
                                         <p id='message'>{{msg.message}}</p>
                                     </div>
+                                    <p v-if='this.lastMessageSent.id === msg.id' id='time'>{{this.timeFromNow(msg.createdAt)}}</p>
                                 </div>
 
                                 <!-- TODO: PUT WHAT TIME LAST MESSAGE WAS SENT -->
@@ -151,8 +148,13 @@ export default {
             </div>
 
             <div id='right'>
-                <div id='user-card'>
-                    <SparkUserCard side="left" />
+                <div id='cards'>
+                    <div id='user-card'>
+                        <SparkUserCard :user=this.otherUser side="left" :isSelf=false />
+                    </div>
+                    <div id='user-card'>
+                        <SparkUserCard :user=this.user side="left" :isSelf=true />
+                    </div>
                 </div>
             </div>
         </div>
@@ -166,10 +168,16 @@ export default {
     height: 20%;
 }
 
+#cards {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
 #time {
-    margin-top: 2%;
-    margin-bottom: 0;
-    margin-right: 53%;
+    margin-top: 0;
+    margin-right: 4%;
 }
 
 #other-user-message-container {
@@ -214,7 +222,8 @@ export default {
     width: 30%;
     padding: .5%;
     width: 60%;
-    margin: 1% 4%;
+    margin: 2% 4%;
+    margin-bottom: 0;
     border-radius: 10px;
     overflow-wrap: break-word;
 }
@@ -296,8 +305,6 @@ export default {
 
 #right {
     width: 25%;
-    display: flex;
-    align-items: flex-end;
 }
 
 #tabs {
