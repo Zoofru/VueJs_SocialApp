@@ -118,8 +118,7 @@ export default {
                                     <p v-if='this.lastMessageSent.id === msg.id' id='time'>{{this.timeFromNow(msg.createdAt)}}</p>
                                 </div>
 
-                                <!-- TODO: PUT WHAT TIME LAST MESSAGE WAS SENT -->
-                                <div id='time' v-if="Math.abs(new Date() - this.lastMessageSent.createdAt) / (1000 * 30 * 24)">
+                                <div id='time' v-if="Math.abs(new Date() - this.lastMessageSent.createdAt) / (1000 * 30 * 24) < 1">
                                     <p>{{new Date().toDateString()}}</p>
                                 </div>
 
@@ -149,9 +148,11 @@ export default {
 
             <div id='right'>
                 <div id='cards'>
+                    <!-- PROPS: side = which way image is faction. isSelf = is current user -->
                     <div id='user-card'>
                         <SparkUserCard :user=this.otherUser side="left" :isSelf=false />
                     </div>
+
                     <div id='user-card'>
                         <SparkUserCard :user=this.user side="left" :isSelf=true />
                     </div>
@@ -185,6 +186,7 @@ export default {
     flex-direction: column;
     width: 100%;
     margin-left: 4%;
+    padding-top: 1,5vh;
 }
 
 #message-other-user {
@@ -194,6 +196,8 @@ export default {
     width: 60%;
     margin: 1% 0;
     border-radius: 10px; 
+    box-shadow: 0px 2px 4px 0px black;
+
 }
 
 #message-other-user-p {
@@ -205,9 +209,11 @@ export default {
 #message-container {
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: flex-end;
     width: 100%;
+    padding-top: 1.5vh;
+    padding-right: 4%;
 }
 
 #message {
@@ -222,10 +228,11 @@ export default {
     width: 30%;
     padding: .5%;
     width: 60%;
-    margin: 2% 4%;
+    /* margin: 2% 4%; */
     margin-bottom: 0;
     border-radius: 10px;
     overflow-wrap: break-word;
+    box-shadow: 0px 2px 4px 0px black;
 }
 
 #send-btn {
