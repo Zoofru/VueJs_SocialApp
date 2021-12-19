@@ -3,6 +3,7 @@ import Nav from '../components/Nav.vue'
 import SideTabs from '../components/SideTabs.vue'
 import SparkUserCard from '../components/SparkComponents/SparkUserCard.vue'
 import UserCard from '../components/UserCard.vue'
+import AutoResizeTextArea from '../components/AutoResizeTextArea.vue'
 import moment from 'moment'
 import axios from 'axios'
 
@@ -14,7 +15,8 @@ export default {
         Nav,
         SideTabs,
         UserCard,
-        SparkUserCard
+        SparkUserCard,
+        AutoResizeTextArea
     },
     computed: {
         user() {
@@ -30,7 +32,7 @@ export default {
             videourl:null,
             imageurl:null,
             allSparkMessages:null,
-            lastMessageSent:null
+            lastMessageSent:null,
         }
     },
     methods: {
@@ -47,19 +49,6 @@ export default {
                 this.otherUser = res.data.user
             }
         },
-        async handleSubmit() {
-            if (this.message) {
-                const res = await axios.post(`${import.meta.env.VITE_API}/spark/message/new`, {
-                    sparkId: this.spark.id,
-                    message: this.message,
-                    messageOwnerId: this.user.id,
-                    type: this.type,
-                    videourl: this.videourl,
-                    imageurl: this.imageurl
-                })
-                this.message = null
-            }
-        },
         async getAllSparkMessages() {
             const res = await axios.get(`${import.meta.env.VITE_API}/spark/messages/all/${parseInt(this.$route.query.id)}`)
             this.allSparkMessages = res.data.messages
@@ -71,7 +60,7 @@ export default {
         },
         timeFromNow(date) {
             return moment(date).fromNow()
-        }
+        },
     },
     watch: {
         user() {
@@ -114,6 +103,9 @@ export default {
                                 <div id='message-container'>
                                     <div id='message-current-user' v-if="msg.messageOwnerId == this.user.id">
                                         <p id='message'>{{msg.message}}</p>
+                                        <div id='img'>
+                                            <img id='msg-img' :src=msg.imageurl v-if="msg.imageurl !== null"/>
+                                        </div>
                                     </div>
                                     <p v-if='this.lastMessageSent.id === msg.id' id='time'>{{this.timeFromNow(msg.createdAt)}}</p>
                                 </div>
@@ -129,19 +121,6 @@ export default {
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div id='input'>
-                        <input 
-                        id='message-input' 
-                        placeholder="Message..." 
-                        v-model='message' 
-                        type="text" 
-                        spellcheck="off"
-                        autocomplete="off"
-                    />
-
-                    <button id='send-btn' @click='this.handleSubmit'>Send</button>
                     </div>
                 </div>
             </div>
@@ -159,10 +138,28 @@ export default {
                 </div>
             </div>
         </div>
+        <div id='msg-inp'>
+            <AutoResizeTextArea :spark=this.spark />
+        </div>
     </div>
 </template>
 
 <style scoped>
+#img {
+    display: flex;
+    justify-content: center;
+}
+
+#msg-img {
+    width: 75%;
+    margin-bottom: 2%;
+}
+
+#icn {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
 
 #user-card {
     width: 80%;
@@ -221,6 +218,7 @@ export default {
     padding: 0 2%;
     color: white;
     height: fit-content;
+    margin-bottom: 2%;
 }
 
 #message-current-user {
@@ -228,26 +226,10 @@ export default {
     width: 30%;
     padding: .5%;
     width: 60%;
-    /* margin: 2% 4%; */
     margin-bottom: 0;
     border-radius: 10px;
     overflow-wrap: break-word;
     box-shadow: 0px 2px 4px 0px black;
-}
-
-#send-btn {
-    border: 1px solid var(--main-color-blue);
-    background-color: var(--main-color-blue);
-    color: white;
-    width: 15%;
-    height: 50%;
-    margin-left: 5%;
-    border-radius: 5px;
-}
-
-#send-btn:hover {
-    color: var(--main-color-blue);
-    background-color: white;
 }
 
 #chat-content {
