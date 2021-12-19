@@ -4,7 +4,8 @@ import InputModal from '../components/InputModal.vue'
 export default {
     name: 'AutoResizeTextArea',
     props: {
-        spark: Object
+        spark: Object,
+        key: Number
     },
     components: {
         InputModal
@@ -16,7 +17,10 @@ export default {
     },
     data() {
         return {
-            message:null
+            message:null,
+            type:null,
+            videourl:null,
+            imageurl:null
         }
     },
     methods: {
@@ -30,7 +34,7 @@ export default {
             ta.style.height = ta.scrollHeight + 'px'
         },
         async handleSubmit() {
-            if (this.message) {
+            if (this.message || this.imageurl) {
                 const res = await axios.post(`${import.meta.env.VITE_API}/spark/message/new`, {
                     sparkId: this.spark.id,
                     message: this.message,
@@ -40,6 +44,8 @@ export default {
                     imageurl: this.imageurl
                 })
                 this.message = null
+                console.log(res);
+                this.$emit('removeImage')
             }
         },
         handleModalInput(input, type) {

@@ -33,6 +33,7 @@ export default {
             imageurl:null,
             allSparkMessages:null,
             lastMessageSent:null,
+            AutoGrowKey: 0
         }
     },
     methods: {
@@ -61,6 +62,10 @@ export default {
         timeFromNow(date) {
             return moment(date).fromNow()
         },
+        removeImage() {
+            document.querySelector('#msg-img').src = null
+            this.AutoGrowKey += 1
+        }
     },
     watch: {
         user() {
@@ -139,7 +144,7 @@ export default {
             </div>
         </div>
         <div id='msg-inp'>
-            <AutoResizeTextArea :spark=this.spark />
+            <AutoResizeTextArea :spark=this.spark @removeImage="removeImage" :key="this.AutoGrowKey" />
         </div>
     </div>
 </template>
