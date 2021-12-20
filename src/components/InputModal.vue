@@ -7,7 +7,7 @@ export default {
             type: String,
         },
         modalContent: {
-            default: 'Content',
+            default: '',
             type: String
         },
         confirmButtonText: {
@@ -23,7 +23,8 @@ export default {
     data() {
         return {
             youtubeLink: false,
-            input:null
+            input:null,
+            linkTitle:null
         }
     },
 }
@@ -40,7 +41,8 @@ export default {
                     </div>
                     <div class="modal-body">
                         {{modalContent}}
-                        <input class='input' type='text' spellcheck="off" autocomplete="off" :placeholder="`${this.type} url`" v-model="this.input" />
+                        <input class='input' type='text' spellcheck="off" autocomplete="off" :placeholder="`${this.type} url`" v-model="this.input"  required />
+                        <input class='input inputTitle' type='text' spellcheck="off" autocomplete="off" :placeholder="`Link Title (optional)`" v-model="this.linkTitle" v-if="this.type === 'link'" />
                     </div>
                     <div class="form-check youtube-check" v-if="type === 'video'">
                         <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" @click='this.youtubeLink = !this.youtubeLink'>
@@ -48,9 +50,10 @@ export default {
                             Youtube Link
                         </label>
                     </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{closeButtonText}}</button>
-                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="$emit('inputSent', this.input, this.youtubeLink)">{{confirmButtonText}}</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="$emit('inputSent', this.input, this.youtubeLink, this.linkTitle)">{{confirmButtonText}}</button>
                     </div>
                 </div>
             </div>

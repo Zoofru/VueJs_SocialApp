@@ -57,7 +57,7 @@ export default {
         },
         scrollToBottom(querySelect) {
             let items = document.querySelectorAll(querySelect)
-            items[items.length -1].scrollIntoView(true)
+            items[items.length -1].scrollIntoView(false)
         },
         timeFromNow(date) {
             return moment(date).fromNow()
@@ -81,7 +81,7 @@ export default {
     },
     mounted() {
         setTimeout(() => {            
-            this.scrollToBottom('#message')
+            this.scrollToBottom('#time')
         }, 300)
     }
 }
@@ -95,16 +95,17 @@ export default {
             <div id='left'>
                 <div id='tabs'>
                     <SideTabs />
+                    <a href="https://www.google.com" target="_blank">hi</a>
                 </div>
 
             </div>
 
-            <div id='center'>
+            <div id='center' v-if="this.spark !== null">
                 <h3>Question Title</h3>
                 <div id='chat'>
                     <div id='chat-content'>
                         <div id='message-chat' v-for="(msg, index) in this.allSparkMessages" :key=index>
-                            <div v-if='this.user !== null'>
+                            <div v-if='this.user !== null && this.otherUser !== null'>
                                 <div id='message-container'>
                                     <div id='message-current-user' v-if="msg.messageOwnerId == this.user.id">
                                         <p id='message'>{{msg.message}}</p>
@@ -112,17 +113,17 @@ export default {
                                             <img id='msg-img' :src=msg.imageurl v-if="msg.imageurl !== null"/>
                                         </div>
                                     </div>
-                                    <p v-if='this.lastMessageSent.id === msg.id' id='time'>{{this.timeFromNow(msg.createdAt)}}</p>
-                                </div>
-
-                                <div id='time' v-if="Math.abs(new Date() - this.lastMessageSent.createdAt) / (1000 * 30 * 24) < 1">
-                                    <p>{{new Date().toDateString()}}</p>
+                                    <p v-if='this.lastMessageSent.id === msg.id && this.user.id === msg.messageOwnerId' id='time'>{{this.timeFromNow(msg.createdAt)}}</p>
                                 </div>
 
                                 <div id='other-user-message-container' v-if="msg.messageOwnerId !== this.user.id">
                                     <div id='message-other-user' >
                                         <p id='message-other-user-p'>{{msg.message}}</p>
+                                        <div id='img'>
+                                            <img id='msg-img' :src=msg.imageurl v-if="msg.imageurl !== null"/>
+                                        </div>
                                     </div>
+                                    <p v-if='this.lastMessageSent.id === msg.id && this.otherUser.id === msg.messageOwnerId' id='time'>{{this.timeFromNow(msg.createdAt)}}</p>
                                 </div>
                             </div>
                         </div>
@@ -179,7 +180,7 @@ export default {
 }
 
 #time {
-    margin-top: 0;
+    margin-top: .5%;
     margin-right: 4%;
 }
 
@@ -199,6 +200,7 @@ export default {
     margin: 1% 0;
     border-radius: 10px; 
     box-shadow: 0px 2px 4px 0px black;
+    overflow-wrap: break-word;
 
 }
 

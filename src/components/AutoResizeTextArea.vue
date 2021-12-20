@@ -122,6 +122,25 @@ export default {
             } else if(isYoutube) {
                 this.handleModalInput(input, 'youtube')
             }
+        },
+        link(input, youtube, linkTitle) {
+            let splitLink = input.split('')
+            let checkLinkForHTTPS = [...splitLink].splice(0, 8).join('')
+            let addHTTPSToLink = "https://" + splitLink.join('')
+
+            if(checkLinkForHTTPS === 'https://') {
+                this.addLink(input, linkTitle)
+            } else {
+                console.log(addHTTPSToLink);
+                this.addLink(addHTTPSToLink, linkTitle)
+            }
+        },
+        addLink(input, linkTitle) {
+            const iframe = document.createElement('iframe');
+            let html = `<a href="${input}" target="_blank">${linkTitle}</a>`;
+            iframe.src = 'data:text/html;charset=utf-8,' + encodeURI(html);
+            iframe.style.height = "5vh"
+            document.querySelector('#inputarea').appendChild(iframe);
         }
     },
     mounted() {
@@ -135,8 +154,8 @@ export default {
         <div class='column'>
             <div id='inputarea'>
                 <textarea id='textarea' autocomplete="false" spellcheck="false" v-model="message" v-bind:placeholder="`Send Message...`"></textarea>
+                <img id='inputimage' src='' />
             </div>
-            <img id='inputimage' src='' />
             
             <div class='border'></div>
             <div id='icons'>
@@ -153,11 +172,17 @@ export default {
                             <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
                         </svg>
                     </div>
+
+                    <div class='hover-bg'>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="23" fill="currentColor" class="bi bi-link" viewBox="0 0 16 16" data-bs-toggle="modal" data-bs-target="#link-modal">
+                            <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9c-.086 0-.17.01-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
+                            <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4.02 4.02 0 0 1-.82 1H12a3 3 0 1 0 0-6H9z"/>
+                        </svg>
+                    </div>
                 </div>
             </div>
         </div>
         <button id='send-btn' @click='this.handleSubmit'>Send</button>
-
         <!-- MODAL -->
         <InputModal
             type='input'
@@ -175,6 +200,12 @@ export default {
             If your link if from youtube check the box that says youtube link\
             otherwise it may not work correctly.'"
             @inputSent="confirmVideoValid"
+        />
+
+        <InputModal
+            type='link'
+            :modalTitle="'Link'"
+            @inputSent="link"
         />
     </div>
 </template>
@@ -199,6 +230,7 @@ svg:hover {
 
 #icn {
     display: flex;
+    margin-top: 1%;
 }
 
 #input {
