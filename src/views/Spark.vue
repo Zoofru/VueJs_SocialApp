@@ -67,11 +67,21 @@ export default {
             this.AutoGrowKey += 1
         },
         waitForLoading() {
-            setTimeout(() => {            
-                document.querySelector("#chat-content").classList.remove('hidden')
-                document.querySelector('.spinner-border').classList.add('hidden')
-                this.scrollToBottom('#time')
-            }, 500)
+            const observer = new MutationObserver((mutations, obs) => {
+                const lastMessage = document.querySelector('#time')
+                if(lastMessage) {
+                    document.querySelector('#chat-content').classList.remove('hidden')
+                    document.querySelector('.spinner-border').classList.add('hidden')
+                    this.scrollToBottom('#time')
+                    obs.disconnect()
+                    return;
+                }
+            })
+
+            observer.observe(document, {
+                childList: true,
+                subtree: true
+            })
         }
     },
     watch: {
@@ -80,7 +90,7 @@ export default {
             // let longPoll = setInterval(() => {
             //     this.getAllSparkMessages()
             // }, 200)
-        }
+        },
     },
     created() {
         this.getSpark()

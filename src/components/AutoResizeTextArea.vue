@@ -125,13 +125,11 @@ export default {
         },
         link(input, youtube, linkTitle) {
             let splitLink = input.split('')
-            let checkLinkForHTTPS = [...splitLink].splice(0, 8).join('')
             let addHTTPSToLink = "https://" + splitLink.join('')
 
-            if(checkLinkForHTTPS === 'https://') {
+            if(new URL(input)) {
                 this.addLink(input, linkTitle)
             } else {
-                console.log(addHTTPSToLink);
                 this.addLink(addHTTPSToLink, linkTitle)
             }
         },
