@@ -65,6 +65,13 @@ export default {
         removeImage() {
             document.querySelector('#msg-img').src = null
             this.AutoGrowKey += 1
+        },
+        waitForLoading() {
+            setTimeout(() => {            
+                document.querySelector("#chat-content").classList.remove('hidden')
+                document.querySelector('.spinner-border').classList.add('hidden')
+                this.scrollToBottom('#time')
+            }, 500)
         }
     },
     watch: {
@@ -80,9 +87,7 @@ export default {
         this.getAllSparkMessages()
     },
     mounted() {
-        setTimeout(() => {            
-            this.scrollToBottom('#time')
-        }, 300)
+        this.waitForLoading()
     }
 }
 </script>
@@ -95,7 +100,6 @@ export default {
             <div id='left'>
                 <div id='tabs'>
                     <SideTabs />
-                    <a href="https://www.google.com" target="_blank">hi</a>
                 </div>
 
             </div>
@@ -103,7 +107,10 @@ export default {
             <div id='center' v-if="this.spark !== null">
                 <h3>Question Title</h3>
                 <div id='chat'>
-                    <div id='chat-content'>
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only"></span>
+                    </div>
+                    <div id='chat-content' class='hidden'>
                         <div id='message-chat' v-for="(msg, index) in this.allSparkMessages" :key=index>
                             <div v-if='this.user !== null && this.otherUser !== null'>
                                 <div id='message-container'>
@@ -151,6 +158,12 @@ export default {
 </template>
 
 <style scoped>
+.hidden {
+    display: none;
+}
+#msg-inp {
+    background: transparent
+}
 #img {
     display: flex;
     justify-content: center;
