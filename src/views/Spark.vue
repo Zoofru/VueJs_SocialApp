@@ -33,7 +33,8 @@ export default {
             imageurl:null,
             allSparkMessages:null,
             lastMessageSent:null,
-            AutoGrowKey: 0
+            AutoGrowKey: 0,
+            userCardKey: 0
         }
     },
     methods: {
@@ -82,7 +83,7 @@ export default {
                 childList: true,
                 subtree: true
             })
-        }
+        },
     },
     watch: {
         user() {
@@ -152,7 +153,13 @@ export default {
                 <div id='cards'>
                     <!-- PROPS: side = which way image is faction. isSelf = is current user -->
                     <div id='user-card'>
-                        <SparkUserCard :propsUser=this.otherUser side="left" :isSelf=false :spark=this.spark />
+                        <SparkUserCard 
+                            :propsUser=this.otherUser 
+                            side="left" 
+                            :isSelf=false 
+                            :spark=this.spark 
+                            :key=this.userCardKey
+                        />
                     </div>
 
                     <div id='user-card'>
@@ -171,9 +178,11 @@ export default {
 .hidden {
     display: none;
 }
+
 #msg-inp {
     background: transparent
 }
+
 #img {
     display: flex;
     justify-content: center;
