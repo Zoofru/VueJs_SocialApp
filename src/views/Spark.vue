@@ -152,11 +152,11 @@ export default {
                 <div id='cards'>
                     <!-- PROPS: side = which way image is faction. isSelf = is current user -->
                     <div id='user-card'>
-                        <SparkUserCard :user=this.otherUser side="left" :isSelf=false />
+                        <SparkUserCard :propsUser=this.otherUser side="left" :isSelf=false :spark=this.spark />
                     </div>
 
                     <div id='user-card'>
-                        <SparkUserCard :user=this.user side="left" :isSelf=true />
+                        <SparkUserCard :propsUser=this.user side="left" :isSelf=true />
                     </div>
                 </div>
             </div>
