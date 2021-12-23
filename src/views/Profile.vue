@@ -59,7 +59,7 @@ export default {
                         </div>
                     </div>
                     <ProfileNavBar @tab='focusTab'/>
-                    <Posts v-if="this.focusedTab == 'Posts'" />
+                    <Posts :user=this.userForProfile v-if="this.focusedTab == 'Posts'" />
                 </div>
                 <div id='sidebar'>
                     <SidebarProfile />

@@ -3,10 +3,8 @@ import axios from 'axios'
 
 export default {
     name: "Posts",
-    computed: {
-        user() {
-            return this.$store.getters.user
-        }
+    props: {
+        user: Object
     },
     data() {
         return {
