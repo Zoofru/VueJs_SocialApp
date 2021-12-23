@@ -68,6 +68,9 @@ export default {
         },
         convertToTimePassed(date) {
             return moment(date).fromNow()
+        },
+        linkToProfile(username) {
+            this.$router.push({path: "/profile", query: { user: username}})
         }
     },
     created() {
@@ -83,7 +86,7 @@ export default {
                 <div id='left'>
                     <img id='avatar' v-bind:src=post.ownerAvatar alt='avatar' />
                     <div id='username-timeago'>
-                        <p id='username'>{{post.owner.username}}</p>
+                        <p id='username' @click="this.linkToProfile(post.owner.username)">{{post.owner.username}}</p>
                         <p id='timeago'>{{this.convertToTimePassed(post.createdAt)}}</p>
                     </div>
                     <!-- NEED NEW MODELS (Database models) FOR USER TAGS AND USE V-FOR TO DISPLAY THEM -->

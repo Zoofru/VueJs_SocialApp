@@ -3,6 +3,7 @@ import Nav from '../components/Nav.vue'
 import SidebarProfile from '../components/SidebarProfile.vue'
 import ProfileNavBar from '../components/ProfileNavBar.vue'
 import Posts from '../components/ProfileNavComponents/Posts.vue'
+import axios from 'axios'
 
 export default {
     name: 'Profile',
@@ -14,7 +15,8 @@ export default {
     },
     data() {
         return {
-            focusedTab: 'Sparks'
+            focusedTab: 'Sparks',
+            userForProfile: null
         }
     },
     computed: {
@@ -23,35 +25,37 @@ export default {
         }
     },
     watch: {
-        user() {
-            document.body.style.backgroundImage = `url(${this.user.profileBackgroundImage})`
+        userForProfile() {
+            document.body.style.backgroundImage = `url(${this.userForProfile.profileBackgroundImage})`
         }
     },
     methods: {
         focusTab(tab) {
             this.focusedTab = tab
+        },
+        async setUserProfile() {
+            const res = await axios.get(`${import.meta.env.VITE_API}/user/finduserbyusername/${this.$route.query.user}`)
+            this.userForProfile = res.data.user
         }
+    },
+    created() {
+        this.setUserProfile()
     }
 }
 </script>
 
 <template>
-<!-- 
-    TODO: 
-    Profile Is not user dependant needs to be fixed. no matter whos profile you try to go to
-    it will always be yours 
--->
     <div id='page'>
         <Nav />
         <div id='profile-content-root'>
             <div id='content'>
                 <div id='profile'>
-                    <div id='profile-content' v-if="this.user !== null">
-                        <img id='profile-avatar' v-bind:src='this.user.avatar' />
+                    <div id='profile-content' v-if="this.userForProfile !== null">
+                        <img id='profile-avatar' v-bind:src='this.userForProfile.avatar' />
                         <div id='header-content'>
-                            <h1 id='username'>{{this.user.username}}</h1>
-                            <h4 id='fullname'>{{this.user.name}}</h4>
-                            <p id='bio'>{{this.user.about}}</p>
+                            <h1 id='username'>{{this.userForProfile.username}}</h1>
+                            <h4 id='fullname'>{{this.userForProfile.name}}</h4>
+                            <p id='bio'>{{this.userForProfile.about}}</p>
                         </div>
                     </div>
                     <ProfileNavBar @tab='focusTab'/>

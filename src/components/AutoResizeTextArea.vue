@@ -20,7 +20,8 @@ export default {
             message:null,
             type:null,
             videourl:null,
-            imageurl:null
+            imageurl:null,
+            links: []
         }
     },
     methods: {
@@ -41,7 +42,8 @@ export default {
                     messageOwnerId: this.user.id,
                     type: this.type,
                     videourl: this.videourl,
-                    imageurl: this.imageurl
+                    imageurl: this.imageurl,
+                    links: this.links
                 })
                 this.message = null
                 console.log(res);
@@ -127,11 +129,16 @@ export default {
             let splitLink = input.split('')
             let addHTTPSToLink = "https://" + splitLink.join('')
 
-            if(new URL(input)) {
-                this.addLink(input, linkTitle)
-            } else {
+            try {
+                if(new URL(input)) {
+                    this.addLink(input, linkTitle)
+                    this.links.push({'link': input, 'linkTitle': linkTitle})
+                }
+            } catch (error) {
                 this.addLink(addHTTPSToLink, linkTitle)
+                this.links.push({'link': input, 'linkTitle': linkTitle})
             }
+
         },
         addLink(input, linkTitle) {
             const iframe = document.createElement('iframe');

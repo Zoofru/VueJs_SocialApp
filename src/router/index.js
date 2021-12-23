@@ -31,7 +31,6 @@ const routes = [
         component: Settings
     }, {
         path: '/profile',
-        name: 'Profile',
         component: Profile
     }, {
         path:'/spark',
