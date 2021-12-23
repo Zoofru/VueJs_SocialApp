@@ -90,8 +90,8 @@ export default {
 #content {
     display: flex;
     justify-content: center;
-    width: 55%;
-    background-color: rgba(125, 125, 125, .4);
+    width: 50%;
+    background-color: rgba(125, 125, 125, .8);
     padding: 30px 0px 10px 0px;
     padding-left: .7%;
     padding-right: .7%;
@@ -139,6 +139,6 @@ export default {
 }
 
 #fullname {
-    color: gray;
+    color: black;
 }
 </style>

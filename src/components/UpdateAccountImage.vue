@@ -1,6 +1,6 @@
 <script>
 import axios from 'axios'
-import fs from 'fs'
+
 export default {
     data() {
         return {
@@ -50,12 +50,12 @@ export default {
 
 <template>
     <div class='settings-content'>
-        <h3>Update Avatar</h3>
+        <h3>Change Avatar</h3>
         <p>
-            To update your avatar, you currently must copy the URL of the image<br/>
-            you would like to use and post the URL here. Click Submit when done.<br/>
+            Change account avatar.<br/>
+            This will be displayed on your posts, and sparks.<br/>
             <br/>
-            Sorry im poor and not currently renting a file server.
+            Sorry im poor and not currently renting a file server. So you must enter a link
         </p>
         <form id='form' @submit.prevent="this.handleAvatarUpdate()">
             <div class="input-group mb-3">
@@ -95,6 +95,7 @@ export default {
     margin-top: 5%;
     width: 50%;
 }
+
 .submitBtn {
     color: white;
     background-color: var(--main-color-blue);
@@ -129,6 +130,6 @@ export default {
     justify-content: center;
     align-items: flex-start;
     width: 100%;
-    margin-left: 5%;
+    margin-bottom: 5%;
 }
 </style>

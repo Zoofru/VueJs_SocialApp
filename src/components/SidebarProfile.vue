@@ -16,7 +16,6 @@ export default {
 
 <template>
     <div id='root'>
-        <button id='edit-profile'>Edit profile</button>
         <div id='bar'>
             <div id='tab' v-for="(tab, index) in this.sidebarTabs" :key=index>
                 <!-- <p id='title'>{{tab}}</p> -->

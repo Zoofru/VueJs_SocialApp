@@ -16,7 +16,6 @@ html * {
 
 ::-webkit-scrollbar {
   width: 9px;
-  
 }
 
 /* Handle */
