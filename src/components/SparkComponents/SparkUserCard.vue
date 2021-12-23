@@ -176,6 +176,7 @@ img {
     width: 35%;
     height: 80%;
     border-radius: 10px;
+    margin-left: 5%;
 }
 
 #right-img {

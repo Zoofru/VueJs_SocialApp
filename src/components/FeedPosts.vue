@@ -232,7 +232,7 @@ p {
 #action-icons {
     display: flex;
     justify-content: flex-end;
-    padding-right: .45vw;
+    padding-right: .1vw;
 }
 
 #timeago {
@@ -259,9 +259,9 @@ p {
 }
 
 #avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 5px;
+    width: 2.5vw;
+    height: 2vhpx;
+    border-radius: 50px;
 }
 
 #hidden {

@@ -116,7 +116,9 @@ h3 {
 }
 
 .user-avatar {
-    width: 12%;
+    width: 30%;
     height: 100%;
+    padding: 0 2%;
+    border-radius: 20px;
 }
 </style>

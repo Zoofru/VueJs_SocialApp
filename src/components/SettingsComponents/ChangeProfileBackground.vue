@@ -66,6 +66,7 @@ export default {
 <style scoped>
 #profile-background-settings {
     width: 50%;
+    margin-bottom: 5%;
 }
 
 .submitBtn {

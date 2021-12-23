@@ -1,11 +1,14 @@
 <script>
 import UpdateAccountImage from './UpdateAccountImage.vue'
 import ChangeProfileBackground from './SettingsComponents/ChangeProfileBackground.vue'
+import ChangeAboutInfo from './SettingsComponents/ChangeAboutInfo.vue'
+
 export default {
     name: "ProfileSettings",
     components: {
         UpdateAccountImage,
-        ChangeProfileBackground
+        ChangeProfileBackground,
+        ChangeAboutInfo
     },
 }
 </script>
@@ -14,6 +17,7 @@ export default {
     <div id='container'>
         <UpdateAccountImage />
         <ChangeProfileBackground />
+        <ChangeAboutInfo />
     </div>
 </template>
 
