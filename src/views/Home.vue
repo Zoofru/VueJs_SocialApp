@@ -19,7 +19,7 @@ export default {
     SparkInvites,
     SideFriends,
     FriendRequest,
-    UserCard
+    UserCard,
   },
   data() {
     return {
@@ -35,13 +35,6 @@ export default {
     }
   },
   methods: {
-    async inviteUser(evt, invitedUser) {
-        const res = await axios.post(`${import.meta.env.VITE_API}/invitations/inviteUser`, {
-            invitingUserId: localStorage.getItem("uId"),
-            invitedUserId: invitedUser
-        })
-        console.log(res);
-    },
     async getUserInvitations() {
         const res = await axios.post(`${import.meta.env.VITE_API}/invitations/getUserInvitations`, {
             id: localStorage.getItem("uId")

@@ -43,7 +43,7 @@ export default {
     <div id='root'>
         <div id='bar-root' @click="this.routeTo('spark')">
             <div id='question-title'>
-                <h3 id='title'>PLACEHOLDER FOR SPARK QUESTION</h3>
+                <h3 id='title'>{{this.spark.sparkTitle}}</h3>
             </div>
 
             <div id='users'>

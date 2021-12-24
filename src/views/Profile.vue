@@ -62,7 +62,7 @@ export default {
                     <Posts :user=this.userForProfile v-if="this.focusedTab == 'Posts'" />
                 </div>
                 <div id='sidebar'>
-                    <SidebarProfile />
+                    <SidebarProfile :userForProfile=this.userForProfile />
                 </div>
             </div>
         </div>

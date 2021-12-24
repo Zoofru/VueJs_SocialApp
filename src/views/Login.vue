@@ -16,7 +16,7 @@ export default {
             try {
                 if(this.email && this.password)  {
                     const res = await axios.post(`${import.meta.env.VITE_API}/user/login`, {
-                        email: this.email,
+                        email: this.email.toLowerCase(),
                         password: this.password,
                         headers: { authorization: localStorage.getItem('uId') }
                     })

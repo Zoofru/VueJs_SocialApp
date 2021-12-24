@@ -76,6 +76,8 @@ export default {
                     this.scrollToBottom('#time')
                     obs.disconnect()
                     return;
+                } if(lastMessage === null) {
+                    document.querySelector('.spinner-border').classList.add('hidden')
                 }
             })
 
@@ -116,7 +118,7 @@ export default {
             </div>
 
             <div id='center' v-if="this.spark !== null">
-                <h3>Question Title</h3>
+                <h3>{{this.spark.sparkTitle}}</h3>
                 <div id='chat'>
                     <div class="spinner-border text-primary" role="status">
                         <span class="sr-only"></span>

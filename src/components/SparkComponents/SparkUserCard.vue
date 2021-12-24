@@ -40,20 +40,23 @@ export default {
                 respectGiverId: this.user.id,
                 sparkWhereRespectGiven: this.spark.id
             })
-
-            if(res.data.newRespect) {
-                const res = await axios.put(`${import.meta.env.VITE_API}/user/update/respect`, {
-                    userId: this.propsUser.id,
-                })
-
-                this.respectBool = true
-            }
+            this.respectBool = true
+            this.updateRespect('add')
         },
         async removeRespectFromUser() {
             const res = await axios.delete(`${import.meta.env.VITE_API}/respect/delete/${this.user.id}/${this.spark.id}`)
             console.log(res);
             if(res.data.Destroyed) {
                 this.respectBool = false
+                this.updateRespect('remove')
+            }
+        },
+        async updateRespect(removeOrAdd) {
+            if(res.data.newRespect) {
+                const res = await axios.put(`${import.meta.env.VITE_API}/user/update/respect`, {
+                    addRemove: removeOrAdd,
+                    userId: this.propsUser.id,
+                })
             }
         },
         //Get respect table from backend, to check if the user has already 

@@ -132,11 +132,11 @@ export default {
             try {
                 if(new URL(input)) {
                     this.addLink(input, linkTitle)
-                    this.links.push({'link': input, 'linkTitle': linkTitle})
+                    this.links.push(JSON.stringify({'link': input, 'linkTitle': linkTitle}))
                 }
             } catch (error) {
                 this.addLink(addHTTPSToLink, linkTitle)
-                this.links.push({'link': input, 'linkTitle': linkTitle})
+                this.links.push(JSON.stringify({'link': input, 'linkTitle': linkTitle}))
             }
 
         },

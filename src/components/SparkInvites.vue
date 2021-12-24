@@ -103,7 +103,7 @@ export default {
             <div id='invite-info' >
                 <img id='avatar' v-if="this.invitingUser != null" v-bind:src=this.invitingUser.avatar alt='avatar'/>
                 <img id='invite-background' src='https://i.imgur.com/Nn5He8I.jpg' alt='bg-cover' >
-                <p id='title-invite' v-if="this.invitingUser != null">{{`${invitations[0].invitationTitle} by ${this.invitingUser.username}`}}</p>
+                <p id='title-invite' v-if="this.invitingUser != null">{{`${invitations[0].invitationTitle} Sent By ${this.invitingUser.username}`}}</p>
             </div>
             <div id='buttons-div'>
                 <button id='accept-btn' @click="this.acceptSparkInvite(invitations[0].sparkId)">Accept Invitation</button>
