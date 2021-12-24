@@ -65,7 +65,7 @@ export default {
 
         <div id='center-body'>
           <NewPostInput v-if="user !== null" :key='NewPostInputKey' @rerender='NewPostInputKey++' />
-          <FeedPosts v-if="user !== null" @invite="inviteUser"/>
+          <FeedPosts v-if="user !== null" />
         </div>
 
         <div id='right-body'>

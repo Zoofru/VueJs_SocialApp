@@ -1,6 +1,7 @@
 <script>
 import axios from 'axios'
 import moment from 'moment'
+import LoginVue from '../views/Login.vue'
 
 export default {
     name: "FeedPosts",
@@ -8,6 +9,7 @@ export default {
         return {
             posts: [],
             postOwner:null,
+            allTags: []
         }
     },
     computed: {
@@ -16,6 +18,10 @@ export default {
         }
     },
     methods: {
+        async getAllTags() {
+            const res = await axios.get(`${import.meta.env.VITE_API}/tags/getbyuserid/${this.user.id}`)
+            this.allTags = res.data.tags
+        },
         async getRandomPosts() {
             const res = await axios.get(`${import.meta.env.VITE_API}/post/randomposts`)
             this.posts = res.data.posts
@@ -75,6 +81,7 @@ export default {
     },
     created() {
         this.getRandomPosts()
+        this.getAllTags()
     }
 }
 </script>
@@ -89,8 +96,7 @@ export default {
                         <p id='username' @click="this.linkToProfile(post.owner.username)">{{post.owner.username}}</p>
                         <p id='timeago'>{{this.convertToTimePassed(post.createdAt)}}</p>
                     </div>
-                    <!-- NEED NEW MODELS (Database models) FOR USER TAGS AND USE V-FOR TO DISPLAY THEM -->
-                    <p v-if="post.owner.super" id='user-tag'>Super</p>
+                    <p v-for="(tag, index) in this.allTags" :key=index :class="`${tag.tagname} tag-style`" :style="`background-color: ${tag.tagHexColor}`">{{tag.tagname}}</p>
                 </div>
                 <a role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                     <svg id="dot-menu" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
@@ -158,15 +164,17 @@ p {
     margin-top: 5%;
 }
 
-#user-tag {
-    margin-left: 4%;
-    background-color: var(--main-color-blue);
-    height: 50%;
-    padding: 0 15px;
-    border-radius: 10px;
+.tag-style {
     color: white;
-    font-size: small;
-    margin-top: 2px;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    width: fit-content;
+    padding: 0 .5vw;
+    border-radius: 15px;
+    margin: 0 .2vw;
+    height: fit-content;
+    font-size: 13px;
 }
 
 .hidden {

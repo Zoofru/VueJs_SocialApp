@@ -31,12 +31,10 @@ export default {
 .user {
     color: orange;
     padding-left: 2%;
-    text-decoration: none;
 }
 
 .otheruser {
     color: black;
     padding-left: 2%;
-    text-decoration: none;
 }
 </style>

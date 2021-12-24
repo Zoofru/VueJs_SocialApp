@@ -17,7 +17,8 @@ export default {
     },
     data() {
         return {
-            sidebarTabs: ['Lasting Marks', 'Tags Achieved',  'Liked', 'Sparks', 'Respect']
+            sidebarTabs: ['Lasting Marks', 'Tags Achieved',  'Liked', 'Sparks', 'Respect'],
+            allTags: []
         }
     },
     methods: {
@@ -29,17 +30,44 @@ export default {
             })
             console.log(res);
         },
+        async getTags() {
+            const res = await axios.get(`${import.meta.env.VITE_API}/tags/getbyuserid/${this.user.id}`)
+            this.allTags = res.data.tags
+        },
+        // async test() {
+        //     const res = await axios.post(`${import.meta.env.VITE_API}/tags/newtag`, {
+        //         tagName: 'Super',
+        //         userId: this.user.id,
+        //         hexColor: '#1b93ff'
+        //     })
+        //     console.log(res);
+        // },
+    },
+    watch: {
+        user() {
+            this.getTags()
+        }
     }
 }
 </script>
 
 <template>
     <div id='root'>
+        <button @click="this.test()">add tag</button>
         <button id='invite-spark-btn' data-bs-toggle="modal" data-bs-target="#invite-modal" >Invite To A Spark</button>
         <div id='bar'> 
             <div id='tab' v-for="(tab, index) in this.sidebarTabs" :key=index>
                 <p id='title' class='lasting-marks' v-if="tab == 'Lasting Marks'">{{tab}}</p>
-                <p id='title' v-else-if="tab == 'Tags Achieved'">{{tab}}</p>
+                <div v-else-if="tab == 'Tags Achieved'">
+                    <p id='title' >{{tab}}</p>
+                    <div id='tag-container'>
+                        <p
+                            v-for="(tag, index) in this.allTags" :key=index
+                            :class='`${tag.tagname} tag-style`' 
+                            :style="`background-color: ${tag.tagHexColor};`"
+                        >{{tag.tagname}}</p>
+                    </div>
+                </div>
                 <div id='tab-content' v-else-if="tab == 'Liked'">
                     <p id='title'>{{tab}}</p>
                     <p id='num' v-if="this.userForProfile !== null">{{this.userForProfile.receivedLikes}}</p>
@@ -72,6 +100,23 @@ export default {
     width: 100%;
     border-radius: 5px;
     height: 100%;
+}
+
+.tag-style {
+    color: white;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    width: fit-content;
+    padding: 0 .5vw;
+    border-radius: 15px;
+    margin: 0 .2vw;
+}
+
+#tag-container {
+    margin-top: 1vh;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 #tab-content {
