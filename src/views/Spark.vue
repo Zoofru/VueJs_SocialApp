@@ -131,7 +131,7 @@ export default {
                                     <div id='message-current-user' v-if="msg.messageOwnerId == this.user.id">
                                         <p id='message'>{{msg.message}}</p>
                                         <div v-for="(link, index) in msg.links" :key=index>
-                                            <Link :link="link" />
+                                            <Link :link="link" cssSelector="user" />
                                         </div>
                                         <div id='img'>
                                             <img id='msg-img' :src=msg.imageurl v-if="msg.imageurl !== null"/>
@@ -143,6 +143,9 @@ export default {
                                 <div id='other-user-message-container' v-if="msg.messageOwnerId !== this.user.id">
                                     <div id='message-other-user' >
                                         <p id='message-other-user-p'>{{msg.message}}</p>
+                                        <div v-for="(link, index) in msg.links" :key=index>
+                                            <Link :link="link" cssSelector="otheruser" />
+                                        </div>
                                         <div id='img'>
                                             <img id='msg-img' :src=msg.imageurl v-if="msg.imageurl !== null"/>
                                         </div>

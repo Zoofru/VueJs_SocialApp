@@ -2,7 +2,8 @@
 export default {
     nmame: "Link",
     props: {
-        link: String
+        link: String,
+        cssSelector: String,
     },
     data() {
         return {
@@ -22,13 +23,20 @@ export default {
 
 <template>
     <div>
-        <a :href='`${this.jsonLink.link}`' target="_blank">{{this.jsonLink.linkTitle}}</a>
+        <a :class='`${this.cssSelector}`' :href='`${this.jsonLink.link}`' target="_blank">{{this.jsonLink.linkTitle}}</a>
     </div>
 </template>
 
 <style scoped>
-a {
+.user {
     color: orange;
     padding-left: 2%;
+    text-decoration: none;
+}
+
+.otheruser {
+    color: black;
+    padding-left: 2%;
+    text-decoration: none;
 }
 </style>
