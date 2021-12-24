@@ -4,6 +4,7 @@ import SideTabs from '../components/SideTabs.vue'
 import SparkUserCard from '../components/SparkComponents/SparkUserCard.vue'
 import UserCard from '../components/UserCard.vue'
 import AutoResizeTextArea from '../components/AutoResizeTextArea.vue'
+import Link from '../components/SparkComponents/Link.vue'
 import moment from 'moment'
 import axios from 'axios'
 
@@ -16,7 +17,8 @@ export default {
         SideTabs,
         UserCard,
         SparkUserCard,
-        AutoResizeTextArea
+        AutoResizeTextArea,
+        Link
     },
     computed: {
         user() {
@@ -128,6 +130,9 @@ export default {
                                 <div id='message-container'>
                                     <div id='message-current-user' v-if="msg.messageOwnerId == this.user.id">
                                         <p id='message'>{{msg.message}}</p>
+                                        <div v-for="(link, index) in msg.links" :key=index>
+                                            <Link :link="link" />
+                                        </div>
                                         <div id='img'>
                                             <img id='msg-img' :src=msg.imageurl v-if="msg.imageurl !== null"/>
                                         </div>

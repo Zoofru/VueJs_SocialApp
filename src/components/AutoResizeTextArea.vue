@@ -138,16 +138,21 @@ export default {
         },
         link(input, youtube, linkTitle) {
             let splitLink = input.split('')
+            let hasHTTPS = [...splitLink].splice(0, 6).join('')
+            let hasHTTP = [...splitLink].splice(0, 6).join('')
+            let hasCOM = [...splitLink].splice(splitLink.length - 3, 3).join('')
             let addHTTPSToLink = "https://" + splitLink.join('')
 
-            try {
-                if(new URL(input)) {
-                    this.addLink(input, linkTitle)
-                    this.links.push(JSON.stringify({'link': input, 'linkTitle': linkTitle}))
-                }
-            } catch (error) {
-                this.addLink(addHTTPSToLink, linkTitle)
+            if(hasCOM !== "com") {
+                return;
+            } else if(hasHTTPS === 'https:' || hasHTTP === 'http:/') {
+                this.addLink(input, linkTitle)
                 this.links.push(JSON.stringify({'link': input, 'linkTitle': linkTitle}))
+            } else if(hasHTTPS !== 'https:' && hasHTTP !== 'http:/') {
+                this.addLink(addHTTPSToLink, linkTitle)
+                this.links.push(JSON.stringify({'link': addHTTPSToLink, 'linkTitle': linkTitle}))
+            } else {
+                console.log('error')
             }
 
         },
