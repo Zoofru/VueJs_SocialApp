@@ -63,8 +63,7 @@ export default {
         timeFromNow(date) {
             return moment(date).fromNow()
         },
-        removeImage() {
-            document.querySelector('#msg-img').src = null
+        rerenderAutoGrowInput() {
             this.AutoGrowKey += 1
         },
         waitForLoading() {
@@ -171,7 +170,7 @@ export default {
             </div>
         </div>
         <div id='msg-inp'>
-            <AutoResizeTextArea :spark=this.spark @removeImage="removeImage" :key="this.AutoGrowKey" />
+            <AutoResizeTextArea :spark=this.spark @rerender="rerenderAutoGrowInput" :key="this.AutoGrowKey" />
         </div>
     </div>
 </template>

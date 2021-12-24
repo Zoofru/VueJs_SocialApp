@@ -35,7 +35,8 @@ export default {
             ta.style.height = ta.scrollHeight + 'px'
         },
         async handleSubmit() {
-            if (this.message || this.imageurl) {
+            console.log(this.links)
+            if (this.message || this.imageurl || this.links.length > 0) {
                 const res = await axios.post(`${import.meta.env.VITE_API}/spark/message/new`, {
                     sparkId: this.spark.id,
                     message: this.message,
@@ -46,8 +47,18 @@ export default {
                     links: this.links
                 })
                 this.message = null
-                console.log(res);
-                this.$emit('removeImage')
+
+                if(this.imageurl) {
+                    this.$emit('rerender')
+                    document.querySelector('#inputimage').src= ''
+                }
+                if(this.links.length > 0) {
+                   const links = document.querySelectorAll('.input-box-link')
+                   for(let i = 0 ; i < links.length ; i++) {
+                       console.log(links[i]);
+                       links[i].remove()
+                   }
+                }
             }
         },
         handleModalInput(input, type) {
@@ -145,6 +156,7 @@ export default {
             let html = `<a href="${input}" target="_blank">${linkTitle}</a>`;
             iframe.src = 'data:text/html;charset=utf-8,' + encodeURI(html);
             iframe.style.height = "5vh"
+            iframe.classList.add('input-box-link')
             document.querySelector('#inputarea').appendChild(iframe);
         }
     },
