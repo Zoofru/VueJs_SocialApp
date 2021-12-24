@@ -16,28 +16,25 @@ html * {
 
 ::-webkit-scrollbar {
   width: 9px;
-  
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: var(--main-color-blue);
+  background: gray;
   border-radius: 10px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: white;
+  background: lightgray;
 }
 
 body {
   padding-bottom: 50px;
   margin: 0px;
   background-color: #f5f5f5;
+  height: 0%;
+  background-image: url('http://schools.stlucie.k12.fl.us/swc/files/2014/12/snow-transparent.gif');
+  background-size: cover;
 }
 </style>

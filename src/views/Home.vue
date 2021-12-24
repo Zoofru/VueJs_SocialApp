@@ -19,14 +19,14 @@ export default {
     SparkInvites,
     SideFriends,
     FriendRequest,
-    UserCard
+    UserCard,
   },
   data() {
     return {
       userInvitations: [],
       componentKey: 0,
       friendRequestKey: 0,
-      NewPostInputKey: 0
+      NewPostInputKey: 0,
     }
   },
   computed: {
@@ -35,13 +35,6 @@ export default {
     }
   },
   methods: {
-    async inviteUser(evt, invitedUser) {
-        const res = await axios.post(`${import.meta.env.VITE_API}/invitations/inviteUser`, {
-            invitingUserId: localStorage.getItem("uId"),
-            invitedUserId: invitedUser
-        })
-        console.log(res);
-    },
     async getUserInvitations() {
         const res = await axios.post(`${import.meta.env.VITE_API}/invitations/getUserInvitations`, {
             id: localStorage.getItem("uId")
@@ -72,7 +65,7 @@ export default {
 
         <div id='center-body'>
           <NewPostInput v-if="user !== null" :key='NewPostInputKey' @rerender='NewPostInputKey++' />
-          <FeedPosts v-if="user !== null" @invite="inviteUser"/>
+          <FeedPosts v-if="user !== null" />
         </div>
 
         <div id='right-body'>

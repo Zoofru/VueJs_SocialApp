@@ -11,18 +11,21 @@ export default {
         }
     },
     methods: {
+        //Login needs to be updated to provide only lower case email
         async Login() {
             try {
                 if(this.email && this.password)  {
                     const res = await axios.post(`${import.meta.env.VITE_API}/user/login`, {
-                        email: this.email,
-                        password: this.password
+                        email: this.email.toLowerCase(),
+                        password: this.password,
+                        headers: { authorization: localStorage.getItem('uId') }
                     })
-                    if(res.data.user) {
+                    if(res.data.uID) {
                         this.unAuth = false
-                        localStorage.setItem("uId", res.data.user.id)
+                        localStorage.setItem("uId", res.data.uID)
                         this.$router.push({ name: "Home" })
                     }
+                    console.log(res);
                 }
             } catch (error) {
                 if(error.response.status === 401) {

@@ -9,10 +9,11 @@ export default {
     },
     data() {
         return {
-            text:null,
+            text: '',
             imageurl:null,
             videourl:null,
-            type:null
+            type:null,
+            characterCount: 300
         }
     },
     computed: {
@@ -28,7 +29,7 @@ export default {
             return false
         },
         async handleSubmit() {
-            if(this.text !== null) {
+            if(this.text !== '') {
                 const res = await axios.post(`${import.meta.env.VITE_API}/post/newpost`, {
                     text: this.text,
                     id: localStorage.getItem("uId"),
@@ -36,7 +37,7 @@ export default {
                     videourl: this.videourl,
                     type: this.type
                 })
-                this.text = null
+                this.text = ''
                 document.querySelector('#inputimage').src = ''
                 if(document.querySelector('.video')) {
                     document.querySelector('.video').remove()
@@ -146,11 +147,14 @@ export default {
                 <img id='new-post-accounticon' v-bind:src=user.avatar alt='account-icon' />
             </div>
             <div id='inputarea'>
-                <textarea id='textarea' autocomplete="false" spellcheck="false" v-model="text" v-bind:placeholder="`Whats new, ${user.username}?`">ass</textarea>
+                <textarea id='textarea' maxlength="300" autocomplete="false" spellcheck="false" v-model="text" v-bind:placeholder="`Whats new, ${user.username}?`"></textarea>
                 <img id='inputimage' src='' />
             </div>
         </div>
         <div class='border'></div>
+        <div id='character-count'>
+            <p id='remaining-char-count'>{{this.characterCount - this.text.length}} characters remaining</p>
+        </div>
 
         <!-- bottom bar (icons and post button) -->
         <div id='icons'>
@@ -199,6 +203,17 @@ export default {
     display: none;
 }
 
+#remaining-char-count {
+    margin: 5px;
+}
+
+#character-count {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 3%;
+}
+
 svg:hover {
     cursor: pointer;
     fill: var(--main-color-blue);
@@ -235,7 +250,6 @@ svg:hover {
 .border {
     border: 1px solid var(--main-color-blue) !important;
     width: 95%;
-    margin-bottom: 10px;
     opacity: .3;
 }
 

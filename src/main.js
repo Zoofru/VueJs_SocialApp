@@ -17,7 +17,9 @@ const store = createStore({
     },
     actions: {
         async getUser(context) {
-            const res = await axios.get(`${import.meta.env.VITE_API}/user/finduser/${localStorage.getItem("uId")}`)
+            const res = await axios.get(`${import.meta.env.VITE_API}/user/loggedinuser`, {
+              headers: { authorization: localStorage.getItem('uId') }
+            })
             if(res.data.user) {
                 this.commit('setUser', res.data.user)
             }

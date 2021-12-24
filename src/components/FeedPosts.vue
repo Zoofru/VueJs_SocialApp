@@ -1,6 +1,7 @@
 <script>
 import axios from 'axios'
 import moment from 'moment'
+import LoginVue from '../views/Login.vue'
 
 export default {
     name: "FeedPosts",
@@ -8,6 +9,7 @@ export default {
         return {
             posts: [],
             postOwner:null,
+            allTags: []
         }
     },
     computed: {
@@ -16,6 +18,10 @@ export default {
         }
     },
     methods: {
+        async getAllTags() {
+            const res = await axios.get(`${import.meta.env.VITE_API}/tags/getbyuserid/${this.user.id}`)
+            this.allTags = res.data.tags
+        },
         async getRandomPosts() {
             const res = await axios.get(`${import.meta.env.VITE_API}/post/randomposts`)
             this.posts = res.data.posts
@@ -27,9 +33,7 @@ export default {
         },
         async deletePost(postId,index) {
             const res = await axios.delete(`${import.meta.env.VITE_API}/post/delete/post/${postId}`)
-            console.log(res);
 
-            const elements = document.querySelectorAll(`#pos-${index}`)
             this.clearDeleteElements(index)
             document.querySelector(`.pos-${index}`).style.backgroundColor = 'gray'
         },
@@ -70,10 +74,14 @@ export default {
         },
         convertToTimePassed(date) {
             return moment(date).fromNow()
+        },
+        linkToProfile(username) {
+            this.$router.push({path: "/profile", query: { user: username}})
         }
     },
     created() {
         this.getRandomPosts()
+        this.getAllTags()
     }
 }
 </script>
@@ -85,11 +93,10 @@ export default {
                 <div id='left'>
                     <img id='avatar' v-bind:src=post.ownerAvatar alt='avatar' />
                     <div id='username-timeago'>
-                        <p id='username'>{{post.owner.username}}</p>
+                        <p id='username' @click="this.linkToProfile(post.owner.username)">{{post.owner.username}}</p>
                         <p id='timeago'>{{this.convertToTimePassed(post.createdAt)}}</p>
                     </div>
-                    <!-- NEED NEW MODELS (Database models) FOR USER TAGS AND USE V-FOR TO DISPLAY THEM -->
-                    <p v-if="post.owner.super" id='user-tag'>Super</p>
+                    <p v-for="(tag, index) in this.allTags" :key=index :class="`${tag.tagname} tag-style`" :style="`background-color: ${tag.tagHexColor}`">{{tag.tagname}}</p>
                 </div>
                 <a role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                     <svg id="dot-menu" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
@@ -99,9 +106,8 @@ export default {
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <!-- THIS WILL BE AN ISSUE. (Spam someone with invitations) ALLOW TO SEE ONLY A CERTAIN AMOUNT OF SPARKS, 
                     OR FROM USERS WITH A RESPECTABLE REP -->
-                    <a class="dropdown-item" @click="$emit('invite', $event, post.userId)">Invite User To A Spark</a>
-                    <a class="dropdown-item" @click="this.addFriendRequest(post.userId, post.owner.username)">Add Friend</a>
-                    <a class="dropdown-item">Report</a>
+                    <a class="dropdown-item" @click="this.addFriendRequest(post.userId, post.owner.username)" v-if="this.user.username !== post.owner.username">Add Friend</a>
+                    <a class="dropdown-item" v-if="this.user.username !== post.owner.username">Report</a>
                     <a class="dropdown-item" v-if="this.user.super || post.owner.username === this.user.username" @click="this.handleDeleteStyle(post.id, index)">Delete</a>
                     
                 </div>
@@ -138,7 +144,6 @@ export default {
                     <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
                 </svg>
             </div>
-
         </div>
     </div>
 </template>
@@ -159,15 +164,17 @@ p {
     margin-top: 5%;
 }
 
-#user-tag {
-    margin-left: 4%;
-    background-color: var(--main-color-blue);
-    height: 50%;
-    padding: 0 15px;
-    border-radius: 10px;
+.tag-style {
     color: white;
-    font-size: small;
-    margin-top: 2px;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    width: fit-content;
+    padding: 0 .5vw;
+    border-radius: 15px;
+    margin: 0 .2vw;
+    height: fit-content;
+    font-size: 13px;
 }
 
 .hidden {
@@ -231,7 +238,7 @@ p {
 #action-icons {
     display: flex;
     justify-content: flex-end;
-    padding-right: .45vw;
+    padding-right: .1vw;
 }
 
 #timeago {
@@ -258,9 +265,9 @@ p {
 }
 
 #avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 5px;
+    width: 2.5vw;
+    height: 2vhpx;
+    border-radius: 50px;
 }
 
 #hidden {

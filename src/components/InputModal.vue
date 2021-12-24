@@ -7,7 +7,7 @@ export default {
             type: String,
         },
         modalContent: {
-            default: 'Content',
+            default: '',
             type: String
         },
         confirmButtonText: {
@@ -23,7 +23,9 @@ export default {
     data() {
         return {
             youtubeLink: false,
-            input:null
+            input: '',
+            linkTitle:null,
+            characterCount: 35
         }
     },
 }
@@ -39,8 +41,13 @@ export default {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        {{modalContent}}
-                        <input class='input' type='text' spellcheck="off" autocomplete="off" :placeholder="`${this.type} url`" v-model="this.input" />
+                        <p id='modal-content'>{{modalContent}}</p>
+                        <div id='invite' v-if="this.type === 'invite'">
+                            <input class='input-invite input' maxlength="35" type='text' spellcheck="off" autocomplete="off" :placeholder="`Spark Title`" v-model="this.input"  required />
+                            <p id='character-count'>{{this.characterCount - this.input.length}} Characters Remaining</p>
+                        </div>
+                        <input class='input' v-else type='text' spellcheck="off" autocomplete="off" :placeholder="`${this.type.charAt(0).toUpperCase() + this.type.slice(1)} url`" v-model="this.input"  required />
+                        <input class='input inputTitle' type='text' spellcheck="off" autocomplete="off" :placeholder="`Link Title (optional)`" v-model="this.linkTitle" v-if="this.type === 'link'" />
                     </div>
                     <div class="form-check youtube-check" v-if="type === 'video'">
                         <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" @click='this.youtubeLink = !this.youtubeLink'>
@@ -48,9 +55,13 @@ export default {
                             Youtube Link
                         </label>
                     </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{closeButtonText}}</button>
-                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="$emit('inputSent', this.input, this.youtubeLink)">{{confirmButtonText}}</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="() => {
+                            $emit('inputSent', this.input, this.youtubeLink, this.linkTitle)
+                            this.input=''
+                            }">{{confirmButtonText}}</button>
                     </div>
                 </div>
             </div>
@@ -59,6 +70,24 @@ export default {
 </template>
 
 <style scoped>
+#modal-content {
+    font-size: 20px;
+}
+
+.input-invite, #character-count {
+    width: 100%;
+}
+
+#character-count {
+    margin: 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#invite {
+    width: 100%;
+}
+
 .modal-body {
     display: flex;
     flex-direction: column;

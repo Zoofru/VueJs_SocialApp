@@ -127,12 +127,24 @@ export default {
 #acceptbtn {
     background-color: var(--main-color-blue);
     color: white;
+    border: 1px solid var(--main-color-blue);
+}
+
+#acceptbtn:hover {
+    background-color: white;
+    color: var(--main-color-blue);
 }
 
 #declinebtn {
     margin-left: 5%;
-    border: 1px solid lightgray;
+    border: 1px solid var(--main-color-blue);
     background-color: white;
+    color: var(--main-color-blue);
+}
+
+#declinebtn:hover {
+    background-color: var(--main-color-blue);
+    color: white;
 }
 
 button {

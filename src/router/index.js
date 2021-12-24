@@ -5,6 +5,8 @@ import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
 import Settings from '../views/Setting.vue'
 import Profile from '../views/Profile.vue'
+import Spark from '../views/Spark.vue'
+import AllSparks from '../views/AllSparks.vue'
 
 const routes = [
     {
@@ -29,8 +31,15 @@ const routes = [
         component: Settings
     }, {
         path: '/profile',
-        name: 'Profile',
         component: Profile
+    }, {
+        path:'/spark',
+        component: Spark,
+        props: true
+    }, {
+        path: '/sparks',
+        name: 'All Sparks',
+        component: AllSparks,
     }
 ]
 
