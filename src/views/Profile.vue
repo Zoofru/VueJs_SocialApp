@@ -101,6 +101,7 @@ export default {
     display: flex;
     justify-content: center;
     height: 100%;
+    background-size: cover;
 }
 
 #profile {

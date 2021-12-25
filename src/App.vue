@@ -36,5 +36,6 @@ body {
   height: 0%;
   background-image: url('http://schools.stlucie.k12.fl.us/swc/files/2014/12/snow-transparent.gif');
   background-size: cover;
+  background-repeat: no-repeat;
 }
 </style>
