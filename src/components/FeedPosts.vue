@@ -1,10 +1,13 @@
 <script>
 import axios from 'axios'
 import moment from 'moment'
-import LoginVue from '../views/Login.vue'
+import UserTag from './UserTag.vue'
 
 export default {
     name: "FeedPosts",
+    components: {
+        UserTag
+    },
     data() {
         return {
             posts: [],
@@ -18,10 +21,6 @@ export default {
         }
     },
     methods: {
-        async getAllTags() {
-            const res = await axios.get(`${import.meta.env.VITE_API}/tags/getbyuserid/${this.user.id}`)
-            this.allTags = res.data.tags
-        },
         async getRandomPosts() {
             const res = await axios.get(`${import.meta.env.VITE_API}/post/randomposts`)
             this.posts = res.data.posts
@@ -81,7 +80,6 @@ export default {
     },
     created() {
         this.getRandomPosts()
-        this.getAllTags()
     }
 }
 </script>
@@ -96,7 +94,7 @@ export default {
                         <p id='username' @click="this.linkToProfile(post.owner.username)">{{post.owner.username}}</p>
                         <p id='timeago'>{{this.convertToTimePassed(post.createdAt)}}</p>
                     </div>
-                    <p v-for="(tag, index) in this.allTags" :key=index :class="`${tag.tagname} tag-style`" :style="`background-color: ${tag.tagHexColor}`">{{tag.tagname}}</p>
+                    <UserTag :userId=post.owner.id />
                 </div>
                 <a role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                     <svg id="dot-menu" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
@@ -164,18 +162,6 @@ p {
     margin-top: 5%;
 }
 
-.tag-style {
-    color: white;
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    width: fit-content;
-    padding: 0 .5vw;
-    border-radius: 15px;
-    margin: 0 .2vw;
-    height: fit-content;
-    font-size: 13px;
-}
 
 .hidden {
     display: none;

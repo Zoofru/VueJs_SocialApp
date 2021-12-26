@@ -16,7 +16,8 @@ export default {
     },
     data() {
         return {
-            respectBool: null
+            respectBool: null,
+            allTags: []
         }
     },
     computed: {
@@ -67,6 +68,10 @@ export default {
                 this.respectBool = true
             }
         },
+        async getTags() {
+            const res = await axios.get(`${import.meta.env.VITE_API}/tags/getbyuserid/${this.propsUser.id}`)
+            this.allTags = res.data.tags
+        },
     },
     watch: {
         spark() {
@@ -74,6 +79,9 @@ export default {
                 this.getRespectObj()
             }, 200)
         },
+        propsUser() {
+            this.getTags()
+        }
     }
 }
 </script>
@@ -87,6 +95,10 @@ export default {
                 <div id='content'>
                     <div id='user-info'>
                         <p id='user-username'>{{this.propsUser.username}}</p>
+                    </div>
+
+                    <div id='tag-container'>
+                        <p v-for="(tag, index) in this.allTags" :key="index" class='tag-style' :style="`background-color: ${tag.tagHexColor}`">{{tag.tagname}}</p>
                     </div>
 
                     <div id='icons' v-if="this.isSelf == false">
@@ -153,6 +165,20 @@ export default {
     display: flex;
     width: 100%;
     background-color: white;
+}
+
+
+#tag-container {
+    display: flex;
+    width: 100%;
+}
+
+.tag-style {
+    margin: 0 2%;
+    padding: .5% 4%;
+    color: white;
+    border-radius: 15px;
+    font-size: 14px;
 }
 
 #add-friend, #respect, #report {
