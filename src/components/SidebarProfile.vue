@@ -34,14 +34,6 @@ export default {
             const res = await axios.get(`${import.meta.env.VITE_API}/tags/getbyuserid/${this.user.id}`)
             this.allTags = res.data.tags
         },
-        // async test() {
-        //     const res = await axios.post(`${import.meta.env.VITE_API}/tags/newtag`, {
-        //         tagName: 'Super',
-        //         userId: this.user.id,
-        //         hexColor: '#1b93ff'
-        //     })
-        //     console.log(res);
-        // },
     },
     watch: {
         user() {
@@ -53,7 +45,6 @@ export default {
 
 <template>
     <div id='root'>
-        <button @click="this.test()">add tag</button>
         <button id='invite-spark-btn' data-bs-toggle="modal" data-bs-target="#invite-modal" >Invite To A Spark</button>
         <div id='bar'> 
             <div id='tab' v-for="(tab, index) in this.sidebarTabs" :key=index>

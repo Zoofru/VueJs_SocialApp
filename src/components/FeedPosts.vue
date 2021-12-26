@@ -2,17 +2,20 @@
 import axios from 'axios'
 import moment from 'moment'
 import UserTag from './UserTag.vue'
+import ReportModal from'./ReportModal.vue'
 
 export default {
     name: "FeedPosts",
     components: {
-        UserTag
+        UserTag,
+        ReportModal
     },
     data() {
         return {
             posts: [],
             postOwner:null,
-            allTags: []
+            allTags: [],
+            testOwner: {}
         }
     },
     computed: {
@@ -76,6 +79,10 @@ export default {
         },
         linkToProfile(username) {
             this.$router.push({path: "/profile", query: { user: username}})
+        },
+        test(owner) {
+            console.log(owner)
+            this.testOwner = owner
         }
     },
     created() {
@@ -87,7 +94,7 @@ export default {
 <template>
     <div id='post-container'>
         <div id='post' v-for="(post, index) in this.posts" :key="index" :class="[`pos-${index}`]">
-            <div id='post-header' v-if="post.owner">
+            <div id='post-header' v-if="post.owner">       
                 <div id='left'>
                     <img id='avatar' v-bind:src=post.ownerAvatar alt='avatar' />
                     <div id='username-timeago'>
@@ -105,7 +112,7 @@ export default {
                     <!-- THIS WILL BE AN ISSUE. (Spam someone with invitations) ALLOW TO SEE ONLY A CERTAIN AMOUNT OF SPARKS, 
                     OR FROM USERS WITH A RESPECTABLE REP -->
                     <a class="dropdown-item" @click="this.addFriendRequest(post.userId, post.owner.username)" v-if="this.user.username !== post.owner.username">Add Friend</a>
-                    <a class="dropdown-item" v-if="this.user.username !== post.owner.username">Report</a>
+                    <a class="dropdown-item" v-if="this.user.username !== post.owner.username" @click="this.test(post.owner)" data-bs-toggle="modal" data-bs-target="#report-modal">Report</a>
                     <a class="dropdown-item" v-if="this.user.super || post.owner.username === this.user.username" @click="this.handleDeleteStyle(post.id, index)">Delete</a>
                     
                 </div>
@@ -143,6 +150,7 @@ export default {
                 </svg>
             </div>
         </div>
+        <ReportModal :userReported=this.testOwner /> 
     </div>
 </template>
 

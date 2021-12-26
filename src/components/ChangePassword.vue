@@ -10,15 +10,15 @@ export default {
         }
     },
     methods: {
-        sendVerify() {
-            let templateParams = {
-                to_name: this.user.name,
-                to_email: this.user.email
-            }
+        // sendVerify() {
+        //     let templateParams = {
+        //         to_name: this.user.name,
+        //         to_email: this.user.email
+        //     }
 
-            emailjs.init(import.meta.env.EMAIL_USER)
-            emailjs.send(import.meta.env.EMAIL_SERVICE, 'template_5kmbr1c', templateParams)
-        },
+        //     emailjs.init(import.meta.env.EMAIL_USER)
+        //     emailjs.send(import.meta.env.EMAIL_SERVICE, 'template_5kmbr1c', templateParams)
+        // },
         async handleSubmit() {
             if(this.user.password === this.currentPass && this.newPass === this.newPassConfirm && this.newPass !== null) {
                 const res = await axios.put(`${import.meta.env.VITE_API}/user/update/password`, {
@@ -27,7 +27,7 @@ export default {
                 })
                 console.log(res);
                 if(res.data.user) {
-                    this.sendVerify()
+                    // this.sendVerify()
                 }
             }
             this.currentPass = null
