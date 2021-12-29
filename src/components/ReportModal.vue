@@ -76,6 +76,13 @@ export default {
                                 <span class='check-box'>Threats or harm of someone</span>
                             </label>
                         </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                            <label class="form-check-label" for="defaultCheck1">
+                                <span class='check-box'>Failure to have a respectful conversation in spark</span>
+                            </label>
+                        </div>
                     </div>
 
                     <div class="modal-footer">
