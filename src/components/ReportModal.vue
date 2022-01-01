@@ -80,7 +80,7 @@ export default {
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
                             <label class="form-check-label" for="defaultCheck1">
-                                <span class='check-box'>Failure to have a respectful conversation in a spark</span>
+                                <span class='check-box'>Failure to engage intellectually. (constant insults and refusal to respectively respond)</span>
                             </label>
                         </div>
                     </div>
