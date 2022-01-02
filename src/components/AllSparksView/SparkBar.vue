@@ -98,8 +98,7 @@ h3 {
     width: 20%;
     height: 35vh;
     margin-left: 5%;
-    border-radius: 15px;
-    border: 3px solid var(--main-color-blue);
+    border: 1px solid var(--main-color-blue);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -108,7 +107,6 @@ h3 {
 }
 
 #bar-root:hover {
-    border: 3px solid darkblue;
     cursor: pointer;
 }
 
