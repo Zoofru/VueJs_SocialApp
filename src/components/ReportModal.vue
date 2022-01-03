@@ -1,4 +1,5 @@
 <script>
+import anime from 'animejs/lib/anime.es.js';
 export default {
     name: "ReportModal",
     props: {
@@ -14,7 +15,8 @@ export default {
             HarrassmentOrHateSpeech: false,
             inappropiateContent: false,
             inappropiateName: false,
-            threatsOrHarmOfSomeone: false
+            threatsOrHarmOfSomeone: false,
+            failureToIngageIntellectually: false
         }
     },
     methods: {
@@ -28,8 +30,16 @@ export default {
             emailjs.init(import.meta.env.EMAIL_USER)
             emailjs.send(import.meta.env.EMAIL_SERVICE, 'template_5kmbr1c', templateParams)
         },
-        test() {
-            console.log(this.userReported)
+        nextReportSubmission() {
+            let els = document.querySelectorAll('.form-check')
+            let bodyContent = document.querySelector('#modal-body-content')
+            
+            anime.timeline({
+                duration: 2000,
+                easing: 'easeOutExpo',
+            })
+            .add({ targets: [els, bodyContent],  opacity: 0})
+            .add({ targets: [els, bodyContent], translateX: 100 }, 0);
         }
     }
 }
@@ -70,14 +80,14 @@ export default {
                             </label>
                         </div>
 
-                        <div class="form-check" id='final-check-box'>
+                        <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
                             <label class="form-check-label" for="defaultCheck1">
                                 <span class='check-box'>Threats or harm of someone</span>
                             </label>
                         </div>
 
-                        <div class="form-check">
+                        <div class="form-check" id='final-check-box'>
                             <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
                             <label class="form-check-label" for="defaultCheck1">
                                 <span class='check-box'>Failure to engage intellectually. (constant insults and refusal to respectively respond)</span>
@@ -86,8 +96,8 @@ export default {
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="this.test()">Next</button>
+                        <button type="button" class="btn btn-secondary">Close</button>
+                        <button type="button" class="btn btn-primary"  @click="this.nextReportSubmission()">Next</button>
                     </div>
                 </div>
             </div>
