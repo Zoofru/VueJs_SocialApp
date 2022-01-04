@@ -1,5 +1,6 @@
 <script>
-import anime from 'animejs/lib/anime.es.js';
+import emailjs from 'emailjs-com'
+
 export default {
     name: "ReportModal",
     props: {
@@ -21,6 +22,7 @@ export default {
     },
     methods: {
         userReportedEmail() {
+            //dosent work
             let templateParams = {
                 reported_user: this.userReported.username,
                 reason: this.reasonForReport,
@@ -28,19 +30,12 @@ export default {
             }
 
             emailjs.init(import.meta.env.EMAIL_USER)
-            emailjs.send(import.meta.env.EMAIL_SERVICE, 'template_5kmbr1c', templateParams)
-        },
-        nextReportSubmission() {
-            let els = document.querySelectorAll('.form-check')
-            let bodyContent = document.querySelector('#modal-body-content')
-            
-            anime.timeline({
-                duration: 2000,
-                easing: 'easeOutExpo',
+            emailjs.send(import.meta.env.EMAIL_SERVICE, 'template_5kmbr1c', templateParams).then(() => {
+                console.log(response.status + response.text);
+            }, (err) => {
+                console.log(err)
             })
-            .add({ targets: [els, bodyContent],  opacity: 0})
-            .add({ targets: [els, bodyContent], translateX: 100 }, 0);
-        }
+        },
     }
 }
 </script>
@@ -60,44 +55,73 @@ export default {
 
                     <div class='check-box-container'>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">
+                            <input class="form-check-input" type="checkbox" value="" id="harrassment">
+                            <label class="form-check-label" for="harassment">
                                 <span class='check-box'>Harrassment or hate speech</span>
                             </label>
                         </div>
 
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">
+                            <input class="form-check-input" type="checkbox" value="" id="obscene-content">
+                            <label class="form-check-label" for="obscene-content">
                                 <span class='check-box'>Inappropriate or obscene content</span>
                             </label>
                         </div>
 
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">
+                            <input class="form-check-input" type="checkbox" value="" id="inapp-name">
+                            <label class="form-check-label" for="inapp-name">
                                 <span class='check-box'>Inappropiate name</span>
                             </label>
                         </div>
 
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">
+                            <input class="form-check-input" type="checkbox" value="" id="threats-or-harm">
+                            <label class="form-check-label" for="threats-or-harm">
                                 <span class='check-box'>Threats or harm of someone</span>
                             </label>
                         </div>
 
                         <div class="form-check" id='final-check-box'>
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">
+                            <input class="form-check-input" type="checkbox" value="" id="failure-to-engage">
+                            <label class="form-check-label" for="failure-to-engage">
                                 <span class='check-box'>Failure to engage intellectually. (constant insults and refusal to respectively respond)</span>
                             </label>
                         </div>
                     </div>
 
+                <div class="modal-body">
+                    <p id='modal-body-content'>Where did this offence occur?</p>
+                </div>
+
+                <div id='checkbox-container-location'>
+                    <div class="form-check" id='check-box'>
+                        <input class="form-check-input" type="checkbox" value="" id="location-home-page">
+                        <label class="form-check-label" for="location-home-page">
+                            <span class='check-box'>Home page posts</span>
+                        </label>
+                    </div>
+
+                    <div class="form-check" id='check-box'>
+                        <input class="form-check-input" type="checkbox" value="" id="location-spark">
+                        <label class="form-check-label" for="location-spark">
+                            <span class='check-box'>Inside a spark</span>
+                        </label>
+                    </div>
+
+                    <div class="form-check" id='final-check-box'>
+                        <input class="form-check-input" type="checkbox" value="" id="location-direct-message">
+                        <label class="form-check-label" for="location-direct-message">
+                            <span class='check-box'>In a direct message</span>
+                        </label>
+                    </div>
+                </div>
+
+
+
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary">Close</button>
-                        <button type="button" class="btn btn-primary"  @click="this.nextReportSubmission()">Next</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="this.userReportedEmail()">Report</button>
                     </div>
                 </div>
             </div>
@@ -125,7 +149,7 @@ export default {
     padding-top: 0;
 }
 
-.check-box-container {
+.check-box-container, #checkbox-container-location {
     margin-left: 5%;
 }
 

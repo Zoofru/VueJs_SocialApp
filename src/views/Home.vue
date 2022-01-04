@@ -65,7 +65,7 @@ export default {
 
         <div id='center-body'>
           <NewPostInput v-if="user !== null" :key='NewPostInputKey' @rerender='NewPostInputKey++' />
-          <FeedPosts v-if="user !== null" />
+          <FeedPosts />
         </div>
 
         <div id='right-body'>
@@ -73,7 +73,6 @@ export default {
           <SideFriends v-if="user !== null"/>
         </div>
       </div>
-      <!-- <div>Icons made by <a href="https://www.flaticon.com/authors/good-ware" title="Good Ware">Good Ware</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div> -->
   </div>
 </template>
 

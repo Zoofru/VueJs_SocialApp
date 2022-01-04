@@ -1,5 +1,6 @@
 <script>
 import axios from 'axios'
+import emailjs from 'emailjs-com'
 
 export default {
     data() {
