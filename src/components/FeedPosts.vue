@@ -1,15 +1,21 @@
 <script>
 import axios from 'axios'
 import moment from 'moment'
-import LoginVue from '../views/Login.vue'
+import UserTag from './UserTag.vue'
+import ReportModal from'./ReportModal.vue'
 
 export default {
     name: "FeedPosts",
+    components: {
+        UserTag,
+        ReportModal
+    },
     data() {
         return {
             posts: [],
             postOwner:null,
-            allTags: []
+            allTags: [],
+            testOwner: {}
         }
     },
     computed: {
@@ -18,10 +24,6 @@ export default {
         }
     },
     methods: {
-        async getAllTags() {
-            const res = await axios.get(`${import.meta.env.VITE_API}/tags/getbyuserid/${this.user.id}`)
-            this.allTags = res.data.tags
-        },
         async getRandomPosts() {
             const res = await axios.get(`${import.meta.env.VITE_API}/post/randomposts`)
             this.posts = res.data.posts
@@ -77,11 +79,14 @@ export default {
         },
         linkToProfile(username) {
             this.$router.push({path: "/profile", query: { user: username}})
+        },
+        test(owner) {
+            console.log(owner)
+            this.testOwner = owner
         }
     },
     created() {
         this.getRandomPosts()
-        this.getAllTags()
     }
 }
 </script>
@@ -89,14 +94,14 @@ export default {
 <template>
     <div id='post-container'>
         <div id='post' v-for="(post, index) in this.posts" :key="index" :class="[`pos-${index}`]">
-            <div id='post-header' v-if="post.owner">
+            <div id='post-header' v-if="post.owner">       
                 <div id='left'>
                     <img id='avatar' v-bind:src=post.ownerAvatar alt='avatar' />
                     <div id='username-timeago'>
                         <p id='username' @click="this.linkToProfile(post.owner.username)">{{post.owner.username}}</p>
                         <p id='timeago'>{{this.convertToTimePassed(post.createdAt)}}</p>
                     </div>
-                    <p v-for="(tag, index) in this.allTags" :key=index :class="`${tag.tagname} tag-style`" :style="`background-color: ${tag.tagHexColor}`">{{tag.tagname}}</p>
+                    <UserTag :userId=post.owner.id />
                 </div>
                 <a role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                     <svg id="dot-menu" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
@@ -107,7 +112,7 @@ export default {
                     <!-- THIS WILL BE AN ISSUE. (Spam someone with invitations) ALLOW TO SEE ONLY A CERTAIN AMOUNT OF SPARKS, 
                     OR FROM USERS WITH A RESPECTABLE REP -->
                     <a class="dropdown-item" @click="this.addFriendRequest(post.userId, post.owner.username)" v-if="this.user.username !== post.owner.username">Add Friend</a>
-                    <a class="dropdown-item" v-if="this.user.username !== post.owner.username">Report</a>
+                    <a class="dropdown-item" v-if="this.user.username !== post.owner.username" @click="this.test(post.owner)" data-bs-toggle="modal" data-bs-target="#report-modal">Report</a>
                     <a class="dropdown-item" v-if="this.user.super || post.owner.username === this.user.username" @click="this.handleDeleteStyle(post.id, index)">Delete</a>
                     
                 </div>
@@ -145,6 +150,7 @@ export default {
                 </svg>
             </div>
         </div>
+        <ReportModal :userReported=this.testOwner /> 
     </div>
 </template>
 
@@ -164,18 +170,6 @@ p {
     margin-top: 5%;
 }
 
-.tag-style {
-    color: white;
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    width: fit-content;
-    padding: 0 .5vw;
-    border-radius: 15px;
-    margin: 0 .2vw;
-    height: fit-content;
-    font-size: 13px;
-}
 
 .hidden {
     display: none;

@@ -87,6 +87,9 @@ export default {
                 subtree: true
             })
         },
+        endSpark() {
+            
+        }
     },
     watch: {
         user() {
@@ -160,7 +163,7 @@ export default {
 
             <div id='right'>
                 <div id='cards'>
-                    <!-- PROPS: side = which way image is faction. isSelf = is current user -->
+                    <!-- PROPS: side = which way image is facing. isSelf = is current user -->
                     <div id='user-card'>
                         <SparkUserCard 
                             :propsUser=this.otherUser 
@@ -171,8 +174,15 @@ export default {
                         />
                     </div>
 
+                    <div class='button-container'>
+                        <button class='button-end-spark' @click="this.endSpark()">End Spark</button>
+                    </div>
+
                     <div id='user-card'>
-                        <SparkUserCard :propsUser=this.user side="left" :isSelf=true />
+                        <SparkUserCard 
+                        :propsUser=this.user 
+                        side="left" 
+                        :isSelf=true />
                     </div>
                 </div>
             </div>
@@ -186,6 +196,27 @@ export default {
 <style scoped>
 .hidden {
     display: none;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    width: 80%;
+}
+
+.button-end-spark {
+    background-color: var(--main-color-blue);
+    color: white;
+    border: 1px solid var(--main-color-blue);
+    padding: 5px;
+    width: 25%;
+    border-radius: 15px;
+}
+
+.button-end-spark:hover {
+    cursor: pointer;
+    background-color: white;
+    color: var(--main-color-blue);
 }
 
 #msg-inp {
