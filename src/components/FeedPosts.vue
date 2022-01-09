@@ -93,7 +93,7 @@ export default {
 
 <template>
     <div id='post-container'>
-        <p>The website is currently under construction there are some parts that will not be functional: search bar at the top of the page, Most profile tabs, ande the finish spark button in a created spark. All are known issues.</p>
+        <p class='disclaimer'>The website is currently under construction there are some parts that will not be functional: search bar at the top of the page, Most profile tabs, ande the finish spark button in a created spark. All are known issues.</p>
         <div id='post' v-for="(post, index) in this.posts" :key="index" :class="[`pos-${index}`]">
             <div id='post-header' v-if="post.owner">       
                 <div id='left'>
@@ -158,6 +158,10 @@ export default {
 <style scoped>
 p {
     margin: 0;
+}
+
+.disclaimer {
+    margin-top: 2%;
 }
 
 .iframe-div {
