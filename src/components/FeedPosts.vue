@@ -25,9 +25,11 @@ export default {
     },
     methods: {
         async getRandomPosts() {
-            const res = await axios.get(`${import.meta.env.VITE_API}/post/randomposts`)
-            this.posts = res.data.posts
-            this.attachOwnerToPost()
+            if(localStorage.getItem("uId")) {
+                const res = await axios.get(`${import.meta.env.VITE_API}/post/randomposts`)
+                this.posts = res.data.posts
+                this.attachOwnerToPost()
+            }
         },
         async getPostOwner(id) {
             const res = await axios.get(`${import.meta.env.VITE_API}/user/finduser/${id}`)
