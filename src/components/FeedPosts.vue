@@ -25,9 +25,11 @@ export default {
     },
     methods: {
         async getRandomPosts() {
-            const res = await axios.get(`${import.meta.env.VITE_API}/post/randomposts`)
-            this.posts = res.data.posts
-            this.attachOwnerToPost()
+            if(localStorage.getItem("uId")) {
+                const res = await axios.get(`${import.meta.env.VITE_API}/post/randomposts`)
+                this.posts = res.data.posts
+                this.attachOwnerToPost()
+            }
         },
         async getPostOwner(id) {
             const res = await axios.get(`${import.meta.env.VITE_API}/user/finduser/${id}`)
@@ -93,6 +95,7 @@ export default {
 
 <template>
     <div id='post-container'>
+        <p class='disclaimer'>The website is currently under construction there are some parts that will not be functional: search bar at the top of the page, Most profile tabs, ande the finish spark button in a created spark. All are known issues.</p>
         <div id='post' v-for="(post, index) in this.posts" :key="index" :class="[`pos-${index}`]">
             <div id='post-header' v-if="post.owner">       
                 <div id='left'>
@@ -157,6 +160,10 @@ export default {
 <style scoped>
 p {
     margin: 0;
+}
+
+.disclaimer {
+    margin-top: 2%;
 }
 
 .iframe-div {

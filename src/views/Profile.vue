@@ -56,6 +56,7 @@ export default {
                             <h1 id='username'>{{this.userForProfile.username}}</h1>
                             <h4 id='fullname'>{{this.userForProfile.name}}</h4>
                             <p id='bio'>{{this.userForProfile.about}}</p>
+                            <p style="color: white"> The Website is currently under construciton some features may not be avaliable</p>
                         </div>
                     </div>
                     <ProfileNavBar @tab='focusTab'/>
